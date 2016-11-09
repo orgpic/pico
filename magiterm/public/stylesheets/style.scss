@@ -1,0 +1,18 @@
+$offwhite: #F4F6F7;
+$offblack: #242327;
+$darkblack: #161820;
+$lightblue: #638898;
+@import url('https://fonts.googleapis.com/css?family=Dosis');
+@import url('https://fonts.googleapis.com/css?family=Advent+Pro|Dosis');
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+body {
+  font: 14px "Dosis", Helvetica, Arial, sans-serif;
+  background-color: $offblack;
+}
+
+.homepage-container {
+	.title {
+		color: $offwhite;
+	}
+}
