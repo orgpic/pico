@@ -62,6 +62,7 @@
 	var React = __webpack_require__(/*! react */ 3);
 	var ReactDOM = __webpack_require__(/*! react-dom */ 97);
 	var LinuxComputer = __webpack_require__(/*! ./LinuxComputer.jsx */ 235);
+	var SignUp = __webpack_require__(/*! ./Signup.jsx */ 237);
 	
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -83,16 +84,27 @@
 	          { className: 'homepage-container' },
 	          React.createElement(
 	            'div',
-	            { className: 'title' },
-	            'Hello Welcome To MagiTerm'
-	          ),
-	          React.createElement(
-	            _reactRouter.Link,
-	            { to: '/linuxcomputer' },
+	            { className: 'header' },
 	            React.createElement(
 	              'div',
-	              null,
-	              'Go To LinuxComputer'
+	              { className: 'overlay' },
+	              React.createElement(
+	                'div',
+	                { className: 'row' },
+	                React.createElement(
+	                  'div',
+	                  { className: 'col-md-6' },
+	                  React.createElement(
+	                    'div',
+	                    { className: 'logo-container' },
+	                    React.createElement(
+	                      'div',
+	                      { className: 'title' },
+	                      ' picoShell '
+	                    )
+	                  )
+	                )
+	              )
 	            )
 	          )
 	        )
@@ -27948,6 +27960,51 @@
 	}(React.Component);
 	
 	module.exports = CodeEditor;
+
+/***/ },
+/* 237 */
+/*!***********************************!*\
+  !*** ./app/components/Signup.jsx ***!
+  \***********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var React = __webpack_require__(/*! react */ 3);
+	var ReactDOM = __webpack_require__(/*! react-dom */ 97);
+	
+	var Signup = function (_React$Component) {
+		_inherits(Signup, _React$Component);
+	
+		function Signup(props) {
+			_classCallCheck(this, Signup);
+	
+			return _possibleConstructorReturn(this, (Signup.__proto__ || Object.getPrototypeOf(Signup)).call(this, props));
+		}
+	
+		_createClass(Signup, [{
+			key: 'render',
+			value: function render() {
+				return React.createElement(
+					'div',
+					null,
+					'This is the SignUp Component'
+				);
+			}
+		}]);
+	
+		return Signup;
+	}(React.Component);
+	
+	module.exports = Signup;
 
 /***/ }
 /******/ ]);

@@ -3,9 +3,29 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
 body {
   font: 14px "Dosis", Helvetica, Arial, sans-serif;
-  background-color: #242327; }
+  background-color: #242327;
+  margin: 0;
+  padding: 0; }
 
-.homepage-container .title {
-  color: #F4F6F7; }
+.homepage-container {
+  width: 100%;
+  background-color: #FFFFFF; }
+  .homepage-container .header {
+    background-image: url("/images/background.svg");
+    width: 100%;
+    height: 455px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden; }
+    .homepage-container .header .overlay {
+      background: rgba(9, 227, 123, 0.2);
+      text-align: center;
+      height: 455px; }
+      .homepage-container .header .overlay .logo-container {
+        padding-top: 120px; }
+        .homepage-container .header .overlay .logo-container .title {
+          font-family: Dosis-Regular;
+          font-size: 120px;
+          color: #FFFFFF; }
 
 /*# sourceMappingURL=style.css.map */
