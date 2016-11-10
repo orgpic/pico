@@ -8,8 +8,6 @@ const bodyParser = require('body-parser');
 const routes = require('./routes/index');
 const users = require('./routes/users');
 
-const port = 3000;
-
 const app = express();
 
 // view engine setup
@@ -58,10 +56,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
-app.listen(port, function() {
-  console.log('Listening in on port ' + port);
-});
-
 
 module.exports = app;
