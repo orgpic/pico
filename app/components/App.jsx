@@ -1,5 +1,8 @@
+import { Router, Route, Link, browserHistory } from 'react-router'
 const React = require('react');
 const ReactDOM = require('react-dom');
+const LinuxComputer = require('./LinuxComputer.jsx');
+const SignUp = require('./Signup.jsx');
 
 class App extends React.Component {
 	constructor(props) {
@@ -10,8 +13,16 @@ class App extends React.Component {
 		return (
 			<div>
         <div className="homepage-container">
-          <div className="title">
-				    Hello Welcome To MagiTerm
+          <div className="header">
+            <div className="overlay">
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="logo-container">
+                    <div className="title"> picoShell </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 			</div>
@@ -19,4 +30,9 @@ class App extends React.Component {
 	}
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render((
+  <Router>
+    <Route path="/" component={App}></Route>
+    <Route path="/linuxcomputer" component={LinuxComputer}></Route>
+  </Router>
+), document.getElementById('app'))
