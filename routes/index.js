@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../db/db');
-var Article = require('../models/Articles');
+var User = require('../models/User');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -10,14 +10,14 @@ router.get('/', function(req, res, next) {
     force: true,
   }).
   then(function() {
-    Article.bulkCreate([
+    User.bulkCreate([
       {
-        title: 'Article 1',
-        body: 'Article 1 Body'
+        Username: 'Article 1',
+        Password: 'Article 1 Body'
       },
       {
-        title: 'Article2',
-        body: 'Article2 Body'
+        Username: 'Article2',
+        Password: 'Article2 Body'
       }
     ], {
       vallide: true,
