@@ -2,6 +2,7 @@ $offwhite: #F4F6F7;
 $offblack: #242327;
 $darkblack: #161820;
 $lightblue: #638898;
+$white: #FFFFFF;
 @import url('https://fonts.googleapis.com/css?family=Dosis');
 @import url('https://fonts.googleapis.com/css?family=Advent+Pro|Dosis');
 @import url('https://fonts.googleapis.com/css?family=Roboto');
@@ -9,10 +10,35 @@ $lightblue: #638898;
 body {
   font: 14px "Dosis", Helvetica, Arial, sans-serif;
   background-color: $offblack;
+  margin: 0;
+  padding: 0;
 }
 
 .homepage-container {
-	.title {
-		color: $offwhite;
-	}
+	width: 100%;
+	background-color: $white;
+	.header {
+		background-image: url('/images/background.svg');
+		width: 100%;
+		height: 455px;
+    padding: 0;
+    margin: 0;
+		overflow: hidden;
+
+		.overlay {
+			background: rgba(9,227,123,0.2);
+			text-align: center;
+      height: 455px;
+
+			.logo-container {
+				padding-top: 120px;
+
+				.title {
+          font-family: Dosis-Regular;
+          font-size: 120px;
+          color: #FFFFFF;
+				}
+			}
+		}
+	}	
 }
