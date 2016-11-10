@@ -1,0 +1,15 @@
+Displaying All Containers:
+docker ps
+
+Building Image:
+#Do this where your Dockerfile is located
+docker build -t evenstevens/picoshell .
+
+Start a container:
+docker run -t -d --name <name> <image> /bin/bash
+
+Running commands:
+docker exec -it <nameofcontainer> <command>
+
+Switching docker machine environments (only if you're using other apps with docker)
+eval "($(docker-machine env <nameofenvironment>))"
