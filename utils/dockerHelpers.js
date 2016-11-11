@@ -4,7 +4,8 @@ const docker = new Docker();
 
 const listImages = function(options, callback) {
   docker.listImages(function(err, images) {
-    callback(images);
+    if(err) { callback(err); }
+    callback(null, images);
   });
 };
 
@@ -13,7 +14,8 @@ const listContainers = function(options, callback) {
   options = options || {all: true}; // default to all
 
   docker.listContainers(options, function(err, containers) {
-    callback(containers);
+    if(err) {callback(err); }
+    callback(null, containers);
   });
 };
 
@@ -28,6 +30,13 @@ const buildImage = function(dockerfile, options, callback) {
       console.log('finished building');
       callback();
     });
+  });
+}
+
+//options should be {Name: username}
+const createContainer = function(image, options, callback) {
+  docker.run(image, ['-t', '-d', '/bin/bash'], [process.stdout, process.stderr], function(err, data, container) {
+    console.log(data);
   });
 }
 

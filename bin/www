@@ -20,6 +20,7 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+const io = require('socket.io').listen(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -28,6 +29,16 @@ const server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+io.on('connection', function(socket) {
+  console.log('New Socket Connection!');
+
+  socket.on('/TE/1', function(code) {
+    //rebroadcast the message to all connected sockets.
+    io.sockets.emit('/TE/1', code);
+  });
+
+});
 
 /**
  * Normalize a port into a number, string, or false.
