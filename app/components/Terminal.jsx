@@ -1,4 +1,6 @@
 const React = require('react');
+// const jQuery = require('jQuery');
+const jQueryTerminal = require('jquery.terminal');
 
 class CodeEditor extends React.Component {
 	constructor(props) {
@@ -8,27 +10,49 @@ class CodeEditor extends React.Component {
 			command: null
 		}
     console.log(':-)');
-
+    this.renderTerminal();
 	}
 
 	sendCommand(e) {
 
 	}
 
+  renderTerminal() {
+    console.log('render terminal');
+    // console.log(jQuery);
+    // console.log(jQuery.terminal);
+    console.log($);
+    console.log($.terminal);
+    // console.log(jQueryTerminal);
+
+    $(function($, undefined) {
+      $('#terminal').terminal(function(command, term) {
+        console.log('command', command);
+          if (command !== '') {
+              var result = window.eval(command);
+              console.log('result', result);
+              if (result != undefined) {
+                  term.echo(String(result));
+              }
+          }
+      }, {
+          greetings: 'Javascript Interpreter',
+          name: 'js_demo',
+          height: 300,
+          width: 450,
+          prompt: '>> '
+      });
+    });
+  }
+
 	render() {
 		return (
-      <script src="node_modules/jquery/dist/jquery.min.js"></script>
-      <script src="node_modules/jquery.terminal/js/jquery.terminal-0.11.13.min.js"></script>
-      <script src="node_modules/jquery.terminal/js/jquery.mousewheel-min.js"></script>
-      <link href="node_modules/jquery.terminal/css/jquery.terminal-0.11.13.css" rel="stylesheet"/>
 
-			<div>
-        <form> 
-          <textarea id="code-editor" onKeyUp={this.sendCommand.bind(this)}>
-            {this.state.command}
-          </textarea><br/>
-        </form>
-        <button onClick={this.sendCommand.bind(this)}> Run </button>
+      <div>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/0.11.13/css/jquery.terminal.min.css" rel="stylesheet"></link>
+
+        <div id="terminal"></div><br/>
+        
 			</div>
 		)
 	}
