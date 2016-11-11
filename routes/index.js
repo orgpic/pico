@@ -9,13 +9,13 @@ var User = db.sequelize.import(__dirname + "/../models/User");
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Magiterm' });
+  res.render('index', { title: 'picoShell' });
 });
 
 router.post('/handleCodeSave', function (req, res) {
   const codeValue = JSON.stringify(req.body.codeValue);
-  const echo = "'echo " 
-  const file = " >> juice.js'"
+  const echo = "'echo ";
+  const file = " >> juice.js'";
   const command = 'bash -c ' + echo + codeValue + file;
   console.log(command);
   docker.runCommand('juice', command, function(err, response) {
