@@ -8,8 +8,11 @@ class CodeEditor extends React.Component {
 			codeValue: null
 		}
     console.log(':-)');
+	}
 
+  componentWillMount() {
     this.socket = io();
+    const context = this;
 
     //The 1 will be replaced by container/user ID when we have sessions
     this.socket.on('/TE/1', function(code) {
@@ -19,12 +22,15 @@ class CodeEditor extends React.Component {
       //Not sure why setState isn't redrawing, so I forced it to re-render. Need to fix.
       document.getElementById('code-editor').value = code;
     });
-	}
+  }
+
 
 	handleCodeRun(e) {
 	    var code = document.getElementById('code-editor').value;
       this.socket.emit('/TE/1', code);
 	}
+
+  handleCodeEnter(e)
 
 	render() {
 		return (
