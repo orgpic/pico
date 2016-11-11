@@ -1,9 +1,16 @@
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
-const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const exphbs = require('express-handlebars');
+const expressValidator = require('express-validator');
+const flash = require('connect-flash');
+const session = require('express-session');
+const passport = require('passport');
+var LocalStrategy = require('passport-local'), Strategy;
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const db = require('./db/db');
 
 const routes = require('./routes/index');
 const users = require('./routes/users');
