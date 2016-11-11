@@ -85,7 +85,7 @@ class App extends React.Component {
 }
 
 ReactDOM.render((
-  <Router>
+  <Router history={browserHistory}>
     <Route path="/" component={App}></Route>
     <Route path="/linuxcomputer" component={LinuxComputer}></Route>
   </Router>
