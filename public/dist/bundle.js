@@ -27909,54 +27909,64 @@
 	var React = __webpack_require__(/*! react */ 3);
 	
 	var CodeEditor = function (_React$Component) {
-		_inherits(CodeEditor, _React$Component);
+	  _inherits(CodeEditor, _React$Component);
 	
-		function CodeEditor(props) {
-			_classCallCheck(this, CodeEditor);
+	  function CodeEditor(props) {
+	    _classCallCheck(this, CodeEditor);
 	
-			var _this = _possibleConstructorReturn(this, (CodeEditor.__proto__ || Object.getPrototypeOf(CodeEditor)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (CodeEditor.__proto__ || Object.getPrototypeOf(CodeEditor)).call(this, props));
 	
-			_this.state = {
-				codeValue: null
-			};
-			return _this;
-		}
+	    var context = _this;
+	    _this.state = {
+	      codeValue: null
+	    };
+	    console.log(':-)');
 	
-		_createClass(CodeEditor, [{
-			key: 'handleCodeRun',
-			value: function handleCodeRun(e) {
-				var code = document.getElementById('code-editor').value;
-				this.setState({
-					codeValue: code
-				});
-				console.log(code);
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				return React.createElement(
-					'div',
-					null,
-					React.createElement(
-						'form',
-						null,
-						React.createElement(
-							'textarea',
-							{ id: 'code-editor' },
-							this.state.codeValue
-						),
-						React.createElement('br', null)
-					),
-					React.createElement(
-						'button',
-						{ onClick: this.handleCodeRun.bind(this) },
-						' Run '
-					)
-				);
-			}
-		}]);
+	    _this.socket = io();
 	
-		return CodeEditor;
+	    //The 1 will be replaced by container/user ID when we have sessions
+	    _this.socket.on('/TE/1', function (code) {
+	      context.setState({
+	        codeValue: code
+	      });
+	      //Not sure why setState isn't redrawing, so I forced it to re-render. Need to fix.
+	      document.getElementById('code-editor').value = code;
+	    });
+	    return _this;
+	  }
+	
+	  _createClass(CodeEditor, [{
+	    key: 'handleCodeRun',
+	    value: function handleCodeRun(e) {
+	      var code = document.getElementById('code-editor').value;
+	      this.socket.emit('/TE/1', code);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'form',
+	          null,
+	          React.createElement(
+	            'textarea',
+	            { id: 'code-editor', onKeyUp: this.handleCodeRun.bind(this) },
+	            this.state.codeValue
+	          ),
+	          React.createElement('br', null)
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this.handleCodeRun.bind(this) },
+	          ' Run '
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return CodeEditor;
 	}(React.Component);
 	
 	module.exports = CodeEditor;

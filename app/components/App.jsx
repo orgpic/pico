@@ -5,13 +5,13 @@ const LinuxComputer = require('./LinuxComputer.jsx');
 const SignUp = require('./Signup.jsx');
 
 class App extends React.Component {
-	constructor(props) {
-		super(props);
-	}
+  constructor(props) {
+    super(props);
+  }
 
-	render() {
-		return (
-			<div>
+  render() {
+    return (
+      <div>
         <div className="homepage-container">
           <div className="header">
             <div className="overlay">
@@ -25,9 +25,9 @@ class App extends React.Component {
             </div>
           </div>
         </div>
-			</div>
-		)
-	}
+      </div>
+    )
+  }
 }
 
 ReactDOM.render((
