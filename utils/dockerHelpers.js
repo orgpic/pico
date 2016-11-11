@@ -4,7 +4,8 @@ const docker = new Docker();
 
 const listImages = function(options, callback) {
   docker.listImages(function(err, images) {
-    callback(images);
+    if(err) { callback(err); }
+    callback(null, images);
   });
 };
 
@@ -13,7 +14,8 @@ const listContainers = function(options, callback) {
   options = options || {all: true}; // default to all
 
   docker.listContainers(options, function(err, containers) {
-    callback(containers);
+    if(err) {callback(err); }
+    callback(null, containers);
   });
 };
 
