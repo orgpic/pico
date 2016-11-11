@@ -4,6 +4,7 @@ const ReactDOM = require('react-dom');
 const LinuxComputer = require('./LinuxComputer.jsx');
 const SignUp = require('./Signup.jsx');
 const Login = require('./Login.jsx');
+const Dashboard = require('./Dashboard.jsx');
 const axios = require('axios');
 
 let authenticate;
@@ -88,5 +89,6 @@ ReactDOM.render((
   <Router>
     <Route path="/" component={App}></Route>
     <Route path="/linuxcomputer" component={LinuxComputer}></Route>
+    <Route path="/dashboard" component={Dashboard}></Route>
   </Router>
 ), document.getElementById('app'))
