@@ -76,6 +76,11 @@ class App extends React.Component {
                     </div>
                   </div>
                 </div>
+                <Link to={`/linuxcomputer`} >
+                  <div>
+                    Linux Computer
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
