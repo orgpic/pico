@@ -57,9 +57,18 @@ router.post('/cmd', function (req, res) {
 
     const command = 'bash -c "echo ' + newdir + ' > /picoShell/.pico' + '"'; 
     console.log(command);
+<<<<<<< 9db4b030519961a94aa04c11fc49c0018558fb28
     docker.runCommand(containerName, command, function(err, res1) {
       if (err) { res.status(200).send(err); } 
       else { res.status(200).send(res1); }
+=======
+    docker.runCommand('juice', command, function(err, res1) {
+      if (err) {
+        res.status(200).send(err);
+      } else {
+        res.status(200).send(res1);
+      }
+>>>>>>> Fix single quotes problem in code editor, changed res.send
     })
   } else if(cmd.split(" ")[0] === 'open') {
     docker.runCommand(containerName, 'cat ' + cmd.split(" ")[1], function(err1, res1) {
@@ -81,9 +90,18 @@ router.post('/cmd', function (req, res) {
       cmd = '"cd ' + res1 + ' && ' + cmd + '"';
       const command = 'bash -c ' + cmd;
       console.log(command);
+<<<<<<< 9db4b030519961a94aa04c11fc49c0018558fb28
       docker.runCommand(containerName, command, function(err2, res2) {
         if (err2) { res.status(200).send(err2); } 
         else { res.status(200).send(res2); }
+=======
+      docker.runCommand('juice', command, function(err2, res2) {
+        if (err2) {
+          res.status(200).send(err2);
+        } else {
+          res.status(200).send(res2);
+        }
+>>>>>>> Fix single quotes problem in code editor, changed res.send
       });
     }) 
   }
