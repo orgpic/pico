@@ -80,4 +80,4 @@ class Signup extends React.Component {
   }
 }
 
-module.exports = Signup;
+module.exports = Signup;	

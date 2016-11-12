@@ -17,6 +17,8 @@ const users = require('./routes/users');
 
 const app = express();
 
+SALT_WORK_FACTOR = 12;
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('public', path.join(__dirname, 'public'));
@@ -28,6 +30,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
@@ -41,7 +46,6 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
