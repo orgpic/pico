@@ -17,16 +17,21 @@ router.get('/', function(req, res) {
 });
 
 router.post('/handleCodeSave', function (req, res) {
-  const code = JSON.stringify(req.body.codeValue).replace("'", "'\\''");
+  // const code = JSON.stringify(req.body.codeValue);
+  // console.log(req.body.codeValue);
+  // console.log(JSON.stringify(req.body.codeValue));
+  // console.log(JSON.stringify(req.body.codeValue).replace(/'/g, "\\\""));
+
+  const code = JSON.stringify(req.body.codeValue).replace(/'/g, "\\\"");
   const echo = "'echo -e ";
   const file = " > juice.js'";
   const command = 'bash -c ' + echo + code + file;
   console.log(command);
   docker.runCommand('juice', command, function(err, response) {
     if (err) {
-      res.send(200, err);
+      res.status(200).send(err);
     } else {
-      res.send(200, response);
+      res.status(200).send(response);
     }
   });
 });
@@ -42,9 +47,9 @@ router.post('/cmd', function (req, res) {
     console.log(command);
     docker.runCommand('juice', command, function(err, res1) {
       if (err) {
-        res.send(200, err);
+        res.status(200).send(err);
       } else {
-        res.send(200, res1);
+        res.status(200).send(res1);
       }
     })
   }
@@ -59,9 +64,9 @@ router.post('/cmd', function (req, res) {
       console.log(command);
       docker.runCommand('juice', command, function(err2, res2) {
         if (err2) {
-          res.send(200, err2);
+          res.status(200).send(err2);
         } else {
-          res.send(200, res2);
+          res.status(200).send(res2);
         }
       });
     })
