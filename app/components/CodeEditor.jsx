@@ -24,11 +24,6 @@ class CodeEditor extends React.Component {
       indent: true,
     });
 
-    /*
-      NEED TO FIX: If you type faster than the requests can keep up, your text gets all messed up. 
-        Set some sort of timeout for emits maybe?
-    */
-
     editor.on('changes', function(editor, e){
       //context.cursorPos = context.editor.doc.getCursor();
       if(Date.now() - context.lastUpdate < 100) {
@@ -50,6 +45,7 @@ class CodeEditor extends React.Component {
 
     this.editor = editor;
     this.lastUpdate = Date.now();
+
   }
 
   componentWillMount() {
@@ -72,6 +68,7 @@ class CodeEditor extends React.Component {
 
   handleCodeChange() {
       var code = document.getElementById('code-editor').value;
+      console.log(code);
       this.socket.emit('/TE/1', code);
   }
 
