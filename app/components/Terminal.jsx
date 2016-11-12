@@ -7,22 +7,28 @@ class Terminal extends React.Component {
 		super(props);
     var context = this;
 		this.state = {
-			command: null
+			command: null,
+      prompt: null,
+      containerName: 'juice' // change this to refer to user name when login is done
 		}
     this.renderTerminal();
 	}
 
+
+
   renderTerminal() {
-    // console.log('render terminal');
-    console.log($);
-    console.log($.terminal);
+    // console.log($);
+    // console.log($.terminal);
+
+    var prompt = this.state.prompt ? this.state.prompt + '>> ' : '>> ';
+    var containerName = this.state.containerName;
 
     $(function($, undefined) {
       $('#terminal').terminal(function(command, term) {
         console.log('command', command);
         if (command !== '') {
 
-          axios.post('/cmd', { cmd: command })
+          axios.post('/cmd', { cmd: command, containerName: containerName })
             .then(function(res) {
               console.log(res);
               console.log(res.data);
@@ -31,20 +37,29 @@ class Terminal extends React.Component {
             .catch(function(err) {
               console.error(err);
               term.echo(String(err));
-            })
+            });
 
             // var result = window.eval(command);
-            // console.log('result', result);
-            // if (result != undefined) {
-            //     term.echo(String(result));
-            // }
         }
       }, {
           greetings: '',
           name: '',
           height: 500,
           width: 650,
-          prompt: '>> '
+          prompt: prompt,
+          onInit: function(term) {
+            console.log('started terminal');
+            var command = 'cd /picoShell';
+            axios.post('/cmd', { cmd: command, containerName: containerName })
+              .then(function(res) {
+                console.log(res);
+                term.echo(String(res.data));
+              })
+              .catch(function(err) {
+                console.error(err);
+                term.echo(String(err));
+              });
+          }
       });
     });
   }

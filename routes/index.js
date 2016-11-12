@@ -38,6 +38,7 @@ router.post('/handleCodeSave', function (req, res) {
 
 router.post('/cmd', function (req, res) {
   var cmd = req.body.cmd;
+  var containerName = req.body.containerName;
 
   if(cmd.split(" ")[0] === 'cd') {
     const newdir = cmd.split(" ")[1];
@@ -45,16 +46,13 @@ router.post('/cmd', function (req, res) {
 
     const command = 'bash -c "echo ' + newdir + ' > /picoShell/.pico' + '"'; 
     console.log(command);
-    docker.runCommand('juice', command, function(err, res1) {
-      if (err) {
-        res.status(200).send(err);
-      } else {
-        res.status(200).send(res1);
-      }
+    docker.runCommand(containerName, command, function(err, res1) {
+      if (err) { res.status(200).send(err); } 
+      else { res.status(200).send(res1); }
     })
   }
   else {
-    docker.runCommand('juice', 'cat /picoShell/.pico', function(err1, res1) {
+    docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
 
       console.log('response from cat /picoShell/.pico :', res1);
       res1 = res1.replace(/^\s+|\s+$/g, '');
@@ -62,12 +60,9 @@ router.post('/cmd', function (req, res) {
       cmd = '"cd ' + res1 + ' && ' + cmd + '"';
       const command = 'bash -c ' + cmd;
       console.log(command);
-      docker.runCommand('juice', command, function(err2, res2) {
-        if (err2) {
-          res.status(200).send(err2);
-        } else {
-          res.status(200).send(res2);
-        }
+      docker.runCommand(containerName, command, function(err2, res2) {
+        if (err2) { res.status(200).send(err2); } 
+        else { res.status(200).send(res2); }
       });
     })
     
