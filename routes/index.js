@@ -27,6 +27,45 @@ router.post('/handleCodeSave', function (req, res) {
   });
 });
 
+router.post('/cmd', function (req, res) {
+  var cmd = req.body.cmd;
+
+  if(cmd.split(" ")[0] === 'cd') {
+    const newdir = cmd.split(" ")[1];
+    console.log('change dir to: ', newdir);
+
+    const command = 'bash -c "echo ' + newdir + ' > .pico' + '"'; 
+    console.log(command);
+    docker.runCommand('test1', command, function(err, res1) {
+      if (err) {
+        res.send(200, err);
+      } else {
+        res.send(200, res1);
+      }
+    })
+  }
+  else {
+    docker.runCommand('test1', 'cat /.pico', function(err1, res1) {
+
+      console.log('response from cat /.pico :', res1);
+      res1 = res1.replace(/^\s+|\s+$/g, '');
+
+      cmd = '"cd ' + res1 + ' && ' + cmd + '"';
+      const command = 'bash -c ' + cmd;
+      console.log(command);
+      docker.runCommand('test1', command, function(err2, res2) {
+        if (err2) {
+          res.send(200, err2);
+        } else {
+          res.send(200, res2);
+        }
+      });
+    })
+    
+  }
+
+
+});
 
 router.post('/user', function(req, res) {
   var username = req.body.username;
