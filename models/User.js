@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
       validPassword: function(password, passwd, done, user) {
         bcrypt.compare(password, passwd, function(err, isMatch) {
           if (err) {
-            console.log(err);
+            return done(err, null);
           } 
           if (isMatch) {
             return done(null, user);
