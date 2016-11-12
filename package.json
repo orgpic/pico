@@ -10,6 +10,8 @@
   "dependencies": {
     "axios": "^0.15.2",
     "babel-core": "^6.17.0",
+    "bcrypt": "^0.8.7",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.15.1",
     "bootstrap": "^3.3.7",
     "chai": "^3.5.0",
