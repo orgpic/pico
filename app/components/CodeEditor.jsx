@@ -53,7 +53,6 @@ class CodeEditor extends React.Component {
 
     //The 1 will be replaced by container/user ID when we have sessions
     this.socket.on('/TE/1', function(code) {
-      console.log('CODE: ', code);
       context.setState({
         codeValue: code
       });
