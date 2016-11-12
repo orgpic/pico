@@ -9,7 +9,7 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(user, done) {
   User.find({where: {id: user.id}}).then(function(user){
-    done(nul, user);
+    done(null, user);
   }).catch(function(err) {
     done(err, null);
   });
