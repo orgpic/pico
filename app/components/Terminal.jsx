@@ -42,7 +42,7 @@ class Terminal extends React.Component {
       }, {
           greetings: '',
           name: '',
-          height: 600,
+          height: 500,
           width: 650,
           prompt: '>> '
       });
