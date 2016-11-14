@@ -64,10 +64,12 @@ class Terminal extends React.Component {
               } else {
                 term.echo(String(res.data));
               }
+              context.socket.emit('/TERM/RES/1', {res: res.data, username: context.username});
             })
             .catch(function(err) {
               console.error(err);
-              term.echo(String(JSON.stringify(err)));
+              term.echo(String(err));
+              context.socket.emit('/TERM/RES/1', {res: err, username: context.username});
             });
 
             // var result = window.eval(command);
