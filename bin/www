@@ -38,6 +38,14 @@ io.on('connection', function(socket) {
     io.sockets.emit('/TE/1', code);
   });
 
+  socket.on('/TERM/1', function(code) {
+    io.sockets.emit('/TERM/1', code);
+  });
+
+  socket.on('/TERM/RES/1', function(code) {
+    io.sockets.emit('/TERM/RES/1', code);
+  });
+
 });
 
 /**
