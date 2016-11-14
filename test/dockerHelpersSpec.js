@@ -16,10 +16,29 @@ describe('Docker', function() {
   });
 
   it('should start container', function() {
-    docker.startContainer('szhou/test', 'test1', 'bash', function(err, res) {
-      console.log(res);
+    console.log('start')
+
+    var res = 'test';
+
+    docker.startContainer('szhou/test2', 'juice1', 'bash', function(err, res) {
+      console.log('res', res);
+      res = res;
+      expect(err).to.be.null;
+      expect(res).to.not.be.null;
+      expect(1).to.be(0);
     });
+    console.log('done')
+    console.log(res)
+    expect(res).to.not.be.null;
   });
+
+  it('should ls /picoShell directory', function() {
+    var console = this.console;
+    docker.runCommand('juice', 'bash -c "cd /picoShell && ls"', function(err, res) {
+      console.log(err, res);
+    })
+  });
+
 
   xit('should install a package', function() {
     

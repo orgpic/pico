@@ -32,11 +32,15 @@ class Terminal extends React.Component {
             .then(function(res) {
               console.log(res);
               console.log(res.data);
-              term.echo(String(res.data));
+              if(typeof res.data === 'object') {
+                term.echo(String(JSON.stringify(res.data)));
+              } else {
+                term.echo(String(res.data));
+              }
             })
             .catch(function(err) {
               console.error(err);
-              term.echo(String(err));
+              term.echo(String(JSON.stringify(err)));
             });
 
             // var result = window.eval(command);

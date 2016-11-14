@@ -8,40 +8,51 @@ const run = "docker run -t -d --name"
 // const build = "docker build";
 // const run = "docker run";
 
+
 const runCommand = function(containerName, command, callback) {
   runCommandCommand = dockex + ' ' + containerName + ' ' + command;
+  console.log(runCommandCommand);
   exec(runCommandCommand, function(err, stdout, stderr) {
     console.log('STDOUT', stdout);
     console.log('STDERR', stderr);
     console.log('ERR', err);
     if (stderr && !stdout) {
-      //callback(err, null);
-      callback(null, stderr);
+      callback(stderr, null);
     } else {
       callback(null, stdout);
     }
   });
 }
 
+const buildImage = function(dockerfile, command, callback) {
+
+}
+
 //** options is containername
 const startContainer = function(imageName, containerName, command, callback) {
   const startContainerCommand = run + ' ' + containerName + ' ' + imageName + ' ' + command;
   console.log(startContainerCommand);
+
   exec(startContainerCommand, function(err, stdout, stderr) {
+    console.log('executed start container command');
     if (stderr) {
-      callback(err, null);
+      callback(stderr, null);
     } else {
       callback(null, stdout);
     }
   })
 } 
 
+const destroyContainer = function(containerName, command, callback) {
+
+}
+
 const install = function(installName, containerName, callback) {
   const installCommand = dockex + ' ' + containerName + ' apt-get install -y ' + installName;
   console.log(installCommand);
   exec(installCommand, function(err, stdout, stderr) {
     if (stderr) {
-      callback(err, null);
+      callback(stderr, null);
     } else {
       callback(null, stdout);
     }
@@ -58,7 +69,7 @@ const writeToFile = function(containerName, codeInput, callback) {
 
   exec(fullCommand, function(err, stdout, stderr) {
     if (stderr) {
-      callback(err, null);
+      callback(stderr, null);
     } else {
       callback(null, stdout);
     }
