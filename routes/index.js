@@ -10,8 +10,7 @@ var User = require('../models/User');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 const jwt = require('jsonwebtoken');
-const jwtDecode = require('jwt-decode');
-
+const jwtDecode = require('jwt-decode')
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -20,10 +19,8 @@ router.get('/', function(req, res) {
 });
 
 router.get('/decode', function(req, res) {
-  console.log('trying to access decode');
   const decoded = jwtDecode(req.query.token);
-  console.log(decoded);
-  res.send(200, decoded)
+  res.send(200, decoded);
 });
 
 
@@ -45,8 +42,6 @@ router.post('/handleCodeSave', function (req, res) {
   });
 });
 
-
-
 router.post('/cmd', function (req, res) {
   var cmd = req.body.cmd;
   var containerName = req.body.containerName;
@@ -57,9 +52,11 @@ router.post('/cmd', function (req, res) {
 
     const command = 'bash -c "echo ' + newdir + ' > /picoShell/.pico' + '"'; 
     console.log(command);
+
     docker.runCommand(containerName, command, function(err, res1) {
       if (err) { res.status(200).send(err); } 
       else { res.status(200).send(res1); }
+
     })
   } else if(cmd.split(" ")[0] === 'open') {
     docker.runCommand(containerName, 'cat ' + cmd.split(" ")[1], function(err1, res1) {
@@ -72,23 +69,83 @@ router.post('/cmd', function (req, res) {
       }
     });
   } else {
-    docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
+      docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
 
-      console.log('response from cat /picoShell/.pico :', res1);
+        console.log('response from cat /picoShell/.pico :', res1);
 
-      res1 = res1.replace(/^\s+|\s+$/g, '');
+        res1 = res1.replace(/^\s+|\s+$/g, '');
 
-      cmd = '"cd ' + res1 + ' && ' + cmd + '"';
-      const command = 'bash -c ' + cmd;
-      console.log(command);
-      docker.runCommand(containerName, command, function(err2, res2) {
-        if (err2) { res.status(200).send(err2); } 
-        else { res.status(200).send(res2); }
-      });
-    }) 
+        cmd = '"cd ' + res1 + ' && ' + cmd + '"';
+        const command = 'bash -c ' + cmd;
+        console.log(command);
+
+        docker.runCommand(containerName, command, function(err2, res2) {
+          if (err2) { res.status(200).send(err2); } 
+          else { res.status(200).send(res2); }
+        docker.runCommand('juice', command, function(err2, res2) {
+          if (err2) {
+            res.status(200).send(err2);
+          } else {
+            res.status(200).send(res2);
+          }
+        });
+      }) 
+    })
   }
 });
 
+User.updateOrCreate = function(user, cb) {
+  if (user.authenticatedWith !== 'local') {
+    User.findOne({where: {username: username}})
+    .then(function(err, oldUser) {
+      if (err) {
+        console.log('err', err);
+      } else if (!oldUser) {
+        User.create({user});
+      } else {
+        User.findOne({where: {username: username}}).update({user});
+      }
+    }).then(function() {
+      cb(null, user);
+    });
+  } else {
+    cb(null, user);
+  }
+};
+
+function generateToken(req, res, next) {
+  req.token = jwt.sign({
+    id: req.user.id,
+    username: req.user.username
+  }, 'server secret', {
+    expiresIn: 7200
+  });
+  next();
+}
+
+function serialize(req, res, next) {
+  var user = req.authInfo.dataValues;
+  User.updateOrCreate(user, function(err, user) {
+    if (err) {
+      return next(err);
+    }
+    req.user = user;
+    next();
+  });
+}
+
+router.post('/authenticate', 
+  passport.authenticate('local', {
+    session: false
+  }), serialize, generateToken,
+  function(req, res) {
+    console.log('trying to send status', req.user, req.token);
+    res.status(200).json({
+      user: req.user,
+      token: req.token
+    });
+  }
+);
 
 
 router.get('*', function(req, res, next) {

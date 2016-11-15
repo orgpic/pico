@@ -98,6 +98,7 @@ router.post('/authenticate', function(req, res) {
     console.log(err);
     res.send(404, err); 
   });
+
 });
 
 module.exports = router;  
