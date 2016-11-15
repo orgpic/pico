@@ -102,10 +102,10 @@ class App extends React.Component {
                     <div className="logo-container">
                       Welcome {this.state.username}!
                     </div>
-                  </div>
-                  <div>
-                    <button onClick = {this.handleLogOut.bind(this)}> Logout </button>
-                  </div>
+                    <div>
+                      <button onClick = {this.handleLogOut.bind(this)}> Logout </button>
+                    </div>
+                  </div>   
                 </div>
               </div>
             </div>
