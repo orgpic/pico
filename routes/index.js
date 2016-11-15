@@ -152,6 +152,7 @@ User.updateOrCreate = function(user, cb) {
 function generateToken(req, res, next) {
   req.token = jwt.sign({
     id: req.user.id,
+    username: req.user.username
   }, 'server secret', {
     expiresIn: 7200
   });
@@ -164,12 +165,12 @@ function serialize(req, res, next) {
     if (err) {
       return next(err);
     }
-    req.user = user
+    req.user = user;
     next();
   });
 }
 
-router.post('/login', 
+router.post('/authenticate', 
   passport.authenticate('local', {
     session: false
   }), serialize, generateToken,
