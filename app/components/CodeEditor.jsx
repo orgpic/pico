@@ -10,7 +10,7 @@ class CodeEditor extends React.Component {
     this.state = {
       codeValue: ''
     }
-    this.username = sessionStorage['token'];
+    this.username = localStorage['jwtToken'];
   }
 
   componentDidMount() {
@@ -59,7 +59,6 @@ class CodeEditor extends React.Component {
           codeValue: code.code
         });
         //Must place the cursor back where it was after replacing contents. Otherwise weird things happen.
-        console.log(code.code);
         context.cursorPos = context.editor.doc.getCursor();
         context.editor.getDoc().setValue(code.code);
         context.editor.doc.setCursor(context.cursorPos);
