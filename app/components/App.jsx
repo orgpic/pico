@@ -2,7 +2,7 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 const React = require('react');
 const ReactDOM = require('react-dom');
 const LinuxComputer = require('./LinuxComputer.jsx');
-const SignUp = require('./Signup.jsx');
+const SignUp = require('./SignUp.jsx');
 const Login = require('./Login.jsx');
 const Dashboard = require('./Dashboard.jsx');
 const axios = require('axios');
