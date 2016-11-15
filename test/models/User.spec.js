@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import Sequelize from 'sequelize';
 import User from '../../models/User.js';
 
-describe('Users table', function() {
+xdescribe('Users table', function() {
   
   it('should have a new user when user is added', function(done) {
     User.create({ username: 'steve', password: 'stevespassword'})
