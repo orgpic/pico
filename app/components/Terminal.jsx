@@ -13,7 +13,6 @@ class Terminal extends React.Component {
       curCommand: null
 		}
     this.username = sessionStorage['token'];
-    console.log('TOKEN', this.username);
     this.renderTerminal();
 	}
 
@@ -82,7 +81,6 @@ class Terminal extends React.Component {
                   curCommand: ''
                 });
               }
-              
             })
             .catch(function(err) {
               console.error(err);
@@ -114,7 +112,6 @@ class Terminal extends React.Component {
           },
           onCommandChange: function(command, term) {
             if(command !== context.state.curCommand) {
-              console.log('EMITTING. USERNAME = ', context.username);
               context.socket.emit('/TERM/1', {cmd: command, username: context.username});
               context.setState({
                 curCommand: command
