@@ -8,13 +8,35 @@ class CodeEditor extends React.Component {
     super(props);
     var context = this;
     this.state = {
-      codeValue: ''
+      codeValue: '',
+      containerName: '',
+      username: '',
+      fileName: ''
     }
     this.username = localStorage['jwtToken'];
   }
-
+  
   componentDidMount() {
     var context = this;
+
+    const token = localStorage['jwtToken'];
+
+    if (token) {
+      axios.get('/decode', {
+        params: {
+          token: token
+        }
+      })
+      .then (function(response) {
+        const user = response.data;
+
+        context.setState({
+          containerName: user.username,
+          username: user.username
+       });
+      });
+    }
+
     var codeEditor = document.getElementById("code-editor")
     var editor = CodeMirror.fromTextArea(codeEditor, {
       lineNumbers: true,
@@ -54,12 +76,19 @@ class CodeEditor extends React.Component {
 
     //The 1 will be replaced by container/user ID when we have sessions
     this.socket.on('/TE/1', function(code) {
+      const fileName = code.fileName;
+      const codeValue = code.code;
+
+      if(code.fileOpen) {
+        context.setState({
+          fileName: fileName
+        });
+      }
       if(code.username !== context.username) {
         context.setState({
-          codeValue: code.code
+          codeValue: codeValue
         });
         //Must place the cursor back where it was after replacing contents. Otherwise weird things happen.
-        console.log(code.code);
         context.cursorPos = context.editor.doc.getCursor();
         context.editor.getDoc().setValue(code.code);
         context.editor.doc.setCursor(context.cursorPos);
@@ -75,8 +104,13 @@ class CodeEditor extends React.Component {
 
   handleCodeSave(e) {
     var code = document.getElementById('code-editor').value;
+    const fileName = this.state.fileName;
+    console.log('filename is: ', fileName);
+    const containerName = this.state.containerName;
     axios.post('/handleCodeSave', {
-      codeValue: code
+      codeValue: code,
+      fileName: fileName,
+      containerName: containerName
       })
       .then(function(response) {
         console.log(response);

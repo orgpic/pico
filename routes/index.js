@@ -15,23 +15,28 @@ const jwtDecode = require('jwt-decode');
 
 /* GET home page. */
 router.get('/', function(req, res) {
+  console.log(req);
   res.render('index', { title: 'picoShell' });
 });
 
 router.get('/decode', function(req, res) {
   console.log('trying to access decode');
   const decoded = jwtDecode(req.query.token);
+  console.log(decoded);
   res.send(200, decoded)
 });
 
 
 router.post('/handleCodeSave', function (req, res) {
+  console.log(req.body);
+  const fileName = req.body.fileName;
+  const containerName = req.body.containerName;
   const code = JSON.stringify(req.body.codeValue).replace(/'/g, "\\\"");
   const echo = "'echo -e ";
-  const file = " > juice.js'";
+  const file = " > " + fileName + "'"
   const command = 'bash -c ' + echo + code + file;
   console.log(command);
-  docker.runCommand('juice', command, function(err, response) {
+  docker.runCommand(containerName, command, function(err, response) {
     if (err) {
       res.status(200).send(err);
     } else {
@@ -63,7 +68,7 @@ router.post('/cmd', function (req, res) {
       if(err1) {
         res.status(200).send(err1);
       } else {
-        res.status(200).send({termResponse: res1, fileOpen: true});
+        res.status(200).send({termResponse: res1, fileOpen: true, fileName: cmd.split(" ")[1]});
       }
     });
   } else {

@@ -9,12 +9,33 @@ class Terminal extends React.Component {
 		this.state = {
 			command: null,
       prompt: null,
-      containerName: 'juice', // change this to refer to user name when login is done
-      curCommand: null
+      containerName: '', // change this to refer to user name when login is done
+      curCommand: null,
+      username: ''
 		}
-    this.username = localStorage['jwtToken'];
-    this.renderTerminal();
 	}
+
+  componentDidMount() {
+    const token = localStorage['jwtToken'];
+    const context = this;
+
+    if (token) {
+      axios.get('/decode', {
+        params: {
+          token: token
+        }
+      })
+      .then (function(response) {
+        const user = response.data;
+
+        context.setState({
+          containerName: user.username,
+          username: user.username
+       });
+        context.renderTerminal();
+      });
+    }
+  }
 
   componentWillMount() {
     this.socket = io();
@@ -64,7 +85,7 @@ class Terminal extends React.Component {
               console.log(res.data);
               if(typeof res.data === 'object') {
                 if(res.data.fileOpen) {
-                  context.socket.emit('/TE/1', {code: res.data.termResponse, username: 'TERMINAL'});
+                  context.socket.emit('/TE/1', {fileOpen: res.data.fileOpen, fileName: res.data.fileName, code: res.data.termResponse, username: context.state.username});
                 } else {
                   term.echo(String(JSON.stringify(res.data)));
                   context.socket.emit('/TERM/RES/1', {res: JSON.stringify(res.data), username: context.username});
@@ -98,7 +119,6 @@ class Terminal extends React.Component {
           prompt: prompt,
           onInit: function(term) {
             context.terminal = term;
-            console.log('started terminal');
             var command = 'cd /picoShell';
             axios.post('/cmd', { cmd: command, containerName: containerName })
               .then(function(res) {
