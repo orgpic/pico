@@ -76,11 +76,20 @@ const writeToFile = function(containerName, codeInput, callback) {
   });
 }
 
+const directoryExists = function(containerName, directory, callback) {
+  const command = '[ -d ' + directory + ' ] && echo "Directory exists"';
+  const fullCommand = dockex + ' ' + containerName + ' ' + command;
+  exec(fullCommand, function(err, stdout, stderr) {
+    callback(stdout);
+  });
+}
+
 module.exports = {
   runCommand: runCommand,
   startContainer: startContainer,
   install: install,
-  writeToFile: writeToFile
+  writeToFile: writeToFile,
+  directoryExists: directoryExists
 };
 
 

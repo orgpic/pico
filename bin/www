@@ -87,6 +87,10 @@ io.on('connection', function(socket) {
     });
   });
 
+  socket.on('/TERM/CD/1', function(code) {
+    io.sockets.emit('/TERM/CD/1', code);
+  });
+
 });
 
 /**
