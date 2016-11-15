@@ -11,6 +11,7 @@ var LocalStrategy = require('passport-local'), Strategy;
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const db = require('./db/config');
+const localPassport = require('./db/config/passport')
 
 const routes = require('./routes/index');
 const users = require('./routes/users');
@@ -48,6 +49,7 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+
 // error handlers
 // development error handler
 // will print stacktrace
@@ -70,5 +72,7 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+
 
 module.exports = app;

@@ -49,11 +49,9 @@ class Login extends React.Component {
   handleSubmit(e, user, pass) {
     e.preventDefault();
     var context = this;
-    axios.post('/auth/authenticate', {
-      params: {
-        username: user, 
-        password: pass
-      }
+    axios.post('/login', {
+      username: user,
+      password: pass
     })
     .then(function(response) {
       if (response) {
