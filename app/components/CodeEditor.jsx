@@ -10,7 +10,7 @@ class CodeEditor extends React.Component {
     this.state = {
       codeValue: ''
     }
-    this.username = sessionStorage['token'];
+    this.username = localStorage['jwtToken'];
   }
 
   componentDidMount() {

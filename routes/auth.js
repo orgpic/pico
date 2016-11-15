@@ -5,17 +5,14 @@ const jwtDecode = require('jwt-decode')
 const secret = "PICOSHELL";
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
+const docker = require('../utils/dockerAPI');
+const Container = require('../models/Container');
 
 router.get('/', function(req, res, next) {
   console.log('try');
   res.send(200);
 });
 
-router.get('/decode', function(req, res) {
-  console.log('trying to access decode');
-  const decoded = jwtDecode(req.query.token);
-  res.send(200, decoded)
-});
 
 router.post('/signup', function(req, res) {
   console.log('signing up: ', req.body.username);
@@ -29,23 +26,38 @@ router.post('/signup', function(req, res) {
         return console.log('Error hashing the password', err);
       }
       passwordHashed = hash;
-      const user = User.create({
-        username: username,
-        password: passwordHashed,
-        salt: salty,
-        bio: 'bio'
-      })
-      .then(function(response) {
-        res.send(201, response);
-      })
-      .catch(function(err) {
-        console.log(err.errors[0].type === 'unique violation')
-        if (err.errors[0].type === 'unique violation') {
-          res.status(200).send('User already exists');
+      docker.startContainer('evenstevens/picoshell', username, '/bin/bash', function(err, dockerResponse) {
+        if (err) {
+          console.error(err);
         } else {
-          res.status(500).send(err);
+         const user = User.create({
+           username: username,
+           password: passwordHashed,
+           salt: salty,
+           bio: 'bio'
+         })
+         .then(function(userResponse) {
+          Container.create({
+           ownerID: username
+          })
+          .then(function(containerResponse) {
+            res.status(201).send('Created a new user and container!');
+          })
+          .catch(function(err) {
+            res.status(500).send(err);
+          });
+         })
+         .catch(function(err) {
+           console.log(err.errors[0].type === 'unique violation')
+           if (err.errors[0].type === 'unique violation') {
+             res.status(200).send('User already exists');
+           } else {
+             res.status(500).send(err);
+           }
+         });
         }
       });
+
     });
   });
 });

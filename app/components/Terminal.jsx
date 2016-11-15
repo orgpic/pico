@@ -12,7 +12,7 @@ class Terminal extends React.Component {
       containerName: 'juice', // change this to refer to user name when login is done
       curCommand: null
 		}
-    this.username = sessionStorage['token'];
+    this.username = localStorage['jwtToken'];
     this.renderTerminal();
 	}
 
