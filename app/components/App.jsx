@@ -80,11 +80,6 @@ class App extends React.Component {
                       </div>
                     </div>
                   </div>
-                  <Link to={`/linuxcomputer`} >
-                    <div>
-                      Linux Computer
-                    </div>
-                  </Link>
                 </div>
               </div>
             </div>
@@ -105,17 +100,12 @@ class App extends React.Component {
                   </div>
                   <div className="col-md-6">
                     <div className="logo-container">
-                      Welcome to picoShell {this.state.username}
+                      Welcome {this.state.username}!
                     </div>
-                  </div>
-                  <Link to={`/linuxcomputer`} >
                     <div>
-                      Linux Computer
+                      <button onClick = {this.handleLogOut.bind(this)}> Logout </button>
                     </div>
-                  </Link>
-                  <div>
-                    <button onClick = {this.handleLogOut.bind(this)}> Logout </button>
-                  </div>
+                  </div>   
                 </div>
               </div>
             </div>

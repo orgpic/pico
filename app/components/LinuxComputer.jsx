@@ -7,6 +7,10 @@ const Terminal = require('./Terminal.jsx')
 class LinuxComputer extends React.Component {
 	constructor(props) {
 		super(props);
+
+    this.state = {
+      username: ''
+    }
 	}
 
 	render() {
