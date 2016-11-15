@@ -4,7 +4,7 @@ import { shallow, mount, render } from 'enzyme';
 // import App from '../app/components/App';
 import Login from '../../../app/components/Login';
 
-describe("Login component", function() {
+xdescribe("Login component", function() {
 
   it("has homepage container div", function() {
     const wrapper = shallow(<Login/>);
