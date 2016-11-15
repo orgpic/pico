@@ -109,7 +109,7 @@ class Terminal extends React.Component {
               });
           },
           onCommandChange: function(command, term) {
-            if(command !== context.state.curCommand && command !== '') {
+            if(command !== context.state.curCommand) {
               context.socket.emit('/TERM/1', {cmd: command, username: context.username});
               context.setState({
                 curCommand: command
