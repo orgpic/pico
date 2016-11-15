@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "root",
-    "database": "picoDB",
+    "database": "demo_schema",
     "dialect": "mysql"
   },
   "test": {

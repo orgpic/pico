@@ -3,6 +3,8 @@ const Stats = require('./Stats.jsx');
 const Bio = require('./Bio.jsx');
 const Collaborators = require('./Collaborators.jsx');
 const UserInfo = require('./UserInfo.jsx');
+const cookie = require('react-cookie');
+
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -12,21 +14,32 @@ class Dashboard extends React.Component {
       authorized: 'pending'
     }
     this.socket = io();
-    if(sessionStorage['token']) {
-      this.setState({
-        authorized: 'pending'
-      });
-      console.log('TOKEN', sessionStorage['token']);
-      this.socket.emit('/userDecrypt', {encrypted: sessionStorage['token']});
-      this.socket.on('/auth/' + sessionStorage['token'], function(response) {
-        console.log('AUTH', response);
+  }
+  ComponentWillRender() {
+    const token = localStorage['jwtToken'];
+    const context = this;
+    if (token) {
+      console.log('this is the token', token)
+      axios.get('/decode', {
+        params: {
+          token: token
+        }
+      })
+      .then (function(response) {
+        const user = response.data;
+
         context.setState({
-          authorized: response
-        });
+          containerName: user.username,
+          username: user.username
+       });
+        context.renderTerminal();
+      }).catch(function(err) {
+        console.log(err);
+        alert('Not Authenticated, returning to login');
+        window.location = '/';
       });
     }
   }
-
   render() {
     if (this.state.authorized === 'pending') {
       return (
@@ -36,7 +49,6 @@ class Dashboard extends React.Component {
         );
     } else if (this.state.authorized === false) {
       window.location = '/';
-
       return(
         <div className="error"> 
           You are not logged in! Returning back to Login Page...

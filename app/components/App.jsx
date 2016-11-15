@@ -2,7 +2,7 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 const React = require('react');
 const ReactDOM = require('react-dom');
 const LinuxComputer = require('./LinuxComputer.jsx');
-const SignUp = require('./Signup.jsx');
+const SignUp = require('./SignUp.jsx');
 const Login = require('./Login.jsx');
 const Dashboard = require('./Dashboard.jsx');
 const axios = require('axios');
@@ -80,11 +80,6 @@ class App extends React.Component {
                       </div>
                     </div>
                   </div>
-                  <Link to={`/linuxcomputer`} >
-                    <div>
-                      Linux Computer
-                    </div>
-                  </Link>
                 </div>
               </div>
             </div>
@@ -105,17 +100,12 @@ class App extends React.Component {
                   </div>
                   <div className="col-md-6">
                     <div className="logo-container">
-                      Welcome to picoShell {this.state.username}
+                      Welcome {this.state.username}!
                     </div>
-                  </div>
-                  <Link to={`/linuxcomputer`} >
                     <div>
-                      Linux Computer
+                      <button onClick = {this.handleLogOut.bind(this)}> Logout </button>
                     </div>
-                  </Link>
-                  <div>
-                    <button onClick = {this.handleLogOut.bind(this)}> Logout </button>
-                  </div>
+                  </div>   
                 </div>
               </div>
             </div>

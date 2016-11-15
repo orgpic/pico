@@ -5,17 +5,10 @@ const jwtDecode = require('jwt-decode')
 const secret = "PICOSHELL";
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
+const docker = require('../utils/dockerAPI');
+const Container = require('../models/Container');
 
-router.get('/', function(req, res, next) {
-  console.log('try');
-  res.send(200);
-});
 
-router.get('/decode', function(req, res) {
-  console.log('trying to access decode');
-  const decoded = jwtDecode(req.query.token);
-  res.send(200, decoded)
-});
 
 router.post('/signup', function(req, res) {
   console.log('signing up: ', req.body.username);
@@ -29,14 +22,31 @@ router.post('/signup', function(req, res) {
         return console.log('Error hashing the password', err);
       }
       passwordHashed = hash;
-      const user = User.create({
+
+      User.create({
         username: username,
         password: passwordHashed,
         salt: salty,
         bio: 'bio'
       })
-      .then(function(response) {
-        res.send(201, response);
+      .then(function(userResponse) {
+        Container.create({
+          ownerID: username
+        })
+        .then(function(containerResponse) {
+          docker.startContainer('evenstevens/picoshell', username, '/bin/bash', function(err, dockerResponse) {
+            if (err) {
+              console.error('Error in creating container with docker');
+              res.status(500).send(err);
+            } else {
+              res.status(201).send('Created a new user and container!');
+            }
+          })
+        })
+        .catch(function(err) {
+          console.log('Error in container creation in DB');
+          res.status(500).send(err);
+        })
       })
       .catch(function(err) {
         console.log(err.errors[0].type === 'unique violation')
@@ -85,8 +95,10 @@ router.post('/authenticate', function(req, res) {
       res.send(200, 'User not found');
     }
   }).catch(function(err) {
+    console.log(err);
     res.send(404, err); 
   });
+
 });
 
 module.exports = router;  

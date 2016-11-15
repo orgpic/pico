@@ -1,6 +1,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const axios = require('axios');
+const cookie = require('react-cookie');
 
 class Login extends React.Component {
   constructor(props) {
@@ -47,21 +48,22 @@ class Login extends React.Component {
   }
 
   handleSubmit(e, user, pass) {
+    const context = this;
     e.preventDefault();
-    var context = this;
-    axios.post('/auth/authenticate', {
-      params: {
-        username: user, 
-        password: pass
-      }
+    axios.post('/authenticate', {
+      username: user,
+      password: pass
     })
     .then(function(response) {
-      if (response) {
+      if (response.data.token) {
         localStorage['jwtToken'] = response.data.token;
-        window.location = '/linuxcomputer'
+        window.location = window.location + 'dashboard';
       } else {
-        alert("authentication failed");
+        alert('Failed Login');
       }
+    })
+    .catch(function(err) {
+      console.log(err);  
     });
   }
 

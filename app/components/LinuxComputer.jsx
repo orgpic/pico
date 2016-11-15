@@ -1,3 +1,4 @@
+
 const React = require('react');
 const ReactDOM = require('react-dom');
 const CodeEditor = require('./CodeEditor.jsx')
@@ -5,19 +6,23 @@ const Terminal = require('./Terminal.jsx')
 
 
 class LinuxComputer extends React.Component {
-	constructor(props) {
-		super(props);
-	}
+  constructor(props) {
+    super(props);
 
-	render() {
+    this.state = {
+      username: ''
+    }
+  }
+
+  render() {
 
      return (
-  			<div>
-  				<CodeEditor />
-  				<Terminal />
-  			</div>
-  		);
-	}
+        <div>
+          <CodeEditor />
+          <Terminal />
+        </div>
+      );
+  }
 }
 
 

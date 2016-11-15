@@ -11,7 +11,7 @@ var LocalStrategy = require('passport-local'), Strategy;
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const db = require('./db/config');
-
+const Passport = require('./db/config/passport')
 const routes = require('./routes/index');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
@@ -31,9 +31,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({secret: 'picoShell is awesome'}));
 app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -47,6 +45,7 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
 
 // error handlers
 // development error handler
@@ -70,5 +69,7 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+
 
 module.exports = app;

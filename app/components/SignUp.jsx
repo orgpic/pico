@@ -57,7 +57,7 @@ class Signup extends React.Component {
       password: pass
     })
     .then(function (response) {
-      console.log(response.data);
+      console.log(response, response.data);
       if (response.data === 'User already exists') {
         console.log('User already exists. Please choose a different username');
         context.setState({
