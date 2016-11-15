@@ -61,6 +61,13 @@ class Login extends React.Component {
         window.location = '/linuxcomputer'
       } else {
         alert("authentication failed");
+        console.log('this is the username: ', response.data);
+        context.socket.emit('/userEncrypt', {username: response.data});
+        context.socket.on('/' + response.data + '/encrypted', function(encrypted) {
+          console.log('ENCRYPTED', encrypted);
+          window.sessionStorage.setItem('token', encrypted);
+          window.location = window.location + 'dashboard';
+        });
       }
     });
   }

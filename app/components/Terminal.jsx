@@ -13,7 +13,6 @@ class Terminal extends React.Component {
       curCommand: null,
       username: ''
 		}
-
 	}
 
   componentDidMount() {
@@ -131,6 +130,7 @@ class Terminal extends React.Component {
           },
           onCommandChange: function(command, term) {
             if(command !== context.state.curCommand) {
+              console.log('EMITTING. USERNAME = ', context.username);
               context.socket.emit('/TERM/1', {cmd: command, username: context.username});
               context.setState({
                 curCommand: command
