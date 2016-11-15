@@ -13,6 +13,7 @@ class Terminal extends React.Component {
       curCommand: null,
       username: ''
 		}
+
 	}
 
   componentDidMount() {
@@ -45,9 +46,6 @@ class Terminal extends React.Component {
     this.socket.on('/TERM/1', function(code) {
       //For some reason code.username keeps resetting itself to 'a'. Not sure why...
       if(code.username !== context.username && code.cmd !== '' && code.username !== 'a') {
-        console.log('code.username', code.username);
-        console.log('context.username', context.username);
-        console.log('SETTING CMD', code.cmd);
         context.terminal.set_command(code.cmd, false);
         context.setState({
           curCommand: code.cmd
@@ -86,6 +84,7 @@ class Terminal extends React.Component {
               if(typeof res.data === 'object') {
                 if(res.data.fileOpen) {
                   context.socket.emit('/TE/1', {fileOpen: res.data.fileOpen, fileName: res.data.fileName, code: res.data.termResponse, username: context.state.username});
+                  context.socket.emit('/TERM/RES/1', {res: '', username: context.username});
                 } else {
                   term.echo(String(JSON.stringify(res.data)));
                   context.socket.emit('/TERM/RES/1', {res: JSON.stringify(res.data), username: context.username});
@@ -137,7 +136,17 @@ class Terminal extends React.Component {
                 curCommand: command
               });
             }
-          }
+          },
+          keydown: function(event, term) {
+            if(event.key === 'Backspace') {
+              //the keydown event fires as soon as the key is pressed, but before a character is removed
+              //A timeout of 10ms allows term.get_command() to reflecct the actual new command after backspace
+              //is pressed. If this is too janky, we can remove this.
+              setTimeout(function() {
+                context.socket.emit('/TERM/1', {cmd: term.get_command(), username: context.username});
+              }, 10);
+            }
+          },
       });
     });
   }
