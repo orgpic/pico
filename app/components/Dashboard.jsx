@@ -41,7 +41,6 @@ class Dashboard extends React.Component {
         );
     } else if (this.state.authorized === false) {
       window.location = '/';
-    }
       return(
         <div className="error"> 
           You are not logged in! Returning back to Login Page...

@@ -6,8 +6,9 @@ const User = db.define('user', {
   username: Sequelize.STRING,
   password: Sequelize.STRING,
   salt: Sequelize.STRING,
-  bio: Sequelize.TEXT
-  }, 
+  bio: Sequelize.TEXT,
+  authenticatedWith: Sequelize.STRING
+}, 
   {
     classMethods: {
       associate: function(models) {

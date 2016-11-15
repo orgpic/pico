@@ -13,6 +13,9 @@ module.exports = {
         allowNull: false,
         unique: true
       },
+      email: {
+        type: Sequelize.STRING
+      },
       password: {
         type: Sequelize.STRING
       },
@@ -25,6 +28,9 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      authenticatedWith: {
+        type: Sequelize.STRING
       },
       updatedAt: {
         allowNull: false,

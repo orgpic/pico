@@ -1,24 +1,12 @@
 var passport = require('passport');
 var path = require('path');
-var LocalStrategy = require('passport-local').Strategy;
+var Strategy = require('passport-local')
 var db = require('../config');
 var User = require('../../models/User');
 const bcrypt = require('bcrypt');
 
-passport.serializeUser(function(user, callback) {
-  console.log('serializing', user, user.id, callback);
-  callback(null, user.id);
-});
 
-passport.deserializeUser(function(userID, done) {
-  console.log('trying to deserialize, userID' );
-  User.findById(userID).then(function(user) {
-    console.log('deserializing found one');
-    done(null, user);
-  });
-});
-
-passport.use(new LocalStrategy({  
+passport.use(new Strategy({  
   passReqToCallback : true
 },
   function(req, username, password, done) {
@@ -30,14 +18,14 @@ passport.use(new LocalStrategy({
         bcrypt.compare(password, user.dataValues.password, function(err, isMatch) {
           if (err) {
             console.log('bycrupt match error');
-            return done(err);
+              done(err);
           } 
           if (isMatch) {
             console.log('bycrtyp match good');
-             return done(null, user.dataValues);
+              done(null, isMatch, user);
           } else {
             console.log('bycrtup match bad', isMatch);
-            return done(null, false, { message: 'No User Found.' });
+              done(null, false, { message: 'No User Found.' });
           }
         });
       }
