@@ -55,11 +55,12 @@ class Login extends React.Component {
       password: pass
     })
     .then(function(response) {
-      if (response) {
-        
-          window.location = window.location + 'dashboard';
-      };
-        console.log('response', response);
+      if (response.data.token) {
+        localStorage['jwtToken'] = response.data.token;
+        window.location = window.location + 'dashboard';
+      } else {
+        alert('Failed Login');
+      }
     })
     .catch(function(err) {
       console.log(err);  

@@ -10,6 +10,7 @@ var User = require('../models/User');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 const jwt = require('jsonwebtoken');
+const jwtDecode = require('jwt-decode')
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -18,10 +19,8 @@ router.get('/', function(req, res) {
 });
 
 router.get('/decode', function(req, res) {
-  console.log('trying to access decode');
   const decoded = jwtDecode(req.query.token);
-  console.log(decoded);
-  res.send(200, decoded)
+  res.send(200, decoded);
 });
 
 
@@ -94,41 +93,6 @@ router.post('/cmd', function (req, res) {
     })
   }
 });
-
-router.post('/signup', 
-  function(req, res, done) {
-    console.log('signing up: ', req.body.username);
-    const username = req.body.username;
-    const password = req.body.password;
-
-    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-      const salty = salt;
-      bcrypt.hash(password, salt, function(err, hash) {
-        if (err) {
-          res.send('Error hashing the password', err);
-        }
-        passwordHashed = hash;
-        const user = User.create({
-          username: username,
-          password: passwordHashed,
-          salt: salty,
-          bio: 'bio',
-          authenticatedWith: 'local'
-        })
-        .then(function(response) {
-          res.send(response);
-        })
-        .catch(function(err) {
-          console.log(err.errors[0].type === 'unique violation');
-          if (err.errors[0].type === 'unique violation') {
-            res.send('user already exists');
-          } else {
-            res.send(err);
-          }
-        });
-      });
-    });
-  });
 
 User.updateOrCreate = function(user, cb) {
   if (user.authenticatedWith !== 'local') {

@@ -14,23 +14,31 @@ class Dashboard extends React.Component {
       authorized: 'pending'
     }
     this.socket = io();
-    if(sessionStorage['token']) {
-      this.setState({
-        authorized: 'pending'
-      });
-      console.log('TOKEN', sessionStorage['token']);
-      this.socket.emit('/userDecrypt', {encrypted: sessionStorage['token']});
-      this.socket.on('/auth/' + sessionStorage['token'], function(response) {
-        console.log('AUTH', response);
-        context.setState({
-          authorized: response
-        });
-      });
-    }
   }
   ComponentWillRender() {
-    console.log('hello')
-    console.log(cookie.load('userId', response.data, { path: '/', maxAge: 3600 }));
+    const token = localStorage['jwtToken'];
+    const context = this;
+    if (token) {
+      console.log('this is the token', token)
+      axios.get('/decode', {
+        params: {
+          token: token
+        }
+      })
+      .then (function(response) {
+        const user = response.data;
+
+        context.setState({
+          containerName: user.username,
+          username: user.username
+       });
+        context.renderTerminal();
+      }).catch(function(err) {
+        console.log(err);
+        alert('Not Authenticated, returning to login');
+        window.location = '/';
+      });
+    }
   }
   render() {
     if (this.state.authorized === 'pending') {
