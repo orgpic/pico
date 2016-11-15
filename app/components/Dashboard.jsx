@@ -3,6 +3,8 @@ const Stats = require('./Stats.jsx');
 const Bio = require('./Bio.jsx');
 const Collaborators = require('./Collaborators.jsx');
 const UserInfo = require('./UserInfo.jsx');
+const cookie = require('react-cookie');
+
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -26,7 +28,10 @@ class Dashboard extends React.Component {
       });
     }
   }
-
+  ComponentWillRender() {
+    console.log('hello')
+    console.log(cookie.load('userId', response.data, { path: '/', maxAge: 3600 }));
+  }
   render() {
     if (this.state.authorized === 'pending') {
       return (
@@ -36,7 +41,7 @@ class Dashboard extends React.Component {
         );
     } else if (this.state.authorized === false) {
       window.location = '/';
-
+    }
       return(
         <div className="error"> 
           You are not logged in! Returning back to Login Page...

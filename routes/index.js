@@ -182,6 +182,16 @@ router.post('/login',
   }
 );
 
+// router.post('/login', passport.authenticate('local'), function(req, res) {
+//   console.log('we have a user', user)
+//   if (req.user) {
+//     console.log('session', req.session);
+//     console.log('req.user', req.user);
+//     res.send(req.user);
+//   } else {
+//     res.send('failed user login');
+//   }
+// });
 
 router.get('*', function(req, res, next) {
   res.render('index', { title: 'picoShell' });

@@ -1,38 +1,65 @@
 var passport = require('passport');
-var path = require('path')
+var path = require('path');
 var LocalStrategy = require('passport-local').Strategy;
 var db = require('../config');
 var User = require('../../models/User');
+const bcrypt = require('bcrypt');
 
-passport.serializeUser(function(user, done) {
-    console.log('serializing')
-
-  done(null, user);
+passport.serializeUser(function(user, callback) {
+  console.log('serializing', user, user.id, callback);
+  callback(null, user.id);
 });
 
-passport.deserializeUser(function(user, done) {
-  console.log('deserializing');
-  User.find({where: {id: user.id}}).then(function(user) {
+passport.deserializeUser(function(userID, done) {
+  console.log('trying to deserialize, userID' );
+  User.findById(userID).then(function(user) {
+    console.log('deserializing found one');
     done(null, user);
-  }).catch(function(err) {
-    done(err, null);
   });
 });
 
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    console.log('finding one', username, password)
-    console.log('done', done)
+passport.use(new LocalStrategy({  
+  passReqToCallback : true
+},
+  function(req, username, password, done) {
     User.findOne({where: { username: username }})
-      .then( function(user) {
-        console.log('user', user.dataValues)
-         if (!user) { return done(null, false); }
-         //if (!user.verifyPassword(password)) { return done(null, false); }
-         return done(null, true, user.dataValues);
-         })
-      .catch(function(err){
-         if (err) { return done(err); }
-      })
+    .then( function(user) {
+      if (!user) {
+        return done(null, false, { message: 'No User Found.' });        
+      } else {
+        bcrypt.compare(password, user.dataValues.password, function(err, isMatch) {
+          if (err) {
+            console.log('bycrupt match error');
+            return done(err);
+          } 
+          if (isMatch) {
+            console.log('bycrtyp match good');
+             return done(null, user.dataValues);
+          } else {
+            console.log('bycrtup match bad', isMatch);
+            return done(null, false, { message: 'No User Found.' });
+          }
+        });
+      }
+      
+
+      //   if (!user.dataValues) { 
+      //     console.log('no User');
+      //     return done(null, false); 
+      //   }
+      //   if (!User.validPassword(password, user.dataValues.password)) { 
+      //     console.log('non valid password');
+      //     return done(null, false); 
+      //   }
+      //   console.log('passowrd looks good')
+      //   return done(null, true, user.dataValues);
+      //   })
+      // .catch(function(err){
+      //   if (err) { return done(err); }
+      // });
+    }).catch(function(err) {
+      done(err, null, null);
+    });
   }
 ));
 

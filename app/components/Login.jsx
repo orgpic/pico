@@ -1,6 +1,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const axios = require('axios');
+const cookie = require('react-cookie');
 
 class Login extends React.Component {
   constructor(props) {
@@ -67,6 +68,9 @@ class Login extends React.Component {
           window.location = window.location + 'dashboard';
         });
       }
+    })
+    .catch(function(err) {
+      console.log(err);  
     });
   }
 

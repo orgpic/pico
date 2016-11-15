@@ -11,8 +11,7 @@ var LocalStrategy = require('passport-local'), Strategy;
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const db = require('./db/config');
-const localPassport = require('./db/config/passport')
-
+const Passport = require('./db/config/passport')
 const routes = require('./routes/index');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
