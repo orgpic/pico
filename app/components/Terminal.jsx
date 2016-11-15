@@ -8,9 +8,10 @@ class Terminal extends React.Component {
     var context = this;
 		this.state = {
 			command: null,
-      prompt: null,
+      prompt: '/picoShell >> ',
       containerName: 'juice', // change this to refer to user name when login is done
-      curCommand: null
+      curCommand: null,
+      curDir: '/'
 		}
     this.username = localStorage['jwtToken'];
     this.renderTerminal();
@@ -41,13 +42,24 @@ class Terminal extends React.Component {
         });
       }
     });
+
+    this.socket.on('/TERM/CD/1', function(path) {
+      if(path.username !== context.username) {
+        console.log('REMOTE DIR', path.dir);
+        context.setState({
+          curDir: path.dir,
+          prompt: path.dir + ' >> '
+        });
+        context.terminal.set_prompt(path.dir + ' >> ');
+      }
+    });
   }
 
   renderTerminal() {
     // console.log($);
     // console.log($.terminal);
     var context = this;
-    var prompt = this.state.prompt ? this.state.prompt + '>> ' : '>> ';
+    var prompt = this.state.prompt;
     var containerName = this.state.containerName;
 
     $(function($, undefined) {
@@ -63,6 +75,17 @@ class Terminal extends React.Component {
                 if(res.data.fileOpen) {
                   context.socket.emit('/TE/1', {code: res.data.termResponse, username: 'TERMINAL'});
                   context.socket.emit('/TERM/RES/1', {res: '', username: context.username});
+                } else if(res.data.pwd) {
+                  console.log('CD', res.data.pwd);
+                  if (res.data.pwd[res.data.pwd.length - 1] === '\n') res.data.pwd = res.data.pwd.slice(0, res.data.pwd.length - 1);
+                  context.setState({
+                    curDir: res.data.pwd,
+                    prompt: res.data.pwd + ' >> '
+                  });
+                  context.terminal.set_prompt(res.data.pwd + ' >> ');
+                  console.log('PROMPT', context.terminal.get_prompt());
+                  context.socket.emit('/TERM/CD/1', {dir: res.data.pwd, username: context.username});
+                  context.socket.emit('/TERM/RES/1', {res: res.data.res, username: context.username});
                 } else {
                   term.echo(String(JSON.stringify(res.data)));
                   context.socket.emit('/TERM/RES/1', {res: JSON.stringify(res.data), username: context.username});
@@ -101,7 +124,7 @@ class Terminal extends React.Component {
             axios.post('/cmd', { cmd: command, containerName: containerName })
               .then(function(res) {
                 console.log(res);
-                term.echo(String(res.data));
+                term.echo(String(res.data.res));
               })
               .catch(function(err) {
                 console.error(err);
