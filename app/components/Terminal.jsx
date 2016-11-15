@@ -12,7 +12,8 @@ class Terminal extends React.Component {
       containerName: 'juice', // change this to refer to user name when login is done
       curCommand: null
 		}
-    this.username = sessionStorage['username'];
+    this.username = sessionStorage['token'];
+    console.log('TOKEN', this.username);
     this.renderTerminal();
 	}
 
@@ -22,8 +23,11 @@ class Terminal extends React.Component {
 
     //The 1 will be replaced by container/user ID when we have sessions
     this.socket.on('/TERM/1', function(code) {
-      console.log(context.terminal.get_command());
-      if(code.username !== context.username && code.cmd !== '') {
+      //For some reason code.username keeps resetting itself to 'a'. Not sure why...
+      if(code.username !== context.username && code.cmd !== '' && code.username !== 'a') {
+        console.log('code.username', code.username);
+        console.log('context.username', context.username);
+        console.log('SETTING CMD', code.cmd);
         context.terminal.set_command(code.cmd, false);
         context.setState({
           curCommand: code.cmd
@@ -60,11 +64,25 @@ class Terminal extends React.Component {
               console.log(res);
               console.log(res.data);
               if(typeof res.data === 'object') {
-                term.echo(String(JSON.stringify(res.data)));
+                if(res.data.fileOpen) {
+                  context.socket.emit('/TE/1', {code: res.data.termResponse, username: 'TERMINAL'});
+                } else {
+                  term.echo(String(JSON.stringify(res.data)));
+                  context.socket.emit('/TERM/RES/1', {res: JSON.stringify(res.data), username: context.username});
+                }
+                context.terminal.set_command('');
+                context.setState({
+                  curCommand: ''
+                });
               } else {
                 term.echo(String(res.data));
+                context.socket.emit('/TERM/RES/1', {res: res.data, username: context.username});
+                context.terminal.set_command('');
+                context.setState({
+                  curCommand: ''
+                });
               }
-              context.socket.emit('/TERM/RES/1', {res: res.data, username: context.username});
+              
             })
             .catch(function(err) {
               console.error(err);
@@ -96,6 +114,7 @@ class Terminal extends React.Component {
           },
           onCommandChange: function(command, term) {
             if(command !== context.state.curCommand) {
+              console.log('EMITTING. USERNAME = ', context.username);
               context.socket.emit('/TERM/1', {cmd: command, username: context.username});
               context.setState({
                 curCommand: command
