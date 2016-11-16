@@ -27,13 +27,15 @@ router.post('/signup', function(req, res) {
         username: username,
         password: passwordHashed,
         salt: salty,
-        bio: 'bio'
+        bio: 'bio',
+        authenticatedWith: 'local'
       })
       .then(function(userResponse) {
         Container.create({
           ownerID: username
         })
         .then(function(containerResponse) {
+          console.log('this is the username');
           docker.startContainer('evenstevens/picoshell', username, '/bin/bash', function(err, dockerResponse) {
             if (err) {
               console.error('Error in creating container with docker');
