@@ -1,6 +1,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const axios = require('axios');
+const { Button } = require('react-bootstrap');
 
 class Login extends React.Component {
   constructor(props) {
@@ -11,7 +12,8 @@ class Login extends React.Component {
     this.state = {
       hover: {
         textDecoration: 'none',
-        color: 'white',
+        color: 'black',
+        fontWeight: 'bold',
         username: '',
         password: ''
       }
@@ -49,6 +51,26 @@ class Login extends React.Component {
   }
 
   render() {
+    var signIn = {
+      height: 360,
+      width: 220,
+      backgroundColor: 'white',
+      opacity: .8,
+      boxShadow: '0px 0px 10px #888888'
+    };
+    var flex = {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center'
+    };
+    var divHeader = {
+      backgroundColor: '',
+      flex: 1,
+    };
+    var github = {
+      background: 'https://octicons.github.com/img/og/mark-github.png'
+    }
     return (
 			<div>
 				<form onSubmit={function(e) {
