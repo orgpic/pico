@@ -38,7 +38,7 @@ class Login extends React.Component {
     .then(function(response) {
       if (response.data.token) {
         localStorage['jwtToken'] = response.data.token;
-        window.location = window.location + 'dashboard';
+        window.location = '/dashboard';
       } else {
         alert('Failed Login');
       }
@@ -78,7 +78,7 @@ class Login extends React.Component {
           className="login-query"
   				onClick={this.props.GoToSignUp}>
           Need to signup?
-  				</a>
+  				</a> <br/>
         </div>
 			</div>
 		);

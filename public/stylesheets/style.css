@@ -8,6 +8,32 @@ body {
   margin: 0;
   padding: 0; }
 
+.dashboard-container {
+  color: #F4F6F7; }
+
+.navbar {
+  height: 100%;
+  background-color: #03CEA1;
+  border-radius: 0; }
+  .navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    float: right; }
+    .navbar ul li {
+      display: inline;
+      padding: 0 5px 0 5px; }
+      .navbar ul li a {
+        text-decoration: none;
+        color: #F4F6F7; }
+        .navbar ul li a:hover {
+          text-decoration: none; }
+    .navbar ul .username {
+      color: #F4F6F7;
+      font-weight: bold;
+      padding-left: 10px;
+      font-size: 1.3em; }
+
 .homepage-container {
   width: 100%;
   background-color: #FFFFFF; }
@@ -60,8 +86,8 @@ body {
                 color: #F4F6F7;
                 text-decoration: none; }
           .homepage-container .header .overlay .logo-container .login-box .login .btn-success {
-            background-color: #638898;
-            border-color: #638898;
+            background-color: #03CEA1;
+            border-color: #03CEA1;
             border-radius: 0;
             width: 90%;
             padding: 2px; }
