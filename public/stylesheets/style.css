@@ -8,8 +8,30 @@ body {
   margin: 0;
   padding: 0; }
 
+.user-info-container {
+  padding: 20px; }
+  .user-info-container .title {
+    color: #7B7373;
+    font-size: 16px;
+    font-family: Roboto-Regular; }
+  .user-info-container .info {
+    font-size: 15px;
+    color: #EDF3F3;
+    padding-bottom: 10px;
+    font-family: Roboto-Regular; }
+
 .dashboard-container {
+  height: 100%;
+  width: 100%;
   color: #F4F6F7; }
+  .dashboard-container .contain {
+    padding: 20px; }
+    .dashboard-container .contain .card {
+      height: 100%;
+      background-color: #191919;
+      border-radius: 0;
+      width: 100%;
+      margin: 10px, 20px, 5px, 5px; }
 
 .navbar {
   height: 100%;
@@ -81,7 +103,7 @@ body {
           .homepage-container .header .overlay .logo-container .login-box .login .login-query-container {
             padding: 5px; }
             .homepage-container .header .overlay .logo-container .login-box .login .login-query-container .login-query {
-              color: #161820; }
+              color: #191919; }
               .homepage-container .header .overlay .logo-container .login-box .login .login-query-container .login-query:hover {
                 color: #F4F6F7;
                 text-decoration: none; }

@@ -17,7 +17,8 @@ class Dashboard extends React.Component {
       firstName: '',
       lastName: '',
       email: '',
-      createdAt: null
+      createdAt: null,
+      github: ''
     }
   }
 
@@ -64,10 +65,34 @@ class Dashboard extends React.Component {
          <div>
           <NavBar username={this.state.username} />
           <div className="dashboard-container">
-             <Stats username={this.state.username} email={this.state.email} github="somegithub"/>
-             <Bio bioInfo="Bio Info!"/>
-             <Collaborators curCollab="Hobo Jim" collabWith={["Mr. Cool", "Some Guy"]}/>
-             <UserInfo firstName={this.state.firstName} lastName={this.state.lastName}/>
+            <div className="row">
+              <div className="col-md-4 contain">
+                <div className="card">
+                </div>
+              </div>
+              <div className="col-md-4 contain">
+                <div className="card">
+                  <UserInfo username={this.state.username} email={this.state.email} github={this.state.github}/>
+                </div>
+              </div>
+              <div className="col-md-4 contain">
+                <div className="card">
+                  <Bio firstName={this.state.firstName} lastName={this.state.lastName}/>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-8 contain">
+                <div className="card">
+                  <Collaborators curCollab="Hobo Jim" collabWith={["Mr. Cool", "Some Guy"]}/>
+                </div>
+              </div>
+              <div className="col-md-4 contain">
+                <div className="card">
+                  <Stats username={this.state.username} email={this.state.email} github="somegithub"/>
+                </div>
+              </div> 
+            </div>
            </div>
          </div>
        );

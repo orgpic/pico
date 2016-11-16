@@ -1,6 +1,6 @@
 $offwhite: #F4F6F7;
 $offblack: #242327;
-$darkblack: #161820;
+$darkblack: #191919;
 $lightblue: #638898;
 $purpleblue: #b2baef;
 $white: #FFFFFF;
@@ -17,8 +17,40 @@ body {
   padding: 0;
 }
 
+.user-info-container {
+  .title {
+    color: #7B7373;
+    font-size: 16px;
+    font-family: Roboto-Regular;
+  }
+
+  .info {
+    font-size: 15px;
+    color: #EDF3F3;
+    padding-bottom: 10px;
+    font-family: Roboto-Regular;
+  }
+  padding: 20px;
+}
+
 .dashboard-container {
+  height: 100%;
+  width: 100%;
   color: $offwhite;
+
+  .contain {
+    padding: 20px;
+
+    .card {
+      height: 100%;
+      background-color: $darkblack;
+      border-radius: 0;
+      width: 100%;
+      margin: 10px, 20px, 5px, 5px
+    }
+  }
+
+
 }
 
 .navbar {

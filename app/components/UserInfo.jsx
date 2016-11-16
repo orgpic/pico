@@ -5,16 +5,33 @@ class UserInfo extends React.Component {
     super(props);
 
     this.state = {
-      firstName: this.props.firstName,
-      lastName: this.props.lastName
+      username: this.props.username,
+      email: this.props.email,
+      github: this.props.github
     }
   }
 
   render() {
     return (
-        <div>
-          <div> First name: {this.state.firstName} </div>
-          <div> Last name: {this.state.lastName} </div>
+        <div className="user-info-container">
+          <div className="title">
+            Username
+          </div>
+          <div className="info">
+            {this.state.username}
+          </div>
+          <div className="title">
+            Email
+          </div>
+          <div className="info">
+            {this.state.email}
+          </div>
+          <div className="title">
+            Github
+          </div>
+          <div className="info">
+            {this.state.github}
+          </div>
         </div>
       );
   }
