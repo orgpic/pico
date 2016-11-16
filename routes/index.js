@@ -75,6 +75,7 @@ router.post('/cmd', function (req, res) {
       readyToExecute = false;
       docker.runCommand(containerName, 'cat /picoShell/.pico', function(err, picoRes) {
         if(picoRes[picoRes.length - 1] === '\n') picoRes = picoRes.slice(0, picoRes.length - 1);
+        if(picoRes[picoRes.length - 1] === '/') picoRes = picoRes.slice(0, picoRes.length - 1);
         const dir = picoRes + '/' + newdir;
         docker.directoryExists(containerName, dir, function(dirRes) {
           if(dirRes.indexOf('Directory exists') !== -1) {
