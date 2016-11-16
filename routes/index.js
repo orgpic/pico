@@ -1,8 +1,9 @@
+'use strict';
 const express = require('express');
 const router = express.Router();
 const exec = require('child_process').exec;
-const kue = require('kue');
-const jobs = kue.createQueue();
+// const kue = require('kue');
+// const jobs = kue.createQueue();
 var bcrypt = require('bcrypt');
 const docker = require('../utils/dockerAPI');
 var db = require('../db/config');
