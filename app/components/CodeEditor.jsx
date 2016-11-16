@@ -11,7 +11,8 @@ class CodeEditor extends React.Component {
       codeValue: '',
       containerName: this.props.containerName,
       username: this.props.username,
-      fileName: ''
+      fileName: '',
+      fileNamePath: ''
     }
     this.username = localStorage['jwtToken'];
   }
@@ -58,11 +59,12 @@ class CodeEditor extends React.Component {
     //The 1 will be replaced by container/user ID when we have sessions
     this.socket.on('/TE/1', function(code) {
       const fileName = code.fileName;
+      const filePath = code.filePath;
       const codeValue = code.code;
-
       if(code.fileOpen) {
         context.setState({
-          fileName: fileName
+          fileName: fileName,
+          filePath: filePath
         });
       }
       if(code.username !== context.username) {
@@ -103,11 +105,18 @@ class CodeEditor extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="code-editor-container">
         <textarea id="code-editor">
           {this.state.codeValue}
         </textarea><br/>
-        <button onClick={this.handleCodeSave.bind(this)}> Save </button>
+        <div className="row">
+          <div className="col-md-6">
+            <button onClick={this.handleCodeSave.bind(this)}> Save </button>
+          </div>
+          <div className="col-md-6 current-file">
+            {this.state.fileName ? this.state.filePath + '/' + this.state.fileName : <p> No File </p>}
+          </div>
+        </div>
       </div>
     )
   }

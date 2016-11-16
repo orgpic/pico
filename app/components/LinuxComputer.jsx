@@ -44,8 +44,14 @@ class LinuxComputer extends React.Component {
          return (
             <div>
               <NavBar username={this.state.username} />
-              <CodeEditor username={this.state.username} containerName={this.state.containerName}/>
-              <Terminal username={this.state.username} containerName={this.state.containerName}/>
+              <div className="row">
+                <div className="col-md-8 card-container">
+                   <CodeEditor username={this.state.username} containerName={this.state.containerName}/>
+                </div>
+                <div className="col-md-4 card-container">
+                  <Terminal username={this.state.username} containerName={this.state.containerName}/>
+                </div>
+              </div>
             </div>
           );
    } else {
