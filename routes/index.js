@@ -160,25 +160,6 @@ router.post('/cmd', function (req, res) {
 });
 
 
-// User.updateOrCreate = function(user, cb) {
-//   if (user.authenticatedWith !== 'local') {
-//     User.findOne({where: {username: username}})
-//     .then(function(err, oldUser) {
-//       if (err) {
-//         console.log('err', err);
-//       } else if (!oldUser) {
-//         User.create({user});
-//       } else {
-//         User.findOne({where: {username: username}}).update({user});
-//       }
-//     }).then(function() {
-//       cb(null, user);
-//     });
-//   } else {
-//     cb(null, user);
-//   }
-// };
-
 function generateToken(req, res, next) {
   req.token = jwt.sign({
     id: req.user.id,
@@ -213,8 +194,21 @@ router.post('/authenticate',
   }
 );
 
+router.get('/github', passport.authenticate('github'));
+
+router.get('/github/callback', function(req, res, next) {
+  console.log('back from g hub');
+  next();
+},
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  function(req, res) {
+    console.log('github callback');
+    res.redirect('/');
+  });
+
 
 router.get('*', function(req, res, next) {
+  console.log('rendering bullshit');  
   res.render('index', { title: 'picoShell' });
 });
 

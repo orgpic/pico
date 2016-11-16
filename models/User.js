@@ -19,17 +19,37 @@ const User = db.define('user', {
       },
       updateOrCreate: function(user, cb) {
         if (user.authenticatedWith !== 'local') {
-          User.findOne({where: {username: username}})
-          .then(function(err, oldUser) {
-            if (err) {
-              console.log('err', err);
+          console.log('gethubbbbbbbbbing1', user);
+          User.findOne({where: {username: user.username}})
+          .then(function(oldUser) {
+            console.log('gethubbbbbbbbbing2');
+            if (oldUser) {
+              console.log('gethubbbbbbbbbing3',oldUser);
+              cb(null, oldUser)
             } else if (!oldUser) {
-              User.create({user});
+              console.log('no old user no old user')
+              User.create(user)
+              .then(function() {
+                cb(null, user);
+              })
+              .catch(function(err) {
+                console.log('gethubbbbbbbbbing4', err);
+                cb(err);
+              });
             } else {
-              User.findOne({where: {username: username}}).update({user});
+              User.findOne({where: {username: username}})
+              .update({user})
+              .then(function() {
+                cb(null, user);
+              })
+              .catch(function(err) {
+                console.log('gethubbbbbbbbbing5', err);
+                cb(err);
+              });
             }
-          }).then(function() {
-            cb(null, user);
+          }).catch(function(err) {
+            console.log('gethubbbbbbbbbing6', err);  
+            cb(err);
           });
         } else {
           cb(null, user);
