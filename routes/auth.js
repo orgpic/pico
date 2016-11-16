@@ -71,11 +71,4 @@ router.post('/signup', function(req, res) {
   });
 });
 
-router.get('/auth/github/callback', 
-  passport.authenticate('github', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  });
-
 module.exports = router;  

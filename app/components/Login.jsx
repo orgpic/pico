@@ -3,12 +3,14 @@ const ReactDOM = require('react-dom');
 const axios = require('axios');
 const { Button } = require('react-bootstrap');
 
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.socket = io();
     this.changeUserNameInput = this.changeUserNameInput.bind(this);
     this.changePasswordInput = this.changePasswordInput.bind(this);
+    this.handleGitSubmit = this.handleGitSubmit.bind(this);
     this.state = {
       hover: {
         textDecoration: 'none',
@@ -19,15 +21,21 @@ class Login extends React.Component {
       }
     };
   }
+  
   changeUserNameInput(event) {
     this.setState({
       username: event.target.value
     });
   }
+
   changePasswordInput(event) {
     this.setState({
       password: event.target.value
     });
+  }
+
+  handleGitSubmit(e) {
+    window.location = 'github';
   }
 
   handleSubmit(e, user, pass) {
@@ -40,7 +48,7 @@ class Login extends React.Component {
     .then(function(response) {
       if (response.data.token) {
         localStorage['jwtToken'] = response.data.token;
-        window.location = '/dashboard';
+        window.location = 'dashboard';
       } else {
         alert('Failed Login');
       }
@@ -95,6 +103,9 @@ class Login extends React.Component {
             </div>
           </div>
 				</form>
+        <a href="/github"> 
+          <Button>Login With Github</Button>
+         </a>
         <div className="login-query-container">
   				<a
           className="login-query"
