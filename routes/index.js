@@ -138,25 +138,6 @@ router.post('/cmd', function (req, res) {
 });
 
 
-// User.updateOrCreate = function(user, cb) {
-//   if (user.authenticatedWith !== 'local') {
-//     User.findOne({where: {username: username}})
-//     .then(function(err, oldUser) {
-//       if (err) {
-//         console.log('err', err);
-//       } else if (!oldUser) {
-//         User.create({user});
-//       } else {
-//         User.findOne({where: {username: username}}).update({user});
-//       }
-//     }).then(function() {
-//       cb(null, user);
-//     });
-//   } else {
-//     cb(null, user);
-//   }
-// };
-
 function generateToken(req, res, next) {
   req.token = jwt.sign({
     id: req.user.id,

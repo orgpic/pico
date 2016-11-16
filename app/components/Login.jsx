@@ -1,6 +1,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const axios = require('axios');
+const { Button } = require('react-bootstrap');
 
 class Login extends React.Component {
   constructor(props) {
@@ -13,7 +14,8 @@ class Login extends React.Component {
     this.state = {
       hover: {
         textDecoration: 'none',
-        color: 'white',
+        color: 'black',
+        fontWeight: 'bold',
         username: '',
         password: ''
       }
@@ -33,7 +35,8 @@ class Login extends React.Component {
     this.setState({
       hover: {
         textDecoration: 'underline', 
-        color: 'black'
+        fontWeight: 'bold',
+        color: 'blue'
       }
     });
   }
@@ -41,7 +44,8 @@ class Login extends React.Component {
     this.setState({
       hover: {
         textDecoration: 'none',
-        color: 'white'
+        fontWeight: 'bold',
+        color: 'black'
       }
     });
   }
@@ -67,12 +71,35 @@ class Login extends React.Component {
   }
 
   render() {
+    var signIn = {
+      height: 360,
+      width: 220,
+      backgroundColor: 'white',
+      opacity: .8,
+      boxShadow: '0px 0px 10px #888888'
+    };
+    var flex = {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center'
+    };
+    var divHeader = {
+      backgroundColor: '',
+      flex: 1,
+    };
+    var github = {
+      background: 'https://octicons.github.com/img/og/mark-github.png'
+    }
     return (
-			<div>
-				<div>Login</div>
-				<form onSubmit={function(e) {
-          this.handleSubmit(e, this.state.username, this.state.password);
-        }.bind(this)}>
+			<div style={signIn}>
+				<div style={divHeader}>Login</div>
+				<form  
+          style={flex} 
+          onSubmit={function(e) {
+            this.handleSubmit(e, this.state.username, this.state.password);
+          }.bind(this)}
+          >
 					<input 
             onChange={this.changeUserNameInput}
             type='text' 
@@ -84,8 +111,9 @@ class Login extends React.Component {
             type='password' 
             placeholder='password'
             />
-					<input type='submit'/>
+					<input type='submit' style={github}/>
 				</form>
+        <Button>Login with github</Button>
 				<div 
 				style={this.state.hover} 
 				onMouseOver={this.hoverOver}
