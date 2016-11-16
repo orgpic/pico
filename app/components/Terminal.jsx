@@ -23,7 +23,7 @@ class Terminal extends React.Component {
     //The 1 will be replaced by container/user ID when we have sessions
     this.socket.on('/TERM/1', function(code) {
       //For some reason code.username keeps resetting itself to 'a'. Not sure why...
-      if(code.username !== context.username && code.cmd !== '' && code.username !== 'a') {
+      if(code.username !== context.state.username && code.cmd !== '' && code.username !== 'a') {
         context.terminal.set_command(code.cmd, false);
         context.setState({
           curCommand: code.cmd
@@ -32,7 +32,7 @@ class Terminal extends React.Component {
     });
 
     this.socket.on('/TERM/RES/1', function(code) {
-      if(code.username !== context.username) {
+      if(code.username !== context.state.username) {
         context.terminal.echo(context.terminal.get_prompt() + context.terminal.get_command());
         context.terminal.echo(code.res);
         context.terminal.set_command('');
@@ -43,7 +43,7 @@ class Terminal extends React.Component {
     });
 
     this.socket.on('/TERM/CD/1', function(path) {
-      if(path.username !== context.username) {
+      if(path.username !== context.state.username) {
         console.log('REMOTE DIR', path.dir);
         context.setState({
           curDir: path.dir,
@@ -74,7 +74,7 @@ class Terminal extends React.Component {
                 if(res.data.fileOpen) {
                   console.log(res.data);
                   context.socket.emit('/TE/1', {filePath: res.data.filePath, fileOpen: res.data.fileOpen, fileName: res.data.fileName, code: res.data.termResponse, username: context.state.username});
-                  context.socket.emit('/TERM/RES/1', {res: '', username: context.username});
+                  context.socket.emit('/TERM/RES/1', {res: '', username: context.state.username});
                 } else if(res.data.pwd) {
                   console.log('CD', res.data.pwd);
                   if (res.data.pwd[res.data.pwd.length - 1] === '\n') res.data.pwd = res.data.pwd.slice(0, res.data.pwd.length - 1);
@@ -84,11 +84,11 @@ class Terminal extends React.Component {
                   });
                   context.terminal.set_prompt(res.data.pwd + ' >> ');
                   console.log('PROMPT', context.terminal.get_prompt());
-                  context.socket.emit('/TERM/CD/1', {dir: res.data.pwd, username: context.username});
-                  context.socket.emit('/TERM/RES/1', {res: res.data.res, username: context.username});
+                  context.socket.emit('/TERM/CD/1', {dir: res.data.pwd, username: context.state.username});
+                  context.socket.emit('/TERM/RES/1', {res: res.data.res, username: context.state.username});
                 } else {
                   term.echo(String(JSON.stringify(res.data)));
-                  context.socket.emit('/TERM/RES/1', {res: JSON.stringify(res.data), username: context.username});
+                  context.socket.emit('/TERM/RES/1', {res: JSON.stringify(res.data), username: context.state.username});
                 }
                 context.terminal.set_command('');
                 context.setState({
@@ -96,7 +96,7 @@ class Terminal extends React.Component {
                 });
               } else {
                 term.echo(String(res.data));
-                context.socket.emit('/TERM/RES/1', {res: res.data, username: context.username});
+                context.socket.emit('/TERM/RES/1', {res: res.data, username: context.state.username});
                 context.terminal.set_command('');
                 context.setState({
                   curCommand: ''
@@ -106,7 +106,7 @@ class Terminal extends React.Component {
             .catch(function(err) {
               console.error(err);
               term.echo(String(err));
-              context.socket.emit('/TERM/RES/1', {res: err, username: context.username});
+              context.socket.emit('/TERM/RES/1', {res: err, username: context.state.username});
             });
 
             // var result = window.eval(command);
@@ -130,7 +130,7 @@ class Terminal extends React.Component {
           },
           onCommandChange: function(command, term) {
             if(command !== context.state.curCommand) {
-              context.socket.emit('/TERM/1', {cmd: command, username: context.username});
+              context.socket.emit('/TERM/1', {cmd: command, username: context.state.username});
               context.setState({
                 curCommand: command
               });
@@ -142,7 +142,7 @@ class Terminal extends React.Component {
               //A timeout of 10ms allows term.get_command() to reflecct the actual new command after backspace
               //is pressed. If this is too janky, we can remove this.
               setTimeout(function() {
-                context.socket.emit('/TERM/1', {cmd: term.get_command(), username: context.username});
+                context.socket.emit('/TERM/1', {cmd: term.get_command(), username: context.state.username});
               }, 10);
             }
           },

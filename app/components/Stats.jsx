@@ -47,7 +47,11 @@ class Stats extends React.Component {
               Top Ten Commands
             </div>
             <div className="info">
-              {this.state.mostUsedCommands}
+              {this.state.mostUsedCommands.slice(0,10).map(function(cmd) {
+                return (
+                    <div>{cmd[0]} - {cmd[1]}</div>
+                  );
+              })}
             </div>
           </div>
         </div>
