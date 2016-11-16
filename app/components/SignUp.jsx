@@ -64,12 +64,26 @@ class Signup extends React.Component {
           usernameExists : true
         });
       } else {
-        context.setState({
-          password: '',
-          username: ''
-        });
+          context.setState({
+            password: '',
+            username: ''
+          });
+          axios.post('/authenticate', {
+            username: user,
+            password: pass
+          })
+          .then(function(response) {
+            if (response.data.token) {
+              localStorage['jwtToken'] = response.data.token;
+              window.location = window.location + 'dashboard';
+            } else {
+              alert('Failed Login');
+            }
+          })
+          .catch(function(err) {
+            console.log(err);  
+          });
       }
-
     })
     .catch(function (error) {
       console.log('Error: ', error);

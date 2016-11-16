@@ -13,6 +13,7 @@ passport.use(new Strategy({
   function(req, username, password, done) {
     User.findOne({where: { username: username }})
     .then( function(user) {
+      console.log('found one', user)
       if (!user) {
         return done(null, false, { message: 'No User Found.' });        
       } else {
