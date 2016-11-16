@@ -1,0 +1,9 @@
+FROM node:argon
+
+RUN mkdir -p /picoShell
+WORKDIR /picoShell
+COPY . /picoShell
+RUN npm install
+
+EXPOSE 3000
+CMD ["npm", "start"]
