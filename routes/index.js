@@ -208,7 +208,7 @@ router.get('/github/callback', passport.authenticate('github', {
 }), serialize, generateToken,
   function(req, res) {
     console.log('trying to send status', req.user, req.token);
-    res.status(200).json({
+    res.redirect('/dashboard').json({
       user: req.user,
       token: req.token
     });
