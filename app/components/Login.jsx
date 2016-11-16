@@ -44,7 +44,7 @@ class Login extends React.Component {
     .then(function(response) {
       if (response.data.token) {
         localStorage['jwtToken'] = response.data.token;
-        window.location = '/dashboard';
+        window.location = 'dashboard';
       } else {
         alert('Failed Login');
       }

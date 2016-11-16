@@ -161,9 +161,15 @@ router.post('/cmd', function (req, res) {
 
 
 function generateToken(req, res, next) {
-  req.token = jwt.sign({
-    id: req.user.id,
-    username: req.user.username
+  var info = req.user;
+    console.log('here at generate', info)
+  var tokenUser = info.username.slice(info.username.length - 1);
+  var tokenMail = info.email.slice(info.email.indexOf('@'));
+  var tokenBio = info.bio.slice(6);
+    console.log('generating a token');
+  req.token = jwt.sign({ 
+    id: (tokenUser + tokenMail + tokenBio),
+    username: info.username
   }, 'server secret', {
     expiresIn: 7200
   });
@@ -171,10 +177,11 @@ function generateToken(req, res, next) {
 }
 
 function serialize(req, res, next) {
-  var user = req.authInfo.dataValues;
+  console.log('serializing userrrrrdffasdfasdfasdfasdfasdfasdfasdfasdr', res.req.authInfo)
+  var user = res.req.authInfo;
   User.updateOrCreate(user, function(err, user) {
     if (err) {
-      return next(err);
+      next(err);
     }
     req.user = user;
     next();
@@ -196,11 +203,15 @@ router.post('/authenticate',
 
 router.get('/github', passport.authenticate('github'));
 
-router.get('/github/callback', passport.authenticate('github',
- { failureRedirect: '/' }),
+router.get('/github/callback', passport.authenticate('github', {
+  session: false,
+}), serialize, generateToken,
   function(req, res) {
-    console.log('github callback');
-    res.redirect('/');
+    console.log('trying to send status', req.user, req.token);
+    res.status(200).json({
+      user: req.user,
+      token: req.token
+    });
   });
 
 
