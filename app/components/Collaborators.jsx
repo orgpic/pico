@@ -3,20 +3,53 @@ const React = require('react');
 class Collaborators extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
+
+    this.state = {
+      invUsername: ''
+    };
+
+    this.changeUserNameInput = this.changeUserNameInput.bind(this);
+  }
+
+  changeUserNameInput(event) {
+    this.setState({
+      invUsername: event.target.value
+    });
+  }
+
+  handleSubmit(e, user) {
+    const context = this;
+    e.preventDefault();
+    console.log(user);
+    document.getElementById('inviteUsernameInput').value = '';
+    alert('Invitation Sent!');
   }
 
   render() {
     return (
         <div>
-          <div>Current Collaborator: {this.props.curCollab}</div>
+          Currently Collaborating With:
+          <div>(Users whose containers you can access)</div>
+          Collaborators on Your Computer:
+          <div>(Users who can access your container)</div>
+          Invite a New Collaborator To Your Computer:
           <div>
-            Collaborating With You:
-            {this.props.collabWith.map(function(colab, index) {
-              return (
-                  <div key={index + 1}>{colab}</div>
-                );
-            })}
+            <form onSubmit={function(e) {
+              this.handleSubmit(e, this.state.invUsername)
+            }.bind(this)}>
+              <div className="form-inputs">
+                <input 
+                  onChange={this.changeUserNameInput}
+                  id="inviteUsernameInput"
+                  type='text' 
+                  placeholder='username'
+                  value={this.state.username}
+                  /><br/>
+                <div className="submit">
+                 <button type="submit" className="btn btn-success">Send Invite</button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       );
