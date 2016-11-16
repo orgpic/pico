@@ -18,13 +18,15 @@ class Dashboard extends React.Component {
       lastName: '',
       email: '',
       createdAt: null,
-      github: ''
+      github: '',
+      commandHistory: []
     }
   }
 
   componentWillMount() {
     var context = this;
     const token = localStorage['jwtToken'];
+    const history = JSON.parse(localStorage['0_commands']);
 
     if (token) {
       axios.get('/decode', {
@@ -51,7 +53,8 @@ class Dashboard extends React.Component {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
-            createdAt: user.createdAt
+            createdAt: user.createdAt,
+            commandHistory: history
           })
         })
       });
@@ -89,7 +92,7 @@ class Dashboard extends React.Component {
               </div>
               <div className="col-md-4 contain">
                 <div className="card">
-                  <Stats username={this.state.username} email={this.state.email} github="somegithub"/>
+                  <Stats commandHistory={this.state.commandHistory} username={this.state.username} email={this.state.email} github="somegithub"/>
                 </div>
               </div> 
             </div>
