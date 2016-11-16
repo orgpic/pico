@@ -4,6 +4,7 @@ var Strategy = require('passport-local')
 var db = require('../config');
 var User = require('../../models/User');
 const bcrypt = require('bcrypt');
+var GitHubStrategy = require('passport-github').Strategy;
 
 
 passport.use(new Strategy({  
@@ -12,6 +13,7 @@ passport.use(new Strategy({
   function(req, username, password, done) {
     User.findOne({where: { username: username }})
     .then( function(user) {
+      console.log('found one', user)
       if (!user) {
         return done(null, false, { message: 'No User Found.' });        
       } else {
@@ -35,16 +37,16 @@ passport.use(new Strategy({
   }
 ));
 
-// passport.use('local-login', new LocalStrategy({
-//   passReqToCallback: true
-// },
-//   function(req, username, password, done) {
-//     console.log('trtingfsgsdfgsd s');
-//     User.findOne({ username: username }, function (err, user) {
-//       if (err) { return done(err); }
-//       if (!user) { return done(null, false); }
-//       if (!user.verifyPassword(password)) { return done(null, false); }
-//       return done(null, user);
-//     });
-//   }
-// ));
+
+
+passport.use(new GitHubStrategy({
+    clientID: 'f864f0df17178ff53b7b',
+    clientSecret: 'd37ad17231f09cf864805e8ffa832b56ba59a855',
+    callbackURL: "http://localhost/auth/githubAuth"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ githubId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));

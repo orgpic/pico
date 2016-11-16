@@ -14,6 +14,7 @@ const jwtDecode = require('jwt-decode')
 
 /* GET home page. */
 router.get('/', function(req, res) {
+  console.log(req);
   res.render('index', { title: 'picoShell' });
 });
 
@@ -24,6 +25,7 @@ router.get('/decode', function(req, res) {
 
 
 router.post('/handleCodeSave', function (req, res) {
+  console.log(req.body);
   const fileName = req.body.fileName;
   const containerName = req.body.containerName;
   const code = JSON.stringify(req.body.codeValue).replace(/'/g, "\\\"");
@@ -45,71 +47,21 @@ router.post('/cmd', function (req, res) {
   var containerName = req.body.containerName;
 
   if(cmd.split(" ")[0] === 'cd') {
-    let newdir = cmd.split(" ")[1];
+    const newdir = cmd.split(" ")[1];
     console.log('change dir to: ', newdir);
-    let readyToExecute = true;
-    if(newdir === '..') {
-      readyToExecute = false;
-      docker.runCommand(containerName, 'cat /picoShell/.pico', function(err, picoRes) {
-        if(picoRes[picoRes.length - 1] === '\n') picoRes = picoRes.slice(0, picoRes.length - 1);
-        newdir = picoRes;
-        if(newdir.indexOf('/') !== newdir.lastIndexOf('/')) {
-          newdir = newdir.slice(0, newdir.lastIndexOf('/'));
-        } else {
-          newdir = '/';
-        }
 
-        const command = 'bash -c "echo ' + newdir + ' > /picoShell/.pico' + '"'; 
-        docker.runCommand(containerName, command, function(err, res1) {
-          if (err) { res.status(200).send(err); } 
-          else { 
-            res.status(200).send({res: res1, pwd: newdir}); 
-          }
-        });
-      });
-    } else if (newdir[0] !== '/') {
-      //append newdir to current dir
-      readyToExecute = false;
-      docker.runCommand(containerName, 'cat /picoShell/.pico', function(err, picoRes) {
-        if(picoRes[picoRes.length - 1] === '\n') picoRes = picoRes.slice(0, picoRes.length - 1);
-        const dir = picoRes + '/' + newdir;
-        docker.directoryExists(containerName, dir, function(dirRes) {
-          if(dirRes.indexOf('Directory exists') !== -1) {
-            const command = 'bash -c "echo ' + dir + ' > /picoShell/.pico' + '"'; 
-            //const command = 'bash -c "cd ' + newdir + '"';
-            console.log(command);
-            docker.runCommand(containerName, command, function(err, res1) {
-              if (err) { res.status(200).send(err); } 
-              else { 
-                res.status(200).send({res: res1, pwd: dir}); 
-              }
-            });
-          } else {
-            res.status(200).send('Error: Directory not found\n');
-          }
-        });
-      });
-    }
-    if(readyToExecute) {
-      const command = 'bash -c "echo ' + newdir + ' > /picoShell/.pico' + '"'; 
-      console.log(command);
-      docker.directoryExists(containerName, newdir, function(dirRes) {
-        if(dirRes.indexOf('Directory exists') !== -1) {
-          docker.runCommand(containerName, command, function(err, res1) {
-            if (err) { res.status(200).send(err); } 
-            else { 
-              docker.runCommand(containerName, 'cat /picoShell/.pico', function(err2, res2) {
-                res.status(200).send({res: res1, pwd: res2}); 
-              });
-            }
-          });
-        } else {
-          res.status(200).send('Error: Directory not found\n');
-        }
-      });
-    }
+    const command = 'bash -c "echo ' + newdir + ' > /picoShell/.pico' + '"'; 
+    console.log(command);
+
+    docker.runCommand(containerName, command, function(err, res1) {
+      if (err) { res.status(200).send(err); } 
+      else { res.status(200).send(res1); }
+
+    })
   } else if(cmd.split(" ")[0] === 'open') {
     docker.runCommand(containerName, 'cat ' + cmd.split(" ")[1], function(err1, res1) {
+      console.log('err1', err1);
+      console.log('res1', res1);
       if(err1) {
         res.status(200).send(err1);
       } else {
@@ -117,43 +69,49 @@ router.post('/cmd', function (req, res) {
       }
     });
   } else {
-    docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
+      docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
 
-      console.log('response from cat /picoShell/.pico :', res1);
+        console.log('response from cat /picoShell/.pico :', res1);
 
-      res1 = res1.replace(/^\s+|\s+$/g, '');
+        res1 = res1.replace(/^\s+|\s+$/g, '');
 
-      cmd = '"cd ' + res1 + ' && ' + cmd + '"';
-      const command = 'bash -c ' + cmd;
-      console.log(command);
-      docker.runCommand(containerName, command, function(err2, res2) {
-        if (err2) { res.status(200).send(err2); } 
-        else { res.status(200).send(res2); }
-      });
-    }) 
+        cmd = '"cd ' + res1 + ' && ' + cmd + '"';
+        const command = 'bash -c ' + cmd;
+        console.log(command);
+
+        docker.runCommand(containerName, command, function(err2, res2) {
+          if (err2) { res.status(200).send(err2); } 
+          else { res.status(200).send(res2); }
+        docker.runCommand('juice', command, function(err2, res2) {
+          if (err2) {
+            res.status(200).send(err2);
+          } else {
+            res.status(200).send(res2);
+          }
+        });
+      }) 
+    })
   }
 });
 
-
-User.updateOrCreate = function(user, cb) {
-  if (user.authenticatedWith !== 'local' && user.authenticatedWith) {
-    User.findOne({where: {username: username}})
-    .then(function(err, oldUser) {
-      if (err) {
-        console.log('err', err);
-      } else if (!oldUser) {
-        User.create({user});
-      } else {
-        User.findOne({where: {username: username}}).update({user});
-      }
-    }).then(function() {
-      cb(null, user);
-    });
-  } else {
-    console.log('in else');
-    cb(null, user);
-  }
-};
+// User.updateOrCreate = function(user, cb) {
+//   if (user.authenticatedWith !== 'local') {
+//     User.findOne({where: {username: username}})
+//     .then(function(err, oldUser) {
+//       if (err) {
+//         console.log('err', err);
+//       } else if (!oldUser) {
+//         User.create({user});
+//       } else {
+//         User.findOne({where: {username: username}}).update({user});
+//       }
+//     }).then(function() {
+//       cb(null, user);
+//     });
+//   } else {
+//     cb(null, user);
+//   }
+// };
 
 function generateToken(req, res, next) {
   req.token = jwt.sign({
@@ -169,12 +127,11 @@ function serialize(req, res, next) {
   var user = req.authInfo.dataValues;
   User.updateOrCreate(user, function(err, user) {
     if (err) {
-      console.log('error in user update or create');
       return next(err);
     }
     req.user = user;
     next();
-  })
+  });
 }
 
 router.post('/authenticate', 
