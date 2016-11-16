@@ -13,7 +13,11 @@ class Dashboard extends React.Component {
     const context = this;
     this.state = {
       username: '',
-      containerName: ''
+      containerName: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      createdAt: null
     }
   }
 
@@ -34,21 +38,36 @@ class Dashboard extends React.Component {
           containerName: user.username,
           username: user.username
        });
+        axios.get('/infodashboard', {
+          params: {
+            username: user.username
+          }
+        })
+        .then(function(response){
+          console.log(response);
+          const user = response.data;
+          context.setState({
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            createdAt: user.createdAt
+          })
+        })
       });
     }
   } 
 
 
   render() {
-   if (this.state.containerName.length) {
+   if (this.state.lastName.length) {
       return (
          <div>
           <NavBar username={this.state.username} />
           <div className="dashboard-container">
-             <Stats username={this.state.username} email="email@email.com" github="somegithub"/>
+             <Stats username={this.state.username} email={this.state.email} github="somegithub"/>
              <Bio bioInfo="Bio Info!"/>
              <Collaborators curCollab="Hobo Jim" collabWith={["Mr. Cool", "Some Guy"]}/>
-             <UserInfo />
+             <UserInfo firstName={this.state.firstName} lastName={this.state.lastName}/>
            </div>
          </div>
        );

@@ -18,6 +18,30 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'picoShell' });
 });
 
+router.get('/infodashboard', function(req, res) {
+  console.log(req);
+  const username = req.query.username;
+  User.findOne({
+    where: {
+      username: username
+    }
+  })
+  .then(function(response) {
+    const user = response.dataValues;
+    const info = {
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      createdAt: user.createdAt
+    }
+    res.send(200, info);
+  })
+  .catch(function(err){
+    res.send(500, err);
+  })
+})
+
 router.get('/decode', function(req, res) {
   const decoded = jwtDecode(req.query.token);
   res.send(200, decoded);
