@@ -2,10 +2,12 @@ $offwhite: #F4F6F7;
 $offblack: #242327;
 $darkblack: #161820;
 $lightblue: #638898;
+$purpleblue: #b2baef;
 $white: #FFFFFF;
 @import url('https://fonts.googleapis.com/css?family=Dosis');
 @import url('https://fonts.googleapis.com/css?family=Advent+Pro|Dosis');
 @import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 body {
   font: 14px "Dosis", Helvetica, Arial, sans-serif;
@@ -13,6 +15,7 @@ body {
   margin: 0;
   padding: 0;
 }
+
 
 .homepage-container {
 	width: 100%;
@@ -31,13 +34,67 @@ body {
       height: 455px;
 
 			.logo-container {
-				padding-top: 120px;
-
+        padding-top: 120px;
 				.title {
           font-family: Dosis-Regular;
           font-size: 120px;
           color: #FFFFFF;
 				}
+        .login-header {
+          background: rgba(36, 35, 39, 0.6);
+          color: $offwhite;
+          margin-left: 50px;
+          margin-right: 100px;
+          padding: 10px;
+          height: 100%;
+          font-family: Montserrat-Bold;
+          font-size: 20px;
+        }
+        .login-box {
+          margin-left: 50px;
+          margin-right: 100px;
+          margin-bottom: 100px;
+          height: 100%;
+          background: rgba(36, 35, 39, 0.4);
+
+          .login {
+            .login-input {
+              margin: 5px;
+              background: rgba(36, 35, 39, 0.6);
+              border: 0;
+              color: $offwhite;
+              width: 90%;
+              padding: 5px;
+
+              &:focus {
+                outline: none;
+              }
+            }
+            .login-query-container {
+              padding: 5px;
+              .login-query {
+                color: $darkblack;
+
+                &:hover {
+                  color: $offwhite;
+                  text-decoration: none;
+                }
+              }
+            }
+            .btn-success {
+              background-color: $lightblue;
+              border-color: $lightblue;
+              border-radius: 0;
+              width: 90%;
+              padding: 2px;
+
+              &:hover {
+               background-color: $purpleblue;
+               border-color: $purpleblue; 
+              }
+            }
+          }
+        }
 			}
 		}
 	}	

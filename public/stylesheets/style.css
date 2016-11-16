@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Dosis");
 @import url("https://fonts.googleapis.com/css?family=Advent+Pro|Dosis");
 @import url("https://fonts.googleapis.com/css?family=Roboto");
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
 body {
   font: 14px "Dosis", Helvetica, Arial, sans-serif;
   background-color: #242327;
@@ -27,6 +28,46 @@ body {
           font-family: Dosis-Regular;
           font-size: 120px;
           color: #FFFFFF; }
+        .homepage-container .header .overlay .logo-container .login-header {
+          background: rgba(36, 35, 39, 0.6);
+          color: #F4F6F7;
+          margin-left: 50px;
+          margin-right: 100px;
+          padding: 10px;
+          height: 100%;
+          font-family: Montserrat-Bold;
+          font-size: 20px; }
+        .homepage-container .header .overlay .logo-container .login-box {
+          margin-left: 50px;
+          margin-right: 100px;
+          margin-bottom: 100px;
+          height: 100%;
+          background: rgba(36, 35, 39, 0.4); }
+          .homepage-container .header .overlay .logo-container .login-box .login .login-input {
+            margin: 5px;
+            background: rgba(36, 35, 39, 0.6);
+            border: 0;
+            color: #F4F6F7;
+            width: 90%;
+            padding: 5px; }
+            .homepage-container .header .overlay .logo-container .login-box .login .login-input:focus {
+              outline: none; }
+          .homepage-container .header .overlay .logo-container .login-box .login .login-query-container {
+            padding: 5px; }
+            .homepage-container .header .overlay .logo-container .login-box .login .login-query-container .login-query {
+              color: #161820; }
+              .homepage-container .header .overlay .logo-container .login-box .login .login-query-container .login-query:hover {
+                color: #F4F6F7;
+                text-decoration: none; }
+          .homepage-container .header .overlay .logo-container .login-box .login .btn-success {
+            background-color: #638898;
+            border-color: #638898;
+            border-radius: 0;
+            width: 90%;
+            padding: 2px; }
+            .homepage-container .header .overlay .logo-container .login-box .login .btn-success:hover {
+              background-color: #b2baef;
+              border-color: #b2baef; }
 
 .error {
   color: #FFFFFF;
