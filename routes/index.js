@@ -74,6 +74,7 @@ router.post('/cmd', function (req, res) {
       readyToExecute = false;
       docker.runCommand(containerName, 'cat /picoShell/.pico', function(err, picoRes) {
         if(picoRes[picoRes.length - 1] === '\n') picoRes = picoRes.slice(0, picoRes.length - 1);
+        if(picoRes[picoRes.length - 1] === '/') picoRes = picoRes.slice(0, picoRes.length - 1);
         const dir = picoRes + '/' + newdir;
         docker.directoryExists(containerName, dir, function(dirRes) {
           if(dirRes.indexOf('Directory exists') !== -1) {
@@ -111,13 +112,18 @@ router.post('/cmd', function (req, res) {
       });
     }
   } else if(cmd.split(" ")[0] === 'open') {
-    docker.runCommand(containerName, 'cat ' + cmd.split(" ")[1], function(err1, res1) {
-      if(err1) {
-        res.status(200).send(err1);
-      } else {
-        res.status(200).send({termResponse: res1, fileOpen: true, fileName: cmd.split(" ")[1]});
-      }
+    docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
+      if(res1[res1.length - 1] === '\n') res1 = res1.slice(0, res1.length - 1);
+      const command = 'cat ' + res1 + '/' + cmd.split(" ")[1];
+      docker.runCommand(containerName, command, function(err2, res2) {
+        if(err2) {
+          res.status(200).send(err2);
+        } else {
+          res.status(200).send({termResponse: res2, fileOpen: true, fileName: cmd.split(" ")[1]});
+        }
+      });
     });
+    
   } else {
     docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
 
