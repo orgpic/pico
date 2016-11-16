@@ -196,11 +196,8 @@ router.post('/authenticate',
 
 router.get('/github', passport.authenticate('github'));
 
-router.get('/github/callback', function(req, res, next) {
-  console.log('back from g hub');
-  next();
-},
-  passport.authenticate('github', { failureRedirect: '/login' }),
+router.get('/github/callback', passport.authenticate('github',
+ { failureRedirect: '/' }),
   function(req, res) {
     console.log('github callback');
     res.redirect('/');

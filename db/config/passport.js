@@ -54,9 +54,12 @@ passport.use(new GitHubStrategy({
       authenticatedWith: 'github'
     };
     User.updateOrCreate(user, function (err, user) {
-      console.log('updated userrrrrr', user.dataValues);
+      if (err) {
+        cb(err);
+      }
+      console.log('updated userrrrrr', user.dataValues, err);
       console.log('cbbbbbbb,', cb);
-      return cb(err, true, user.dataValues);
+      cb(null, true, user.dataValues);
     });
   }
 ));
