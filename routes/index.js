@@ -1,9 +1,8 @@
-'use strict';
 const express = require('express');
 const router = express.Router();
 const exec = require('child_process').exec;
-// const kue = require('kue');
-// const jobs = kue.createQueue();
+const kue = require('kue');
+const jobs = kue.createQueue();
 var bcrypt = require('bcrypt');
 const docker = require('../utils/dockerAPI');
 var db = require('../db/config');
@@ -28,14 +27,7 @@ router.get('/infodashboard', function(req, res) {
   })
   .then(function(response) {
     const user = response.dataValues;
-    const info = {
-      username: user.username,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      createdAt: user.createdAt
-    }
-    res.send(200, info);
+    res.send(200, response);
   })
   .catch(function(err){
     res.send(500, err);
@@ -144,11 +136,10 @@ router.post('/cmd', function (req, res) {
         if(err2) {
           res.status(200).send(err2);
         } else {
-          res.status(200).send({termResponse: res2, fileOpen: true, fileName: cmd.split(" ")[1]});
+          res.status(200).send({termResponse: res2, fileOpen: true, fileName: cmd.split(" ")[1], filePath: res1});
         }
       });
     });
-    
   } else {
     docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
 

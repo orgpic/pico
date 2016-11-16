@@ -13,8 +13,13 @@ class Bio extends React.Component {
   render() {
     return (
         <div>
-          <div>
-            {this.state.firstName + ' ' + this.state.lastName}
+          <div className="card-container">
+            <div className="title">
+              Bio
+            </div>
+            <div className="info">
+              {this.state.firstName + ' ' + this.state.lastName}
+            </div>
           </div>
         </div>
       );

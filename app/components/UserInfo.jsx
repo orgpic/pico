@@ -13,7 +13,7 @@ class UserInfo extends React.Component {
 
   render() {
     return (
-        <div className="user-info-container">
+        <div className="card-container">
           <div className="title">
             Username
           </div>
