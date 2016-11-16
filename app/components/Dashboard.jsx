@@ -3,7 +3,8 @@ const Stats = require('./Stats.jsx');
 const Bio = require('./Bio.jsx');
 const Collaborators = require('./Collaborators.jsx');
 const UserInfo = require('./UserInfo.jsx');
-const cookie = require('react-cookie');
+const NavBar = require('./NavBar.jsx');
+const axios = require('axios');
 
 
 class Dashboard extends React.Component {
@@ -11,15 +12,16 @@ class Dashboard extends React.Component {
     super(props);
     const context = this;
     this.state = {
-      authorized: 'pending'
+      username: '',
+      containerName: ''
     }
-    this.socket = io();
   }
-  ComponentWillRender() {
+
+  componentWillMount() {
+    var context = this;
     const token = localStorage['jwtToken'];
-    const context = this;
+
     if (token) {
-      console.log('this is the token', token)
       axios.get('/decode', {
         params: {
           token: token
@@ -27,43 +29,35 @@ class Dashboard extends React.Component {
       })
       .then (function(response) {
         const user = response.data;
-
+        console.log('setting state!');
         context.setState({
           containerName: user.username,
           username: user.username
        });
-        context.renderTerminal();
-      }).catch(function(err) {
-        console.log(err);
-        alert('Not Authenticated, returning to login');
-        window.location = '/';
       });
     }
-  }
+  } 
+
+
   render() {
-    if (this.state.authorized === 'pending') {
+   if (this.state.containerName.length) {
       return (
-          <div>
-            Authorizing user...
-          </div>
-        );
-    } else if (this.state.authorized === false) {
-      window.location = '/';
-      return(
-        <div className="error"> 
-          You are not logged in! Returning back to Login Page...
-        </div>
-      )
-    } else if (this.state.authorized === true) {
-      return (
-          <div>
-            Dashboard!
-            <Stats username="username" email="email@email.com" github="somegithub"/>
-            <Bio bioInfo="Bio Info!"/>
-            <Collaborators curCollab="Hobo Jim" collabWith={["Mr. Cool", "Some Guy"]}/>
-            <UserInfo />
-          </div>
-        );
+         <div>
+          <NavBar username={this.state.username} />
+          <div className="dashboard-container">
+             <Stats username={this.state.username} email="email@email.com" github="somegithub"/>
+             <Bio bioInfo="Bio Info!"/>
+             <Collaborators curCollab="Hobo Jim" collabWith={["Mr. Cool", "Some Guy"]}/>
+             <UserInfo />
+           </div>
+         </div>
+       );
+    } else {
+     return (
+       <div>
+         Loading...
+       </div>
+     )
     }
   }
 }

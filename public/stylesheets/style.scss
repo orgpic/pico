@@ -4,6 +4,7 @@ $darkblack: #161820;
 $lightblue: #638898;
 $purpleblue: #b2baef;
 $white: #FFFFFF;
+$brightgreen: #03CEA1;
 @import url('https://fonts.googleapis.com/css?family=Dosis');
 @import url('https://fonts.googleapis.com/css?family=Advent+Pro|Dosis');
 @import url('https://fonts.googleapis.com/css?family=Roboto');
@@ -16,6 +17,38 @@ body {
   padding: 0;
 }
 
+.dashboard-container {
+  color: $offwhite;
+}
+
+.navbar {
+  height: 100%;
+  background-color: $brightgreen;
+  border-radius: 0;
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    float: right;
+    li {
+      display: inline;
+      padding: 0 5px 0 5px;
+      a {
+        text-decoration: none;
+        color: $offwhite;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+    .username {
+      color: $offwhite;
+      font-weight: bold;
+      padding-left: 10px;
+      font-size: 1.3em;
+    }
+  } 
+}
 
 .homepage-container {
 	width: 100%;
@@ -82,8 +115,8 @@ body {
               }
             }
             .btn-success {
-              background-color: $lightblue;
-              border-color: $lightblue;
+              background-color: $brightgreen;
+              border-color: $brightgreen;
               border-radius: 0;
               width: 90%;
               padding: 2px;
