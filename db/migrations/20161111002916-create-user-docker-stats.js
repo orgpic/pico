@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: function(queryInterface, Sequelize) {
-    return queryInterface.createTable('UserDockerStats', {
+    return queryInterface.createTable('userdockerstats', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -25,6 +25,6 @@ module.exports = {
     });
   },
   down: function(queryInterface, Sequelize) {
-    return queryInterface.dropTable('UserDockerStats');
+    return queryInterface.dropTable('userdockerstats');
   }
 };
