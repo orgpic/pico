@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const docker = require('../utils/dockerAPI');
 const Container = require('../models/Container');
-
+const passport = require('passport')
 
 
 router.post('/signup', function(req, res) {
@@ -71,45 +71,11 @@ router.post('/signup', function(req, res) {
   });
 });
 
-router.post('/authenticate', function(req, res) {
-  const username = req.body.params.username;
-  const password = req.body.params.password;
-  User.findOne({
-    where: {
-      username: username
-    }
-  })
-  .then(function(response) {
-    console.log(response);
-    if (response) {
-      bcrypt.compare(password, response.dataValues.password, function(err, results) {
-        if (err) {
-          return console.log(err);
-        } else {
-          if (results === true) {
-            const userid = response.dataValues.id;
-            const claim = {
-              id: userid,
-              username: response.dataValues.username 
-            };
-            const token = jwt.sign(claim, secret);
-            const body = {
-              token: jwt.sign(claim, secret)
-            }
-            res.send(200, body);
-          } else {
-            res.send(200, results);
-          }
-        }
-      });
-    } else {
-      res.send(200, 'User not found');
-    }
-  }).catch(function(err) {
-    console.log(err);
-    res.send(404, err); 
+router.get('/auth/github/callback', 
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
   });
-
-});
 
 module.exports = router;  
