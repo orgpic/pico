@@ -14,7 +14,7 @@ class Collaborators extends React.Component {
             Collaborating With You:
             {this.props.collabWith.map(function(colab, index) {
               return (
-                  <div key={index}>{colab}</div>
+                  <div key={index + 1}>{colab}</div>
                 );
             })}
           </div>
