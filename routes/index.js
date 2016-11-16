@@ -18,6 +18,23 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'picoShell' });
 });
 
+router.get('/infodashboard', function(req, res) {
+  console.log(req);
+  const username = req.query.username;
+  User.findOne({
+    where: {
+      username: username
+    }
+  })
+  .then(function(response) {
+    const user = response.dataValues;
+    res.send(200, response);
+  })
+  .catch(function(err){
+    res.send(500, err);
+  })
+})
+
 router.get('/decode', function(req, res) {
   const decoded = jwtDecode(req.query.token);
   res.send(200, decoded);
@@ -120,11 +137,10 @@ router.post('/cmd', function (req, res) {
         if(err2) {
           res.status(200).send(err2);
         } else {
-          res.status(200).send({termResponse: res2, fileOpen: true, fileName: cmd.split(" ")[1]});
+          res.status(200).send({termResponse: res2, fileOpen: true, fileName: cmd.split(" ")[1], filePath: res1});
         }
       });
     });
-    
   } else {
     docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
 

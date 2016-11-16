@@ -72,7 +72,8 @@ class Terminal extends React.Component {
               console.log(res.data);
               if(typeof res.data === 'object') {
                 if(res.data.fileOpen) {
-                  context.socket.emit('/TE/1', {fileOpen: res.data.fileOpen, fileName: res.data.fileName, code: res.data.termResponse, username: context.state.username});
+                  console.log(res.data);
+                  context.socket.emit('/TE/1', {filePath: res.data.filePath, fileOpen: res.data.fileOpen, fileName: res.data.fileName, code: res.data.termResponse, username: context.state.username});
                   context.socket.emit('/TERM/RES/1', {res: '', username: context.username});
                 } else if(res.data.pwd) {
                   console.log('CD', res.data.pwd);
@@ -113,8 +114,6 @@ class Terminal extends React.Component {
       }, {
           greetings: '',
           name: '',
-          height: 500,
-          width: 650,
           prompt: prompt,
           onInit: function(term) {
             context.terminal = term;
