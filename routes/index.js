@@ -1,8 +1,9 @@
+'use strict';
 const express = require('express');
 const router = express.Router();
 const exec = require('child_process').exec;
-const kue = require('kue');
-const jobs = kue.createQueue();
+// const kue = require('kue');
+// const jobs = kue.createQueue();
 var bcrypt = require('bcrypt');
 const docker = require('../utils/dockerAPI');
 var db = require('../db/config');
@@ -14,9 +15,25 @@ const jwtDecode = require('jwt-decode')
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  console.log(req);
   res.render('index', { title: 'picoShell' });
 });
+
+router.get('/infodashboard', function(req, res) {
+  console.log(req);
+  const username = req.query.username;
+  User.findOne({
+    where: {
+      username: username
+    }
+  })
+  .then(function(response) {
+    const user = response.dataValues;
+    res.send(200, response);
+  })
+  .catch(function(err){
+    res.send(500, err);
+  })
+})
 
 router.get('/decode', function(req, res) {
   const decoded = jwtDecode(req.query.token);
@@ -75,6 +92,7 @@ router.post('/cmd', function (req, res) {
       readyToExecute = false;
       docker.runCommand(containerName, 'cat /picoShell/.pico', function(err, picoRes) {
         if(picoRes[picoRes.length - 1] === '\n') picoRes = picoRes.slice(0, picoRes.length - 1);
+        if(picoRes[picoRes.length - 1] === '/') picoRes = picoRes.slice(0, picoRes.length - 1);
         const dir = picoRes + '/' + newdir;
         docker.directoryExists(containerName, dir, function(dirRes) {
           if(dirRes.indexOf('Directory exists') !== -1) {
@@ -112,12 +130,16 @@ router.post('/cmd', function (req, res) {
       });
     }
   } else if(cmd.split(" ")[0] === 'open') {
-    docker.runCommand(containerName, 'cat ' + cmd.split(" ")[1], function(err1, res1) {
-      if(err1) {
-        res.status(200).send(err1);
-      } else {
-        res.status(200).send({termResponse: res1, fileOpen: true, fileName: cmd.split(" ")[1]});
-      }
+    docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
+      if(res1[res1.length - 1] === '\n') res1 = res1.slice(0, res1.length - 1);
+      const command = 'cat ' + res1 + '/' + cmd.split(" ")[1];
+      docker.runCommand(containerName, command, function(err2, res2) {
+        if(err2) {
+          res.status(200).send(err2);
+        } else {
+          res.status(200).send({termResponse: res2, fileOpen: true, fileName: cmd.split(" ")[1], filePath: res1});
+        }
+      });
     });
   } else {
     docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
@@ -139,9 +161,15 @@ router.post('/cmd', function (req, res) {
 
 
 function generateToken(req, res, next) {
-  req.token = jwt.sign({
-    id: req.user.id,
-    username: req.user.username
+  var info = req.user;
+    console.log('here at generate', info)
+  var tokenUser = info.username.slice(info.username.length - 1);
+  var tokenMail = info.email.slice(info.email.indexOf('@'));
+  var tokenBio = info.bio.slice(6);
+    console.log('generating a token');
+  req.token = jwt.sign({ 
+    id: (tokenUser + tokenMail + tokenBio),
+    username: info.username
   }, 'server secret', {
     expiresIn: 7200
   });
@@ -149,10 +177,11 @@ function generateToken(req, res, next) {
 }
 
 function serialize(req, res, next) {
-  var user = req.authInfo.dataValues;
+  console.log('serializing userrrrrdffasdfasdfasdfasdfasdfasdfasdfasdr', res.req.authInfo)
+  var user = res.req.authInfo;
   User.updateOrCreate(user, function(err, user) {
     if (err) {
-      return next(err);
+      next(err);
     }
     req.user = user;
     next();
@@ -172,8 +201,22 @@ router.post('/authenticate',
   }
 );
 
+router.get('/github', passport.authenticate('github'));
+
+router.get('/github/callback', passport.authenticate('github', {
+  session: false,
+}), serialize, generateToken,
+  function(req, res) {
+    console.log('trying to send status', req.user, req.token);
+    res.redirect('/dashboard').json({
+      user: req.user,
+      token: req.token
+    });
+  });
+
 
 router.get('*', function(req, res, next) {
+  console.log('rendering bullshit');  
   res.render('index', { title: 'picoShell' });
 });
 

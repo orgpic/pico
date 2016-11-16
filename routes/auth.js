@@ -11,9 +11,12 @@ const passport = require('passport')
 
 
 router.post('/signup', function(req, res) {
-  console.log('signing up: ', req.body.username);
+  console.log('signing up: ', req.body);
   const username = req.body.username;
   const password = req.body.password;
+  const firstname = req.body.firstname;
+  const lastname = req.body.lastname;
+  const email = req.body.email;
 
   bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
     const salty = salt;
@@ -26,6 +29,9 @@ router.post('/signup', function(req, res) {
       User.create({
         username: username,
         password: passwordHashed,
+        firstName: firstname,
+        lastName: lastname,
+        email: email,
         salt: salty,
         bio: 'bio',
         authenticatedWith: 'local'
@@ -64,12 +70,5 @@ router.post('/signup', function(req, res) {
     });
   });
 });
-
-router.get('/auth/github/callback', 
-  passport.authenticate('github', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  });
 
 module.exports = router;  

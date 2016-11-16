@@ -1,11 +1,77 @@
 @import url("https://fonts.googleapis.com/css?family=Dosis");
 @import url("https://fonts.googleapis.com/css?family=Advent+Pro|Dosis");
 @import url("https://fonts.googleapis.com/css?family=Roboto");
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
 body {
   font: 14px "Dosis", Helvetica, Arial, sans-serif;
   background-color: #242327;
   margin: 0;
   padding: 0; }
+
+#terminal {
+  width: 100%;
+  height: 400px; }
+
+.code-editor-container {
+  padding: 0;
+  margin: 0;
+  height: 620px; }
+  .code-editor-container .current-file {
+    color: #03CEA1;
+    text-align: right;
+    padding: 0;
+    margin: 0; }
+
+.card-container {
+  padding: 20px; }
+  .card-container .title {
+    color: #7B7373;
+    font-size: 16px;
+    font-family: Roboto-Regular; }
+  .card-container .info {
+    font-size: 15px;
+    color: #EDF3F3;
+    padding-bottom: 10px;
+    font-family: Roboto-Regular; }
+
+.dashboard-container {
+  height: 100%;
+  width: 100%;
+  color: #F4F6F7; }
+  .dashboard-container .contain {
+    padding: 20px; }
+    .dashboard-container .contain .card {
+      height: 100%;
+      background-color: #191919;
+      border-radius: 0;
+      width: 100%;
+      margin: 10px, 20px, 5px, 5px; }
+
+.navbar {
+  height: 100%;
+  background-color: #03CEA1;
+  border-radius: 0; }
+  .navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    float: right; }
+    .navbar ul li {
+      display: inline;
+      padding: 0 5px 0 5px; }
+      .navbar ul li a {
+        text-decoration: none;
+        color: #F4F6F7; }
+        .navbar ul li a:hover {
+          text-decoration: none; }
+    .navbar ul .logout {
+      cursor: pointer;
+      color: #F4F6F7; }
+    .navbar ul .username {
+      color: #F4F6F7;
+      font-weight: bold;
+      padding-left: 10px;
+      font-size: 1.3em; }
 
 .homepage-container {
   width: 100%;
@@ -27,6 +93,47 @@ body {
           font-family: Dosis-Regular;
           font-size: 120px;
           color: #FFFFFF; }
+        .homepage-container .header .overlay .logo-container .login-header {
+          background: rgba(36, 35, 39, 0.6);
+          color: #F4F6F7;
+          margin-left: 50px;
+          margin-right: 100px;
+          padding: 10px;
+          height: 100%;
+          font-family: Montserrat-Bold;
+          font-size: 20px; }
+        .homepage-container .header .overlay .logo-container .login-box {
+          margin-left: 50px;
+          margin-right: 100px;
+          margin-bottom: 100px;
+          height: 100%;
+          background: rgba(36, 35, 39, 0.4); }
+          .homepage-container .header .overlay .logo-container .login-box .login .login-input {
+            margin: 5px;
+            background: rgba(36, 35, 39, 0.6);
+            border: 0;
+            color: #F4F6F7;
+            width: 90%;
+            padding: 5px; }
+            .homepage-container .header .overlay .logo-container .login-box .login .login-input:focus {
+              outline: none; }
+          .homepage-container .header .overlay .logo-container .login-box .login .login-query-container {
+            padding: 5px; }
+            .homepage-container .header .overlay .logo-container .login-box .login .login-query-container .login-query {
+              color: #191919;
+              cursor: pointer; }
+              .homepage-container .header .overlay .logo-container .login-box .login .login-query-container .login-query:hover {
+                color: #F4F6F7;
+                text-decoration: none; }
+          .homepage-container .header .overlay .logo-container .login-box .login .btn-success {
+            background-color: #03CEA1;
+            border-color: #03CEA1;
+            border-radius: 0;
+            width: 90%;
+            padding: 2px; }
+            .homepage-container .header .overlay .logo-container .login-box .login .btn-success:hover {
+              background-color: #b2baef;
+              border-color: #b2baef; }
 
 .error {
   color: #FFFFFF;
@@ -36,7 +143,7 @@ body {
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
   font-family: monospace;
-  height: 300px;
+  height: 90%;
   color: black; }
 
 /* PADDING */
@@ -49,13 +156,13 @@ body {
   /* Horizontal padding of content */ }
 
 .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
-  background-color: white;
+  background-color: #191919;
   /* The little square between H and V scrollbars */ }
 
 /* GUTTER */
 .CodeMirror-gutters {
   border-right: 1px solid #ddd;
-  background-color: #f7f7f7;
+  background-color: #191919;
   white-space: nowrap; }
 
 .CodeMirror-linenumber {

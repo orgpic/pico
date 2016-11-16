@@ -1,17 +1,106 @@
 $offwhite: #F4F6F7;
 $offblack: #242327;
-$darkblack: #161820;
+$darkblack: #191919;
 $lightblue: #638898;
+$purpleblue: #b2baef;
 $white: #FFFFFF;
+$brightgreen: #03CEA1;
 @import url('https://fonts.googleapis.com/css?family=Dosis');
 @import url('https://fonts.googleapis.com/css?family=Advent+Pro|Dosis');
 @import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 body {
   font: 14px "Dosis", Helvetica, Arial, sans-serif;
   background-color: $offblack;
   margin: 0;
   padding: 0;
+}
+
+#terminal {
+  width: 100%;
+  height: 400px;
+}
+
+.code-editor-container {
+  padding: 0;
+  margin: 0;
+  height: 620px;
+  .current-file {
+    color: $brightgreen;
+    text-align: right;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.card-container {
+  .title {
+    color: #7B7373;
+    font-size: 16px;
+    font-family: Roboto-Regular;
+  }
+
+  .info {
+    font-size: 15px;
+    color: #EDF3F3;
+    padding-bottom: 10px;
+    font-family: Roboto-Regular;
+  }
+  padding: 20px;
+}
+
+.dashboard-container {
+  height: 100%;
+  width: 100%;
+  color: $offwhite;
+
+  .contain {
+    padding: 20px;
+
+    .card {
+      height: 100%;
+      background-color: $darkblack;
+      border-radius: 0;
+      width: 100%;
+      margin: 10px, 20px, 5px, 5px
+    }
+  }
+
+
+}
+
+.navbar {
+  height: 100%;
+  background-color: $brightgreen;
+  border-radius: 0;
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    float: right;
+    li {
+      display: inline;
+      padding: 0 5px 0 5px;
+      a {
+        text-decoration: none;
+        color: $offwhite;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+    .logout {
+      cursor: pointer;
+      color: $offwhite;
+    }
+    .username {
+      color: $offwhite;
+      font-weight: bold;
+      padding-left: 10px;
+      font-size: 1.3em;
+    }
+  } 
 }
 
 .homepage-container {
@@ -31,13 +120,68 @@ body {
       height: 455px;
 
 			.logo-container {
-				padding-top: 120px;
-
+        padding-top: 120px;
 				.title {
           font-family: Dosis-Regular;
           font-size: 120px;
           color: #FFFFFF;
 				}
+        .login-header {
+          background: rgba(36, 35, 39, 0.6);
+          color: $offwhite;
+          margin-left: 50px;
+          margin-right: 100px;
+          padding: 10px;
+          height: 100%;
+          font-family: Montserrat-Bold;
+          font-size: 20px;
+        }
+        .login-box {
+          margin-left: 50px;
+          margin-right: 100px;
+          margin-bottom: 100px;
+          height: 100%;
+          background: rgba(36, 35, 39, 0.4);
+
+          .login {
+            .login-input {
+              margin: 5px;
+              background: rgba(36, 35, 39, 0.6);
+              border: 0;
+              color: $offwhite;
+              width: 90%;
+              padding: 5px;
+
+              &:focus {
+                outline: none;
+              }
+            }
+            .login-query-container {
+              padding: 5px;
+              .login-query {
+                color: $darkblack;
+                cursor: pointer;
+
+                &:hover {
+                  color: $offwhite;
+                  text-decoration: none;
+                }
+              }
+            }
+            .btn-success {
+              background-color: $brightgreen;
+              border-color: $brightgreen;
+              border-radius: 0;
+              width: 90%;
+              padding: 2px;
+
+              &:hover {
+               background-color: $purpleblue;
+               border-color: $purpleblue; 
+              }
+            }
+          }
+        }
 			}
 		}
 	}	
@@ -54,7 +198,7 @@ body {
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
   font-family: monospace;
-  height: 300px;
+  height: 90%;
   color: black;
 }
 
@@ -68,14 +212,14 @@ body {
 }
 
 .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
-  background-color: white; /* The little square between H and V scrollbars */
+  background-color: $darkblack; /* The little square between H and V scrollbars */
 }
 
 /* GUTTER */
 
 .CodeMirror-gutters {
   border-right: 1px solid #ddd;
-  background-color: #f7f7f7;
+  background-color: $darkblack;
   white-space: nowrap;
 }
 .CodeMirror-linenumbers {}

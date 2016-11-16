@@ -4,6 +4,7 @@ const ReactDOM = require('react-dom');
 const CodeEditor = require('./CodeEditor.jsx')
 const Terminal = require('./Terminal.jsx')
 const axios = require('axios');
+const NavBar = require('./NavBar.jsx');
 
 
 class LinuxComputer extends React.Component {
@@ -42,8 +43,15 @@ class LinuxComputer extends React.Component {
     if (this.state.containerName.length) {
          return (
             <div>
-              <CodeEditor username={this.state.username} containerName={this.state.containerName}/>
-              <Terminal username={this.state.username} containerName={this.state.containerName}/>
+              <NavBar username={this.state.username} />
+              <div className="row">
+                <div className="col-md-8 card-container">
+                   <CodeEditor username={this.state.username} containerName={this.state.containerName}/>
+                </div>
+                <div className="col-md-4 card-container">
+                  <Terminal username={this.state.username} containerName={this.state.containerName}/>
+                </div>
+              </div>
             </div>
           );
    } else {

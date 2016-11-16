@@ -5,20 +5,20 @@ const axios = require('axios');
 class Signup extends React.Component {
   constructor (props) {
     super (props);
-    this.hoverOver = this.hoverOver.bind(this);
-    this.hoverOut = this.hoverOut.bind(this);
     this.changeUserNameInput = this.changeUserNameInput.bind(this);
     this.changePasswordInput = this.changePasswordInput.bind(this);
+    this.changeFirstNameInput = this.changeFirstNameInput.bind(this);
+    this.changeLastNameInput = this.changeLastNameInput.bind(this);
+    this.changeEmailInput = this.changeEmailInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = {
-      hover: {
-        textDecoration: 'none',
-        color: 'white',
         username: '',
         password: '',
+        firstname: '',
+        lastname: '',
+        email: '',
         usernameExists: false
-      }
     };
   }
   changeUserNameInput(event) {
@@ -31,30 +31,35 @@ class Signup extends React.Component {
       password: event.target.value
     });
   }
-  hoverOver() {
+
+  changeFirstNameInput(event) {
     this.setState({
-      hover: {
-        textDecoration: 'underline', 
-        color: 'black'
-      }
-    });
-  }
-  hoverOut() {
-    this.setState({
-      hover: {
-        textDecoration: 'none',
-        color: 'white'
-      }
+      firstname: event.target.value
     });
   }
 
-  handleSubmit(e, user, pass) {
+  changeLastNameInput(event) {
+    this.setState({
+      lastname: event.target.value
+    })
+  }
+
+  changeEmailInput(event) {
+    this.setState({
+      email: event.target.value
+    })
+  }
+
+  handleSubmit(e, user, pass, firstname, lastname, email) {
     const context = this;
     e.preventDefault();
-    console.log('submitting a new user', user);
+    console.log('submitting a new user', this.state);
     axios.post('/auth/signup', {
       username: user,
-      password: pass
+      password: pass,
+      firstname: firstname,
+      lastname: lastname,
+      email: email
     })
     .then(function (response) {
       console.log(response, response.data);
@@ -93,33 +98,54 @@ class Signup extends React.Component {
   render() {
     return (
 			<div>
-				<div>Signup</div>
 				<form onSubmit={function(e) {
-          this.handleSubmit(e, this.state.username, this.state.password);
+          this.handleSubmit(e, this.state.username, this.state.password, this.state.firstname, this.state.lastname, this.state.email);
         }.bind(this)}>
-					<input 
-            onChange={this.changeUserNameInput}
-            type='text' 
-            placeholder='username'
-            value={this.state.username}
-            />
-          <input 
-            onChange={this.changePasswordInput}
-            type='password' 
-            placeholder='password'
-            />					
-          <input type='submit'/>
+          <div className="form-inputs">
+            <input 
+              onChange={this.changeUserNameInput}
+              className="login-input"
+              type='text' 
+              placeholder='username'
+              value={this.state.username}
+              /><br/>
+            <input 
+              onChange={this.changePasswordInput}
+              className="login-input"
+              type='password' 
+              placeholder='password'
+              />
+            <input 
+              onChange={this.changeFirstNameInput}
+              className="login-input"
+              type='text' 
+              placeholder='first name'
+              />
+            <input 
+              onChange={this.changeLastNameInput}
+              className="login-input"
+              type='text' 
+              placeholder='last name'
+              />
+            <input 
+              onChange={this.changeEmailInput}
+              className="login-input"
+              type='first name' 
+              placeholder='email'
+              />
+            <div className="submit">
+             <button type="submit" className="btn btn-success">Sign Up</button>
+            </div>
+          </div>
         </form>
-
         {this.state.usernameExists ? <div> Username exists. Please choose a different username. </div> : null}
-
-				<div 
-					style={this.state.hover} 
-					onMouseOver={this.hoverOver}
-					onMouseOut={this.hoverOut} 
-					onClick={this.props.GoToLogin}
-					>
-					Already have an account?</div>
+        <div className="login-query-container">
+          <a
+          className="login-query"
+          onClick={this.props.GoToLogin}>
+          Already have an Account?
+          </a>
+        </div>
 			</div>
 		);
   }

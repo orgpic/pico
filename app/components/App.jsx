@@ -5,6 +5,7 @@ const LinuxComputer = require('./LinuxComputer.jsx');
 const SignUp = require('./SignUp.jsx');
 const Login = require('./Login.jsx');
 const Dashboard = require('./Dashboard.jsx');
+const NavBar = require('./NavBar.jsx');
 const axios = require('axios');
 
 let authenticate;
@@ -18,7 +19,8 @@ class App extends React.Component {
       authenticate: 'login',
       authenticated: false,
       username: '',
-      containerName: ''
+      containerName: '',
+      render: false
     };
   }
 
@@ -32,16 +34,16 @@ class App extends React.Component {
           token: token
         }
       })
-      .then (function(response) {
+      .then(function(response) {
         const user = response.data;
 
         context.setState({
          authenticated: true,
          username: user.username,
-         containerName: user.containerName  
+         containerName: user.containerName,
        });
       });
-    }
+    } 
   }
 
   GoToLogin() {
@@ -55,13 +57,9 @@ class App extends React.Component {
     });
   }
 
-  handleLogOut() {
-    localStorage.removeItem('jwtToken');
-    location.reload();
-  }
-
   render() {
     if (!this.state.authenticated) {
+
       this.state.authenticate === 'login' ? authenticate = <Login GoToSignUp={this.GoToSignUp}/> : authenticate = <SignUp GoToLogin={this.GoToLogin}/>;
       return (
         <div>        
@@ -76,8 +74,15 @@ class App extends React.Component {
                   </div>
                   <div className="col-md-6">
                     <div className="logo-container">
-                      <div className="login">
-                       {authenticate}
+                      <div className="login-header">
+                        <div className="login">
+                          Reinvent the Interview Process
+                        </div>
+                      </div>
+                      <div className="login-box">
+                        <div className="login">
+                         {authenticate}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -91,6 +96,9 @@ class App extends React.Component {
       return (
         <div>        
           <div className="homepage-container">
+          <div>
+            <NavBar username={this.state.username}/>
+          </div>
             <div className="header">
               <div className="overlay">
                 <div className="row">
@@ -99,17 +107,10 @@ class App extends React.Component {
                       <div className="title"> picoShell</div>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <div className="logo-container">
-                      Welcome {this.state.username}!
-                    </div>
-                    <div>
-                      <button onClick = {this.handleLogOut.bind(this)}> Logout </button>
-                    </div>
-                  </div>   
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       )
