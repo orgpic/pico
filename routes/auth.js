@@ -49,7 +49,8 @@ router.post('/signup', function(req, res) {
         })
       })
       .catch(function(err) {
-        console.log(err.errors[0].type === 'unique violation')
+        console.log(err);
+        console.log(err.errors[0].type === 'unique violation');
         if (err.errors[0].type === 'unique violation') {
           res.status(200).send('User already exists');
         } else {
