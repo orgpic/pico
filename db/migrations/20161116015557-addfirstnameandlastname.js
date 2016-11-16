@@ -3,12 +3,12 @@
 module.exports = {
   up: function (queryInterface, Sequelize) {
     queryInterface.addColumn(
-      'Users',
+      'users',
       'firstName',
       Sequelize.STRING
     )
     queryInterface.addColumn(
-      'Users',
+      'users',
       'lastName',
       Sequelize.STRING
     )

@@ -8,8 +8,9 @@
   "test": {
     "username": "root",
     "password": "root",
-    "database": "demo_schema",
+    "database": "picodb",
     "host": "127.0.0.1",
+    "port": "3306",
     "dialect": "mysql"
   },
   "production": {
