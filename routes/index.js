@@ -79,7 +79,6 @@ router.get('/infodashboard', function(req, res) {
     }
   })
   .then(function(response) {
-    const user = response.dataValues;
     res.send(200, response);
   })
   .catch(function(err){
