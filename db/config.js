@@ -1,9 +1,8 @@
 const Sequelize = require('sequelize');
 
-const db = new Sequelize('picodb', 'root', 'root', {
-  host: 'localhost',
-  dialect: 'mysql',
+const LOCAL_DB_URL = 'mysql://root:root@127.0.0.1:3306/picodb';
 
+const db = new Sequelize(process.env.JAWSDB_URL || LOCAL_DB_URL, {
   pool: {
     max: 5,
     min: 0,
@@ -11,8 +10,7 @@ const db = new Sequelize('picodb', 'root', 'root', {
   }
 });
 
-db
-  .authenticate()
+db.authenticate()
   .then(function(err) {
     console.log('Connected to mysql database');
   })
