@@ -308,6 +308,31 @@ router.get('/github/callback', passport.authenticate('github', {
     });
   });
 
+router.post('/profilepicture', function(req, res) {
+
+  const pictureUrl = req.body.profilePictureUrl;
+  const username = req.body.username;
+
+
+  User.findOne({
+    where: {
+      username: username
+    }
+  })
+  .then(function(user) {
+    user.update({
+      profilePicture: pictureUrl
+    })
+    .then(function() {
+      res.status(200).send('Successfully saved picture in DB');
+    })
+  })
+  .catch(function(err) {
+    console.log(err);
+    res.status(500).send(err);
+  });
+});
+
 
 router.get('*', function(req, res, next) {
   console.log('rendering bullshit');  

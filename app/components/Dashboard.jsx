@@ -4,6 +4,7 @@ const Bio = require('./Bio.jsx');
 const Collaborators = require('./Collaborators.jsx');
 const UserInfo = require('./UserInfo.jsx');
 const NavBar = require('./NavBar.jsx');
+const ProfilePicture = require('./ProfilePicture.jsx');
 const axios = require('axios');
 
 
@@ -19,7 +20,8 @@ class Dashboard extends React.Component {
       email: '',
       createdAt: null,
       github: '',
-      commandHistory: []
+      commandHistory: [],
+      profilePictureUrl: ''
     }
   }
 
@@ -54,7 +56,8 @@ class Dashboard extends React.Component {
             lastName: user.lastName,
             email: user.email,
             createdAt: user.createdAt,
-            commandHistory: history
+            commandHistory: history,
+            profilePictureUrl: user.profilePicture
           })
         })
       });
@@ -71,6 +74,7 @@ class Dashboard extends React.Component {
             <div className="row">
               <div className="col-md-4 contain">
                 <div className="card">
+                  <ProfilePicture profilePicture={this.state.profilePictureUrl} username={this.state.username}/>
                 </div>
               </div>
               <div className="col-md-4 contain">
@@ -85,12 +89,12 @@ class Dashboard extends React.Component {
               </div>
             </div>
             <div className="row">
-              <div className="col-md-8 contain">
+              <div className="col-md-7 contain">
                 <div className="card">
                   <Collaborators curCollab="Hobo Jim" collabWith={["Mr. Cool", "Some Guy"]} username={this.state.username}/>
                 </div>
               </div>
-              <div className="col-md-4 contain">
+              <div className="col-md-5 contain">
                 <div className="card">
                   <Stats commandHistory={this.state.commandHistory} username={this.state.username} email={this.state.email} github="somegithub"/>
                 </div>

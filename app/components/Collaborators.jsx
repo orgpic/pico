@@ -87,50 +87,67 @@ class Collaborators extends React.Component {
   render() {
     var context = this;
     return (
-        <div>
-          Currently Collaborating With:
+        <div className = "card-container">
+          <div className="title">
+            Currently Collaborating With
+          </div>
           <div>
+            {this.state.collabWith.length ? this.state.collabWith.map(function(accepted) {
+              return (<div className="collaborators">{accepted}</div>)
+            }) : <div className="none"> None </div>}
             {this.state.collabWith.map(function(accepted) {
               return (
                   <div>{accepted}</div>
                 );
             })}
           </div>
-          Collaborators on Your Computer:
+          <div className="title">
+            Collaborators on Your Computer
+          </div>
           <div>
-            {this.state.collaborators.map(function(accepted) {
+            {this.state.collabWith.length ? this.state.collabWith.map(function(accepted) {
+              return (<div className="collaborators">{accepted}</div>)
+            }) : <div className="none"> None </div>}
+            {this.state.collabWith.map(function(accepted) {
               return (
                   <div>{accepted}</div>
                 );
             })}
           </div>
-          Invite a New Collaborator To Your Computer:
-          <div>
+          <div className="title">
+            Invite a New Collaborator To Your Computer
+          </div>
+          <div className="row">
             <form onSubmit={function(e) {
               this.handleSubmit(e, this.state.invUsername)
             }.bind(this)}>
-              <div className="form-inputs">
+              <div className="form-inputs col-md-8">
                 <input 
                   onChange={this.changeUserNameInput}
                   id="inviteUsernameInput"
                   type='text' 
                   placeholder='username'
-                  /><br/>
-                <div className="submit">
-                 <button type="submit" className="btn btn-success">Send Invite</button>
-                </div>
+                  className="collaborators-input"
+                  />
+              </div>
+              <div className="col-md-4">
+                <button type="submit" className="btn btn-success">Send Invite</button>
               </div>
             </form>
           </div>
-          <div>Pending Collaboration Invites:
-              {this.state.pendingInvites.map(function(pending) {
+          <div>
+            <div className="title">
+              Pending Collaboration Invites
+            </div>
+              {this.state.pendingInvites.length ? this.state.pendingInvites.map(function(pending) {
                 return (
-                    <div>{pending} 
+                    <div className="collaborator">{pending} 
                       <span onClick={() => {context.handleAcceptCollab(pending)}}> Accept </span>
                       <span onClick={() => {context.handleRejectCollab(pending)}}> Reject </span>           
                     </div>
                   );
-              })}
+              }) : <div className="none"> None </div>}
+
           </div>
         </div>
       );
