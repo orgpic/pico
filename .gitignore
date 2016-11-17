@@ -6,3 +6,4 @@ test/dist/
 .sass-cache/
 dump.rdb
 npm-debug*
+db/config/config.json
