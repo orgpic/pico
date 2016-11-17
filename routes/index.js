@@ -8,6 +8,7 @@ var bcrypt = require('bcrypt');
 const docker = require('../utils/dockerAPI');
 var db = require('../db/config');
 var User = require('../models/User');
+var Collaborator = require('../models/Collaborator');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 const jwt = require('jsonwebtoken');
@@ -16,6 +17,57 @@ const jwtDecode = require('jwt-decode')
 /* GET home page. */
 router.get('/', function(req, res) {
   res.render('index', { title: 'picoShell' });
+});
+
+router.post('/pendingInvites', function(req, res) {
+  Collaborator.findAll({
+    where: {
+      recieverUsername: req.body.username,
+      confirmed: 'unconfirmed'
+    }
+  }).then(function(resp) {
+    res.status(200).send(resp);
+  });
+});
+
+router.post('/sendInvite', function(req, res) {
+  User.findOne({
+    where: {
+      username: req.body.usernameToInvite
+    }
+  })
+  .then(function(resp) {
+    if(!resp) {
+      res.status(200).send({fail: 'Username not found!'});
+    } else
+    {
+      const inviter = req.body.username;
+      const user = req.body.usernameToInvite;
+      Collaborator.find({
+        where: {
+          requesterUsername: inviter,
+          recieverUsername: user
+        }
+      }).then(function(resp1) {
+        if(resp1) {
+          res.status(200).send({fail: 'You already sent that user an invite, or they are already collaborating with you!'});
+        } else {
+          Collaborator.create({
+            requesterUsername: inviter,
+            recieverUsername: user,
+            confirmed: 'unconfirmed'
+          }).then(function(resp2) {
+            res.status(200).send({success: 'Collaboration invitation sent!'});
+          });
+        }
+      }).catch(function(err1) {
+        console.log('ERR', err1);
+        res.status(500).send(err1);
+      });
+    }
+  });
+
+  //res.status(200).send('Hello!');
 });
 
 router.get('/infodashboard', function(req, res) {

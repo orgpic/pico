@@ -87,7 +87,7 @@ class Dashboard extends React.Component {
             <div className="row">
               <div className="col-md-8 contain">
                 <div className="card">
-                  <Collaborators curCollab="Hobo Jim" collabWith={["Mr. Cool", "Some Guy"]}/>
+                  <Collaborators curCollab="Hobo Jim" collabWith={["Mr. Cool", "Some Guy"]} username={this.state.username}/>
                 </div>
               </div>
               <div className="col-md-4 contain">
