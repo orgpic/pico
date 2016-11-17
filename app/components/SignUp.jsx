@@ -28,8 +28,32 @@ class Signup extends React.Component {
     };
   }
   changeUserNameInput(event) {
+    const context = this; 
+
     this.setState({
       username: event.target.value
+    });
+
+    utils.isValidUsername(event.target.value, function(err, res) {
+      if (err) {
+        console.error(err);
+      } else {
+        if (res === 'valid username') {
+          context.setState({
+            usernameValid: true,
+            usernameExists: false
+          });
+        } else if (res === 'found user') {
+          context.setState({
+            usernameValid: false,
+            usernameExists: true
+          });
+        } else {
+          context.setState({
+            usernameValid: false
+          })
+        }
+      }
     });
   }
   changePasswordInput(event) {
@@ -101,44 +125,25 @@ class Signup extends React.Component {
     const context = this;
     e.preventDefault();
 
-    if (this.state.firstnameValid && this.state.lastnameValid && this.state.emailValid && this.state.passwordValid) {
-      axios.post('/auth/signup', {
+    if (this.state.usernameValid && this.state.firstnameValid && this.state.lastnameValid && this.state.emailValid && this.state.passwordValid) {
+      context.setState({
+        password: '',
+        username: ''
+      });
+      axios.post('/authenticate', {
         username: user,
-        password: pass,
-        firstname: firstname,
-        lastname: lastname,
-        email: email
+        password: pass
       })
-      .then(function (response) {
-        if (response.data === 'User already exists') {
-          console.log('User already exists. Please choose a different username');
-          context.setState({
-            usernameExists : true
-          });
+      .then(function(response) {
+        if (response.data.token) {
+          localStorage['jwtToken'] = response.data.token;
+          window.location = window.location + 'dashboard';
         } else {
-            context.setState({
-              password: '',
-              username: ''
-            });
-            axios.post('/authenticate', {
-              username: user,
-              password: pass
-            })
-            .then(function(response) {
-              if (response.data.token) {
-                localStorage['jwtToken'] = response.data.token;
-                window.location = window.location + 'dashboard';
-              } else {
-                alert('Failed Login');
-              }
-            })
-            .catch(function(err) {
-              console.log(err);  
-            });
+          alert('Failed Login');
         }
       })
-      .catch(function (error) {
-        console.log('Error: ', error);
+      .catch(function(err) {
+        console.log(err);  
       });
     } else {
         ReactDOM.render(
@@ -161,8 +166,8 @@ class Signup extends React.Component {
               type='text' 
               placeholder='username'
               value={this.state.username}
-              /><br/>
-              <span id="username"></span>
+              />
+              {this.state.usernameValid ? <i className="glyphicon glyphicon-ok"></i> : null}
             <input 
               onChange={this.changePasswordInput}
               className="login-input"

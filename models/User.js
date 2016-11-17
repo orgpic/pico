@@ -10,7 +10,8 @@ const User = db.define('user', {
   firstName: Sequelize.STRING,
   lastName: Sequelize.STRING,
   email: Sequelize.STRING,
-  authenticatedWith: Sequelize.STRING
+  authenticatedWith: Sequelize.STRING,
+  githubHandle: Sequelize.STRING
 }, 
   {
     classMethods: {
