@@ -22,6 +22,12 @@ body {
   height: 400px;
 }
 
+.signup-container {
+  .glyphicon {
+    color: $brightgreen;
+  }
+}
+
 .code-editor-container {
   padding: 0;
   margin: 0;
@@ -174,6 +180,7 @@ body {
               border-radius: 0;
               width: 90%;
               padding: 2px;
+              margin: 2px;
 
               &:hover {
                background-color: $purpleblue;

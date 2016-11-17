@@ -88,7 +88,7 @@ class CodeEditor extends React.Component {
   handleCodeSave(e) {
     var code = document.getElementById('code-editor').value;
     const fileName = this.state.fileName;
-    console.log('filename is: ', fileName);
+  console.log('filename is: ', fileName);
     const containerName = this.state.containerName;
     axios.post('/handleCodeSave', {
       codeValue: code,

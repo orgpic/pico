@@ -12,6 +12,9 @@ body {
   width: 100%;
   height: 400px; }
 
+.signup-container .glyphicon {
+  color: #03CEA1; }
+
 .code-editor-container {
   padding: 0;
   margin: 0;
@@ -130,7 +133,8 @@ body {
             border-color: #03CEA1;
             border-radius: 0;
             width: 90%;
-            padding: 2px; }
+            padding: 2px;
+            margin: 2px; }
             .homepage-container .header .overlay .logo-container .login-box .login .btn-success:hover {
               background-color: #b2baef;
               border-color: #b2baef; }
