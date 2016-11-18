@@ -28,7 +28,7 @@ class Terminal extends React.Component {
       containerName: nextProps.containerName
     })
     this.terminal.clear();
-    this.terminal.echo('Welcome to ' + nextProps.containerName + '\'s computer.');
+    if(nextProps.containerName !== this.props.containerName) this.terminal.echo('Welcome to ' + nextProps.containerName + '\'s computer.');
     this.socket.on('/TERM/' + nextProps.containerName, function(code) {
       context.recievedTermInput(code);
     });
@@ -38,7 +38,7 @@ class Terminal extends React.Component {
     });
 
     this.socket.on('/TERM/CD/' + nextProps.containerName, function(path) {
-      context.recievedTermCD(code);
+      context.recievedTermCD(path);
     });
   }
 
@@ -52,10 +52,8 @@ class Terminal extends React.Component {
   }
 
   recievedTermResponse(code) {
-    console.log('RECIEVED FROM', code.username);
     if(code.username !== this.state.username) {
-      console.log('RECIEVED', code);
-      this.terminal.echo(this.terminal.get_prompt() + this.terminal.get_command());
+      this.terminal.echo(this.terminal.get_prompt() + code.cmd);
       this.terminal.echo(code.res);
       this.terminal.set_command('');
       this.setState({
@@ -109,7 +107,7 @@ class Terminal extends React.Component {
                 if(res.data.fileOpen) {
                   console.log(res.data);
                   context.socket.emit('/TE/', {filePath: res.data.filePath, fileOpen: res.data.fileOpen, fileName: res.data.fileName, code: res.data.termResponse, username: context.state.username, containerName: context.state.containerName});
-                  context.socket.emit('/TERM/RES/', {res: '', username: context.state.username, containerName: context.state.containerName});
+                  context.socket.emit('/TERM/RES/', {cmd: command, res: '', username: context.state.username, containerName: context.state.containerName});
                 } else if(res.data.pwd) {
                   console.log('CD', res.data.pwd);
                   if (res.data.pwd[res.data.pwd.length - 1] === '\n') res.data.pwd = res.data.pwd.slice(0, res.data.pwd.length - 1);
@@ -120,19 +118,19 @@ class Terminal extends React.Component {
                   context.terminal.set_prompt(res.data.pwd + ' >> ');
                   console.log('PROMPT', context.terminal.get_prompt());
                   context.socket.emit('/TERM/CD/', {dir: res.data.pwd, username: context.state.username, containerName: context.state.containerName});
-                  context.socket.emit('/TERM/RES/', {res: res.data.res, username: context.state.username, containerName: context.state.containerName});
+                  context.socket.emit('/TERM/RES/', {cmd: command, res: res.data.res, username: context.state.username, containerName: context.state.containerName});
                 } else {
                   term.echo(String(JSON.stringify(res.data)));
-                  context.socket.emit('/TERM/RES/', {res: JSON.stringify(res.data), username: context.state.username, containerName: context.state.containerName});
+                  context.socket.emit('/TERM/RES/', {cmd: command, res: JSON.stringify(res.data), username: context.state.username, containerName: context.state.containerName});
                 }
-                context.terminal.set_command('');
+                context.terminal.set_command('', false);
                 context.setState({
                   curCommand: ''
                 });
               } else {
                 term.echo(String(res.data));
-                context.socket.emit('/TERM/RES/', {res: res.data, username: context.state.username, containerName: context.state.containerName});
-                context.terminal.set_command('');
+                context.socket.emit('/TERM/RES/', {cmd: command, res: res.data, username: context.state.username, containerName: context.state.containerName});
+                context.terminal.set_command('', false);
                 context.setState({
                   curCommand: ''
                 });
@@ -141,7 +139,7 @@ class Terminal extends React.Component {
             .catch(function(err) {
               console.error(err);
               term.echo(String(err));
-              context.socket.emit('/TERM/RES/', {res: err, username: context.state.username, containerName: context.state.containerName});
+              context.socket.emit('/TERM/RES/', {cmd: command, res: err, username: context.state.username, containerName: context.state.containerName});
             });
 
             // var result = window.eval(command);
