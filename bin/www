@@ -51,17 +51,17 @@ server.on('listening', onListening);
 io.on('connection', function(socket) {
   console.log('New Socket Connection!');
 
-  socket.on('/TE/1', function(code) {
+  socket.on('/TE/', function(code) {
     //rebroadcast the message to all connected sockets.
-    io.sockets.emit('/TE/1', code);
+    io.sockets.emit('/TE/' + code.containerName, code);
   });
 
-  socket.on('/TERM/1', function(code) {
-    io.sockets.emit('/TERM/1', code);
+  socket.on('/TERM/', function(code) {
+    io.sockets.emit('/TERM/' + code.containerName, code);
   });
 
-  socket.on('/TERM/RES/1', function(code) {
-    io.sockets.emit('/TERM/RES/1', code);
+  socket.on('/TERM/RES/', function(code) {
+    io.sockets.emit('/TERM/RES/' + code.containerName, code);
   });
 
   socket.on('/userEncrypt', function(userObj) {
@@ -87,8 +87,8 @@ io.on('connection', function(socket) {
     });
   });
 
-  socket.on('/TERM/CD/1', function(code) {
-    io.sockets.emit('/TERM/CD/1', code);
+  socket.on('/TERM/CD/', function(code) {
+    io.sockets.emit('/TERM/CD/' + code.containerName, code);
   });
 
 });

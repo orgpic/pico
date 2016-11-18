@@ -58,7 +58,6 @@ class LinuxComputer extends React.Component {
   }
 
 	render() {
-    console.log('RENDER!');
     if (this.state.containerName.length) {
          return (
             <div>
