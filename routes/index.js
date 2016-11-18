@@ -136,14 +136,13 @@ router.get('/decode', function(req, res) {
 
 
 router.post('/handleCodeSave', function (req, res) {
-  console.log(req.body);
   const fileName = req.body.fileName;
   const containerName = req.body.containerName;
   const code = JSON.stringify(req.body.codeValue).replace(/'/g, "\\\"");
   const echo = "'echo -e ";
   const file = " > " + fileName + "'"
   const command = 'bash -c ' + echo + code + file;
-  console.log(command);
+
   docker.runCommand(containerName, command, function(err, response) {
     if (err) {
       res.status(200).send(err);
@@ -206,7 +205,7 @@ router.post('/cmd', function (req, res) {
       });
     }
     if(readyToExecute) {
-      const command = 'bash -c "echo ' + newdir + ' > /picoShell/.pico' + '"'; 
+      const command = 'bash -c "echo ' + newdir + ' > /picoShell/.pico' + '"';
       console.log(command);
       docker.directoryExists(containerName, newdir, function(dirRes) {
         if(dirRes.indexOf('Directory exists') !== -1) {
