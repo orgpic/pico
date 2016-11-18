@@ -13,7 +13,6 @@ database:
 
 test:
   override:
-    - cd db
     - sequelize db:migrate:undo:all
     - sequelize db:migrate
     - npm test
