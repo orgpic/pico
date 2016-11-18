@@ -5,6 +5,8 @@ class NavBar extends React.Component {
 	constructor (props) {
 		super(props);
 
+    this.handleLogOut = this.handleLogOut.bind(this);
+
 		this.state = {
 			username: this.props.username
 		};	
@@ -19,7 +21,7 @@ class NavBar extends React.Component {
 		return (
   			<div className = "navbar">
     			<ul>
-      			<li> <a className="logout" onClick={this.handleLogOut.bind(this)}> Log Out </a> </li>
+      			<li> <a className="logout" onClick={this.handleLogOut}> Log Out </a> </li>
       			<li> <a href="/"> Home </a> </li>
       			<li> <a href="/linuxcomputer"> Computer </a> </li>
       			<li> <a href="/dashboard"> Dashboard </a> </li>

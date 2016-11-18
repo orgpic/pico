@@ -1,16 +1,42 @@
 const React = require('react');
+const axios = require('axios');
+// const BarChart = require('react-d3-basic').BarChart;
+const PieChart = require('react-chartjs').Pie;
+const Chart = require('chartjs');  
 
 class Stats extends React.Component {
   constructor(props) {
     super(props);
 
-    const mostUsedCommands = this.mostUsedCommands(this.props.commandHistory);
+    this.mostUsedCommands = this.mostUsedCommands(this.props.commandHistory);
 
     this.state = {
       commandHistory: this.props.commandHistory,
-      mostUsedCommands: mostUsedCommands
+      mostUsedCommands: this.mostUsedCommands,
+      containerName: this.props.containerName,
+      usage: -1,
     }
   }
+
+  componentWillMount() {
+    this.getStats();
+  }
+
+  getStats() {
+    const context = this;
+    console.log(this.state);
+    axios.post('/cmd', { cmd: 'df -h', containerName: this.state.containerName })
+      .then(function(res) {
+        const data = "`" + res.data + "`";
+        const usage = parseInt(data.split("\n")[1].split('G')[3].split('%')[0].trim());
+        context.setState({
+          usage: usage
+        });
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+    }
 
   mostUsedCommands(commandHistory) {
     const set = {};
@@ -36,26 +62,38 @@ class Stats extends React.Component {
     return arr;
   }
 
+
+
   render() {
-    return (
-        <div>
-          <div className="card-container">
-            <div className="title">
-              STATS
-            </div>
-            <div className="title">
-              Top Ten Commands
-            </div>
-            <div className="info">
-              {this.state.mostUsedCommands.slice(0,10).map(function(cmd) {
-                return (
-                    <div>{cmd[0]} - {cmd[1]}</div>
-                  );
-              })}
+    if (this.state.usage >= 0) {
+      const used = this.state.usage;
+      const free = 100 - this.state.usage;
+      var data = [
+          {color:"#b2baef", label:"used",value:used},
+          {color:"#03CEA1", label:"free", value:free}
+      ];
+
+      var options = {
+          animateRotate:true
+      }
+      return (
+          <div>
+            <div className="card-container">
+              <div className="title">
+                STATS
+              </div>
+              <div className="title">
+                Usage
+              </div>
+              <div className="info">
+                <PieChart data={data} options={options} />
+              </div>
             </div>
           </div>
-        </div>
-      );
+        );
+    } else {
+      return (<div> Loading...</div>)
+    }
   }
 }
 

@@ -7,3 +7,5 @@ RUN apt-get install -y gcc
 
 RUN mkdir -p /picoShell
 WORKDIR /picoShell
+
+RUN touch .pico && echo "/picoShell" > .pico

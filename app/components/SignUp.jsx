@@ -6,30 +6,28 @@ const utils = require('../../utils/validationHelpers')
 class Signup extends React.Component {
   constructor (props) {
     super (props);
+    
     this.changeUserNameInput = this.changeUserNameInput.bind(this);
-    this.changePasswordInput = this.changePasswordInput.bind(this);
-    this.changeFirstNameInput = this.changeFirstNameInput.bind(this);
-    this.changeLastNameInput = this.changeLastNameInput.bind(this);
-    this.changeEmailInput = this.changeEmailInput.bind(this);
-    this.changeGithubInput = this.changeGithubInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.changeInput = this.changeInput.bind(this);
 
     this.state = {
         username: '',
         password: '',
-        firstname: '',
-        lastname: '',
+        firstName: '',
+        lastName: '',
         email: '',
         github: '',
         usernameExists: false,
         usernameValid: false,
         passwordValid: false,
-        firstnameValid: false,
-        lastnameValid: false,
+        firstNameValid: false,
+        lastNameValid: false,
         githubValid: false,
         emailValid: false
     };
   }
+
   changeUserNameInput(event) {
     const context = this; 
 
@@ -59,101 +57,54 @@ class Signup extends React.Component {
       }
     });
   }
-  changePasswordInput(event) {
+
+  changeInput(event) {
+    const context = this;
+    const type = event.target.dataset.type;
+    const valid = type + 'Valid';
+    const value = event.target.value;
+    let func;
+
     this.setState({
-      password: event.target.value
+      [type]: value
     });
 
-    if (utils.isValidPassword(event.target.value)) {
+    if (type === 'email') {
+      console.log('type is email!');
+      func = utils.isValidEmail;
+    } else if (type === 'username') {
+      func = utils.isValidUsername;
+    } else if (type === 'password') {
+      func = utils.isValidPassword;
+    } else if (type === 'firstName' || type === 'lastName' || type === 'github') {
+      func = utils.isValidName;
+    }
+
+    if (func(value)) {
+      console.log(type, value);
       this.setState({
-        passwordValid: true
-      })
+        [valid]: true
+      });
     } else {
+      console.log('is not a valid email!!!');
       this.setState({
-        passwordValid: false
+        [valid]: false
       });
     }
   }
 
-  changeFirstNameInput(event) {
-    this.setState({
-      firstname: event.target.value
-    });
-
-
-    if (utils.isValidName(event.target.value)) {
-      this.setState({
-        firstnameValid: true
-      });
-    } else {
-      this.setState({
-        firstnameValid: false
-      });
-    }
-  }
-
-  changeLastNameInput(event) {
-    this.setState({
-      lastname: event.target.value
-    });
-
-    if (utils.isValidName(event.target.value)) {
-      this.setState({
-        lastnameValid: true
-      });
-    } else {
-      this.setState({
-        lastnameValid: false
-      });
-    }
-  }
-
-  changeGithubInput(event) {
-    this.setState({
-      github: event.target.value
-    });
-
-    console.log(this.state.github);
-
-    if (utils.isValidName(event.target.value)) {
-      this.setState({
-        githubValid: true
-      });
-    } else {
-      this.setState({
-        githubValid: false
-      });
-    }
-  }
-
-  changeEmailInput(event) {
-    this.setState({
-      email: event.target.value
-    });
-
-    if (utils.isValidEmail(event.target.value)) {
-      this.setState({
-        emailValid: true
-      });
-    } else {
-      this.setState({
-        emailValid: false
-      });
-    }
-  }
-
-  handleSubmit(e, user, pass, firstname, lastname, email, github) {
+  handleSubmit(e, user, pass, firstName, lastName, email, github) {
     const context = this;
     e.preventDefault();
 
     console.log('submitting', github);
 
-    if (this.state.usernameValid && this.state.firstnameValid && this.state.githubValid && this.state.lastnameValid && this.state.emailValid && this.state.passwordValid) {
+    if (this.state.usernameValid && this.state.firstNameValid && this.state.githubValid && this.state.lastNameValid && this.state.emailValid && this.state.passwordValid) {
       axios.post('/auth/signup', {
          username: user,
          password: pass,
-         firstname: firstname,
-         lastname: lastname,
+         firstname: firstName,
+         lastname: lastName,
          email: email,
          githubHandle: github
        })
@@ -187,9 +138,9 @@ class Signup extends React.Component {
 
   render() {
     return (
-			<div className="signup-container">
-				<form onSubmit={function(e) {
-          this.handleSubmit(e, this.state.username, this.state.password, this.state.firstname, this.state.lastname, this.state.email, this.state.github);
+      <div className="signup-container">
+        <form onSubmit={function(e) {
+          this.handleSubmit(e, this.state.username, this.state.password, this.state.firstName, this.state.lastName, this.state.email, this.state.github);
         }.bind(this)}>
           <div className="form-inputs">
             <input 
@@ -197,45 +148,50 @@ class Signup extends React.Component {
               className="login-input"
               type='text' 
               placeholder='username'
-              value={this.state.username}
+              data-type='username'
               />
               {this.state.usernameValid ? <i className="glyphicon glyphicon-ok"></i> : null}
             <input 
-              onChange={this.changePasswordInput}
+              onChange={this.changeInput}
               className="login-input"
               type='password' 
               placeholder='password'
+              data-type='password'
               />
               {this.state.passwordValid ? <i className="glyphicon glyphicon-ok"></i> : null}
             <input 
-              onChange={this.changeFirstNameInput}
+              onChange={this.changeInput}
               className="login-input"
               type='text' 
               placeholder='first name'
+              data-type='firstName'
               />
               <span id="firstname"></span>
-              {this.state.firstnameValid ? <i className="glyphicon glyphicon-ok"></i> : null}
+              {this.state.firstNameValid ? <i className="glyphicon glyphicon-ok"></i> : null}
             <input 
-              onChange={this.changeLastNameInput}
+              onChange={this.changeInput}
               className="login-input"
               type='text' 
               placeholder='last name'
+              data-type='lastName'
               />
               <span id="lastname"></span>
-              {this.state.lastnameValid ? <i className="glyphicon glyphicon-ok"></i> : null}
+              {this.state.lastNameValid ? <i className="glyphicon glyphicon-ok"></i> : null}
               <input 
-                onChange={this.changeGithubInput}
+                onChange={this.changeInput}
                 className="login-input"
                 type='text' 
                 placeholder='github'
+                data-type='github'
                 />
                 <span id="github"></span>
                 {this.state.githubValid ? <i className="glyphicon glyphicon-ok"></i> : null}
             <input 
-              onChange={this.changeEmailInput}
+              onChange={this.changeInput}
               className="login-input"
-              type='email' 
+              type='text' 
               placeholder='email'
+              data-type='email'
               />
               <span id="email"></span>
               {this.state.emailValid ? <i className="glyphicon glyphicon-ok"></i> : null}
@@ -254,9 +210,9 @@ class Signup extends React.Component {
           Already have an Account?
           </a>
         </div>
-			</div>
-		);
+      </div>
+    );
   }
 }
 
-module.exports = Signup;	
+module.exports = Signup;  

@@ -11,7 +11,7 @@ const axios = require('axios');
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    const context = this;
+
     this.state = {
       username: '',
       containerName: '',
@@ -39,18 +39,18 @@ class Dashboard extends React.Component {
       })
       .then (function(response) {
         const user = response.data;
-        console.log('setting state!');
+
         context.setState({
           containerName: user.username,
           username: user.username
-       });
+        });
+
         axios.get('/infodashboard', {
           params: {
             username: user.username
           }
         })
         .then(function(response){
-          console.log(response);
           const user = response.data;
           context.setState({
             firstName: user.firstName,
@@ -65,7 +65,7 @@ class Dashboard extends React.Component {
         })
       });
     }
-  } 
+  }
 
 
   render() {
@@ -99,7 +99,7 @@ class Dashboard extends React.Component {
               </div>
               <div className="col-md-5 contain">
                 <div className="card">
-                  <Stats commandHistory={this.state.commandHistory} username={this.state.username} email={this.state.email} github="somegithub"/>
+                  <Stats containerName={this.state.username} commandHistory={this.state.commandHistory} username={this.state.username} email={this.state.email} github="somegithub"/>
                 </div>
               </div> 
             </div>
