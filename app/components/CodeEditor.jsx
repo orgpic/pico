@@ -15,12 +15,39 @@ class CodeEditor extends React.Component {
       fileNamePath: ''
     }
     this.username = localStorage['jwtToken'];
+    this.recievedCEChange = this.recievedCEChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
+    const context = this;
+    this.socket.off('/TE/' + this.state.containerName);
     this.setState({
       containerName: nextProps.containerName
     })
+    this.socket.on('/TE/' + nextProps.containerName, function(code) {
+      context.recievedCEChange(code);
+    });
+  }
+
+  recievedCEChange(code) {
+    const fileName = code.fileName;
+    const filePath = code.filePath;
+    const codeValue = code.code;
+    if(code.fileOpen) {
+      this.setState({
+        fileName: fileName,
+        filePath: filePath
+      });
+    }
+    if(code.username !== this.username) {
+      this.setState({
+        codeValue: codeValue
+      });
+      //Must place the cursor back where it was after replacing contents. Otherwise weird things happen.
+      this.cursorPos = this.editor.doc.getCursor();
+      this.editor.getDoc().setValue(code.code);
+      this.editor.doc.setCursor(this.cursorPos);
+    }
   }
   
   componentDidMount() {
@@ -63,32 +90,15 @@ class CodeEditor extends React.Component {
     const context = this;
 
     //The 1 will be replaced by container/user ID when we have sessions
-    this.socket.on('/TE/1', function(code) {
-      const fileName = code.fileName;
-      const filePath = code.filePath;
-      const codeValue = code.code;
-      if(code.fileOpen) {
-        context.setState({
-          fileName: fileName,
-          filePath: filePath
-        });
-      }
-      if(code.username !== context.username) {
-        context.setState({
-          codeValue: codeValue
-        });
-        //Must place the cursor back where it was after replacing contents. Otherwise weird things happen.
-        context.cursorPos = context.editor.doc.getCursor();
-        context.editor.getDoc().setValue(code.code);
-        context.editor.doc.setCursor(context.cursorPos);
-      }
+    this.socket.on('/TE/' + this.props.containerName, function(code) {
+      recievedCEChange(code);
     });
   }
 
 
   handleCodeChange() {
       var code = document.getElementById('code-editor').value;
-      this.socket.emit('/TE/1', {code: code, username: this.username});
+      this.socket.emit('/TE/', {code: code, username: this.username, containerName: this.state.containerName});
   }
 
   handleCodeSave(e) {
