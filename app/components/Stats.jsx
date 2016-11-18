@@ -14,7 +14,7 @@ class Stats extends React.Component {
       commandHistory: this.props.commandHistory,
       mostUsedCommands: this.mostUsedCommands,
       containerName: this.props.containerName,
-      usage: '',
+      usage: -1,
     }
   }
 
@@ -24,6 +24,7 @@ class Stats extends React.Component {
 
   getStats() {
     const context = this;
+    console.log(this.state);
     axios.post('/cmd', { cmd: 'df -h', containerName: this.state.containerName })
       .then(function(res) {
         const data = "`" + res.data + "`";
@@ -31,6 +32,9 @@ class Stats extends React.Component {
         context.setState({
           usage: usage
         });
+      })
+      .catch(function(err) {
+        console.log(err);
       })
     }
 
@@ -61,31 +65,35 @@ class Stats extends React.Component {
 
 
   render() {
-    const used = 42;
-    const free = 100 - 42;
-    var data = [
-        {color:"#b2baef", label:"used",value:used},
-        {color:"#03CEA1", label:"free", value:free}
-    ];
+    if (this.state.usage >= 0) {
+      const used = this.state.usage;
+      const free = 100 - this.state.usage;
+      var data = [
+          {color:"#b2baef", label:"used",value:used},
+          {color:"#03CEA1", label:"free", value:free}
+      ];
 
-    var options = {
-        animateRotate:true
-    }
-    return (
-        <div>
-          <div className="card-container">
-            <div className="title">
-              STATS
-            </div>
-            <div className="title">
-              Usage
-            </div>
-            <div className="info">
-              <PieChart data={data} options={options} />
+      var options = {
+          animateRotate:true
+      }
+      return (
+          <div>
+            <div className="card-container">
+              <div className="title">
+                STATS
+              </div>
+              <div className="title">
+                Usage
+              </div>
+              <div className="info">
+                <PieChart data={data} options={options} />
+              </div>
             </div>
           </div>
-        </div>
-      );
+        );
+    } else {
+      return (<div> Loading...</div>)
+    }
   }
 }
 
