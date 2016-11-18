@@ -83,8 +83,8 @@
     "nodemon": "^1.11.0",
     "nyc": "^8.4.0",
     "react": "^15.4.0",
+    "react-addons-test-utils": "^15.4.0",
     "react-dom": "^15.4.0",
-    "react-addons-test-utils": "^15.3.2",
     "sinon": "^1.17.6",
     "webpack": "^1.13.2"
   }
