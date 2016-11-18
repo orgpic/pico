@@ -22,12 +22,13 @@ describe("SignUp component", function() {
 
   it("should have input fields", function() {
     const wrapper = shallow(<SignUp/>);
-    expect(wrapper.find('input')).to.have.length(5);
+    expect(wrapper.find('input')).to.have.length(6);
     expect(wrapper.find('#username')).to.have.length(1);
     expect(wrapper.find('#password')).to.have.length(1);
     expect(wrapper.find('#firstname')).to.have.length(1);
     expect(wrapper.find('#lastname')).to.have.length(1);
     expect(wrapper.find('#email')).to.have.length(1);
+    // expect(wrapper.find('#github')).to.have.length(1);
   });
 
   // it('should call onsubmit', () => {
