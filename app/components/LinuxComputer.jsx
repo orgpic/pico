@@ -15,6 +15,8 @@ class LinuxComputer extends React.Component {
       username: '',
       containerName: ''
     }
+
+    this.selectChange = this.selectChange.bind(this);
   }
 
 
@@ -29,21 +31,47 @@ class LinuxComputer extends React.Component {
        }
      })
      .then (function(response) {
-       const user = response.data;
-       console.log('setting state!');
-       context.setState({
+        const user = response.data;
+        console.log('setting state!');
+        context.setState({
          containerName: user.username,
-         username: user.username
-      });
+         username: user.username,
+         collabWith: []
+        });
+        axios.post('/collaboratingWith', {username: user.username})
+          .then(function(res) {
+            const acceptedUsernames = res.data.map(function(accepted) {
+              return accepted.requesterUsername;
+            });
+            context.setState({
+              collabWith: acceptedUsernames
+            });
+          })
      });
    }
  } 
 
+  selectChange(event) {
+    //alert(event.target.value);
+    this.setState({
+      containerName: event.target.value
+    });
+  }
+
 	render() {
+    console.log('RENDER!');
     if (this.state.containerName.length) {
          return (
             <div>
               <NavBar username={this.state.username} />
+              <select onChange={this.selectChange}>
+                <option value={this.state.username}>{this.state.username}</option>
+                {this.state.collabWith.map(function(user) {
+                  return (
+                      <option value={user}>{user}</option>
+                    );
+                })}
+              </select>
               <div className="row">
                 <div className="col-md-8 card-container">
                    <CodeEditor username={this.state.username} containerName={this.state.containerName}/>

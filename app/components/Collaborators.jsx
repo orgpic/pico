@@ -28,7 +28,7 @@ class Collaborators extends React.Component {
     axios.post('/myCollaborators', {username: this.state.username})
       .then(function(res) {
         const acceptedUsernames = res.data.map(function(accepted) {
-          return accepted.requesterUsername;
+          return accepted.recieverUsername;
         });
         context.setState({
           collaborators: acceptedUsernames
@@ -37,7 +37,7 @@ class Collaborators extends React.Component {
     axios.post('/collaboratingWith', {username: this.state.username})
       .then(function(res) {
         const acceptedUsernames = res.data.map(function(accepted) {
-          return accepted.recieverUsername;
+          return accepted.requesterUsername;
         });
         context.setState({
           collabWith: acceptedUsernames
@@ -95,24 +95,14 @@ class Collaborators extends React.Component {
             {this.state.collabWith.length ? this.state.collabWith.map(function(accepted) {
               return (<div className="collaborators">{accepted}</div>)
             }) : <div className="none"> None </div>}
-            {this.state.collabWith.map(function(accepted) {
-              return (
-                  <div>{accepted}</div>
-                );
-            })}
           </div>
           <div className="title">
             Collaborators on Your Computer
           </div>
           <div>
-            {this.state.collabWith.length ? this.state.collabWith.map(function(accepted) {
+            {this.state.collabWith.length ? this.state.collaborators.map(function(accepted) {
               return (<div className="collaborators">{accepted}</div>)
             }) : <div className="none"> None </div>}
-            {this.state.collabWith.map(function(accepted) {
-              return (
-                  <div>{accepted}</div>
-                );
-            })}
           </div>
           <div className="title">
             Invite a New Collaborator To Your Computer
