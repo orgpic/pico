@@ -22,7 +22,7 @@ router.get('/', function(req, res) {
 router.post('/collaboratingWith', function(req, res) {
   Collaborator.findAll({
     where: {
-      requesterUsername: req.body.username,
+      recieverUsername: req.body.username,
       confirmed: 'confirmed'
     }
   }).then(function(resp) {
@@ -33,7 +33,7 @@ router.post('/collaboratingWith', function(req, res) {
 router.post('/myCollaborators', function(req, res) {
   Collaborator.findAll({
     where: {
-      recieverUsername: req.body.username,
+      requesterUsername: req.body.username,
       confirmed: 'confirmed'
     }
   }).then(function(resp) {

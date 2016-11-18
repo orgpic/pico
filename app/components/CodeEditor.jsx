@@ -16,6 +16,12 @@ class CodeEditor extends React.Component {
     }
     this.username = localStorage['jwtToken'];
   }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      containerName: nextProps.containerName
+    })
+  }
   
   componentDidMount() {
     const context = this;

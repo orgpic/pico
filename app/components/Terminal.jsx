@@ -16,6 +16,12 @@ class Terminal extends React.Component {
     this.renderTerminal();
 	}
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      containerName: nextProps.containerName
+    })
+  }
+
   componentWillMount() {
     this.socket = io();
     const context = this;
@@ -65,11 +71,9 @@ class Terminal extends React.Component {
       $('#terminal').terminal(function(command, term) {
         console.log('command', command);
         if (command !== '') {
-
-          axios.post('/cmd', { cmd: command, containerName: containerName })
+          console.log('container', context.state.containerName);
+          axios.post('/cmd', { cmd: command, containerName: context.state.containerName })
             .then(function(res) {
-              console.log(res);
-              console.log(res.data);
               if(typeof res.data === 'object') {
                 if(res.data.fileOpen) {
                   console.log(res.data);
