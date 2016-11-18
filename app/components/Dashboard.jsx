@@ -99,7 +99,7 @@ class Dashboard extends React.Component {
               </div>
               <div className="col-md-5 contain">
                 <div className="card">
-                  <Stats commandHistory={this.state.commandHistory} username={this.state.username} email={this.state.email} github="somegithub"/>
+                  <Stats containerName={this.state.username} commandHistory={this.state.commandHistory} username={this.state.username} email={this.state.email} github="somegithub"/>
                 </div>
               </div> 
             </div>

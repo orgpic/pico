@@ -1,16 +1,38 @@
 const React = require('react');
+const axios = require('axios');
+// const BarChart = require('react-d3-basic').BarChart;
+const PieChart = require('react-chartjs').Pie;
+const Chart = require('chartjs');  
 
 class Stats extends React.Component {
   constructor(props) {
     super(props);
 
-    const mostUsedCommands = this.mostUsedCommands(this.props.commandHistory);
+    this.mostUsedCommands = this.mostUsedCommands(this.props.commandHistory);
 
     this.state = {
       commandHistory: this.props.commandHistory,
-      mostUsedCommands: mostUsedCommands
+      mostUsedCommands: this.mostUsedCommands,
+      containerName: this.props.containerName,
+      usage: '',
     }
   }
+
+  componentWillMount() {
+    this.getStats();
+  }
+
+  getStats() {
+    const context = this;
+    axios.post('/cmd', { cmd: 'df -h', containerName: this.state.containerName })
+      .then(function(res) {
+        const data = "`" + res.data + "`";
+        const usage = parseInt(data.split("\n")[1].split('G')[3].split('%')[0].trim());
+        context.setState({
+          usage: usage
+        });
+      })
+    }
 
   mostUsedCommands(commandHistory) {
     const set = {};
@@ -36,7 +58,19 @@ class Stats extends React.Component {
     return arr;
   }
 
+
+
   render() {
+    const used = 42;
+    const free = 100 - 42;
+    var data = [
+        {color:"#b2baef", label:"used",value:used},
+        {color:"#03CEA1", label:"free", value:free}
+    ];
+
+    var options = {
+        animateRotate:true
+    }
     return (
         <div>
           <div className="card-container">
@@ -44,14 +78,10 @@ class Stats extends React.Component {
               STATS
             </div>
             <div className="title">
-              Top Ten Commands
+              Usage
             </div>
             <div className="info">
-              {this.state.mostUsedCommands.slice(0,10).map(function(cmd) {
-                return (
-                    <div>{cmd[0]} - {cmd[1]}</div>
-                  );
-              })}
+              <PieChart data={data} options={options} />
             </div>
           </div>
         </div>
