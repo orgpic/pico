@@ -104,19 +104,19 @@ class CodeEditor extends React.Component {
   handleCodeSave(e) {
     var code = document.getElementById('code-editor').value;
     const fileName = this.state.fileName;
-  console.log('filename is: ', fileName);
+    console.log('filename is: ', fileName);
     const containerName = this.state.containerName;
     axios.post('/handleCodeSave', {
       codeValue: code,
       fileName: fileName,
       containerName: containerName
-      })
-      .then(function(response) {
-        console.log(response);
-      })
-      .catch(function(err) {
-        console.error(err);
-      });
+    })
+    .then(function(response) {
+      console.log(response);
+    })
+    .catch(function(err) {
+      console.error(err);
+    });
   }
 
   render() {
@@ -124,10 +124,10 @@ class CodeEditor extends React.Component {
       <div className="code-editor-container">
         <textarea id="code-editor">
           {this.state.codeValue}
-        </textarea><br/>
-        <div className="row">
-          <div className="col-md-6">
-            <button onClick={this.handleCodeSave.bind(this)}> Save </button>
+          </textarea><br/>
+          <div className="row">
+            <div className="col-md-6">
+              <button onClick={this.handleCodeSave.bind(this)}> Save </button>
           </div>
           <div className="col-md-6 current-file">
             {this.state.fileName ? this.state.filePath + '/' + this.state.fileName : <p> No File </p>}

@@ -121,6 +121,7 @@ router.get('/infodashboard', function(req, res) {
     }
   })
   .then(function(response) {
+    console.log(response);
     res.send(200, response);
   })
   .catch(function(err){
@@ -135,14 +136,13 @@ router.get('/decode', function(req, res) {
 
 
 router.post('/handleCodeSave', function (req, res) {
-  console.log(req.body);
   const fileName = req.body.fileName;
   const containerName = req.body.containerName;
   const code = JSON.stringify(req.body.codeValue).replace(/'/g, "\\\"");
   const echo = "'echo -e ";
   const file = " > " + fileName + "'"
   const command = 'bash -c ' + echo + code + file;
-  console.log(command);
+
   docker.runCommand(containerName, command, function(err, response) {
     if (err) {
       res.status(200).send(err);
@@ -205,7 +205,7 @@ router.post('/cmd', function (req, res) {
       });
     }
     if(readyToExecute) {
-      const command = 'bash -c "echo ' + newdir + ' > /picoShell/.pico' + '"'; 
+      const command = 'bash -c "echo ' + newdir + ' > /picoShell/.pico' + '"';
       console.log(command);
       docker.directoryExists(containerName, newdir, function(dirRes) {
         if(dirRes.indexOf('Directory exists') !== -1) {
@@ -236,18 +236,23 @@ router.post('/cmd', function (req, res) {
     });
   } else {
     docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
-
       console.log('response from cat /picoShell/.pico :', res1);
+      console.log('this is the container name', containerName);
 
-      res1 = res1.replace(/^\s+|\s+$/g, '');
+      if (err1) {
+        res.status(404).send('Creating .pico');
+      } else {
+        res1 = res1.replace(/^\s+|\s+$/g, '');
 
-      cmd = '"cd ' + res1 + ' && ' + cmd + '"';
-      const command = 'bash -c ' + cmd;
-      console.log(command);
-      docker.runCommand(containerName, command, function(err2, res2) {
-        if (err2) { res.status(200).send(err2); } 
-        else { res.status(200).send(res2); }
-      });
+        cmd = '"cd ' + res1 + ' && ' + cmd + '"';
+        const command = 'bash -c ' + cmd;
+        console.log(command);
+        docker.runCommand(containerName, command, function(err2, res2) {
+          if (err2) { res.status(200).send(err2); } 
+          else { res.status(200).send(res2); }
+        });
+      }
+
     }) 
   }
 });
@@ -307,31 +312,28 @@ router.get('/github/callback', passport.authenticate('github', {
     });
   });
 
-router.post('/profilepicture', function(req, res) {
-
-  const pictureUrl = req.body.profilePictureUrl;
-  const username = req.body.username;
-
+router.post('/updateuser', function(req, res) {
+  const user = req.body;
 
   User.findOne({
     where: {
-      username: username
+      username: user.username
     }
   })
   .then(function(user) {
-    user.update({
-      profilePicture: pictureUrl
+      user.update(req.body.toUpdate);
     })
     .then(function() {
-      res.status(200).send('Successfully saved picture in DB');
+      res.status(200).send('Successfully updated user');
     })
-  })
+    .catch(function(err) {
+      res.status(500).send('Wasn\'t able to save to database');
+    })
   .catch(function(err) {
-    console.log(err);
+    console.error(err);
     res.status(500).send(err);
-  });
-});
-
+  })
+})
 
 router.get('*', function(req, res, next) {
   console.log('rendering bullshit');  

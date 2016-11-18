@@ -11,7 +11,7 @@ const axios = require('axios');
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    const context = this;
+
     this.state = {
       username: '',
       containerName: '',
@@ -21,7 +21,8 @@ class Dashboard extends React.Component {
       createdAt: null,
       github: '',
       commandHistory: [],
-      profilePictureUrl: ''
+      profilePictureUrl: '',
+      bio: ''
     }
   }
 
@@ -39,18 +40,18 @@ class Dashboard extends React.Component {
       })
       .then (function(response) {
         const user = response.data;
-        console.log('setting state!');
+
         context.setState({
           containerName: user.username,
           username: user.username
-       });
+        });
+
         axios.get('/infodashboard', {
           params: {
             username: user.username
           }
         })
         .then(function(response){
-          console.log(response);
           const user = response.data;
           context.setState({
             firstName: user.firstName,
@@ -59,12 +60,13 @@ class Dashboard extends React.Component {
             createdAt: user.createdAt,
             commandHistory: history,
             profilePictureUrl: user.profilePicture,
-            github: user.githubHandle
+            github: user.githubHandle,
+            bio: user.bio
           })
         })
       });
     }
-  } 
+  }
 
 
   render() {
@@ -86,7 +88,7 @@ class Dashboard extends React.Component {
               </div>
               <div className="col-md-4 contain">
                 <div className="card">
-                  <Bio firstName={this.state.firstName} lastName={this.state.lastName}/>
+                  <Bio username={this.state.username} bio={this.state.bio}/>
                 </div>
               </div>
             </div>
@@ -98,7 +100,7 @@ class Dashboard extends React.Component {
               </div>
               <div className="col-md-5 contain">
                 <div className="card">
-                  <Stats commandHistory={this.state.commandHistory} username={this.state.username} email={this.state.email} github="somegithub"/>
+                  <Stats containerName={this.state.username} commandHistory={this.state.commandHistory} username={this.state.username} email={this.state.email} github="somegithub"/>
                 </div>
               </div> 
             </div>
