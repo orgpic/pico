@@ -9,7 +9,7 @@ const NavBar = require('./NavBar.jsx');
 class LinuxComputer extends React.Component {
   constructor(props) {
     super(props);
-
+    this.socket = io();
     this.state = {
       username: '',
       containerName: '',
@@ -38,14 +38,17 @@ componentWillMount() {
     });
   });
 
-   // if (user) {
-   //   axios.get('/oAuth', {
-   //   })
-   //   .then (function(response) {
-   //      const user = response.data;
-   //      console.log('setting state!');
-        
-   // }
+  this.socket.on('/DASH/REMOVE/COLLABWITH/' + user.username, function(rejection) {
+    if(rejection.remover === context.state.containerName) {
+      window.location.reload();
+    } else {
+      var collabWith = context.state.collabWith;
+      collabWith.splice(collabWith.indexOf(rejection.remover), 1);
+      context.setState({
+        collabWith: collabWith
+      });
+    }
+  });
 } 
 
   selectChange(event) {
