@@ -14,9 +14,6 @@ body {
   width: 100%;
   height: 400px; }
 
-.signup-container .glyphicon {
-  color: #03CEA1; }
-
 .code-editor-container {
   padding: 0;
   margin: 0;
@@ -43,16 +40,16 @@ body {
 .card-container .header {
   padding: 10px;
   margin: 0px;
-  background-color: #323232;
+  background-color: #5bace1;
   font-family: Roboto-Regular;
   text-align: center;
-  color: #7B7373; }
+  color: #F4F6F7; }
 .card-container .information {
   padding: 20px; }
   .card-container .information .title {
-    color: #7B7373;
+    color: #271F42;
     font-size: 16px;
-    font-family: Roboto-Regular;
+    font-family: "Work Sans", sans-serif;
     padding-top: 7px; }
   .card-container .information .info {
     font-size: 15px;
@@ -98,12 +95,13 @@ body {
 .dashboard-container {
   height: 100%;
   width: 100%;
-  color: #F4F6F7; }
+  color: #F4F6F7;
+  background-color: #e1d35b; }
   .dashboard-container .contain {
     padding: 20px; }
     .dashboard-container .contain .card {
       height: 100%;
-      background-color: #191919;
+      background-color: #5b69e1;
       border-radius: 0;
       width: 100%;
       margin: 10px, 20px, 5px, 5px; }
@@ -136,6 +134,15 @@ body {
       font-weight: bold;
       padding-left: 10px;
       font-size: 1.3em; }
+  .navbar .logo {
+    font-family: Dosis-Regular;
+    font-size: 20px;
+    color: #FFFFFF;
+    text-align: left;
+    text-decoration: none; }
+    .navbar .logo a img {
+      width: 25px;
+      margin-bottom: 4px; }
 
 .homepage-container {
   width: 100%;
@@ -193,19 +200,21 @@ body {
     height: 100%; }
     .homepage-container .login-container .login-header {
       background: rgba(36, 35, 39, 0.6);
-      color: #F4F6F7;
+      color: #FEFEFE;
       margin-left: 100px;
       margin-right: 100px;
       padding: 10px;
       height: 100%;
       font-family: 'Work Sans', sans-serif;
-      font-size: 20px; }
+      font-size: 20px;
+      box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.2); }
     .homepage-container .login-container .login-box {
       margin-left: 100px;
       margin-right: 100px;
       margin-bottom: 100px;
       height: 100%;
       background: rgba(36, 35, 39, 0.4);
+      box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
       font-family: 'Work Sans', sans-serif; }
       .homepage-container .login-container .login-box .login .login-input {
         margin: 5px;
@@ -219,10 +228,10 @@ body {
       .homepage-container .login-container .login-box .login .login-query-container {
         padding: 5px; }
         .homepage-container .login-container .login-box .login .login-query-container .login-query {
-          color: #191919;
+          color: #FEFEFE;
           cursor: pointer; }
           .homepage-container .login-container .login-box .login .login-query-container .login-query:hover {
-            color: #FEFEFE;
+            color: white;
             text-decoration: none; }
       .homepage-container .login-container .login-box .login .btn-success {
         background-color: #90728C;
@@ -230,10 +239,12 @@ body {
         border-radius: 0;
         width: 90%;
         padding: 2px;
-        margin: 2px; }
+        margin: 2px;
+        color: #FEFEFE; }
         .homepage-container .login-container .login-box .login .btn-success:hover {
-          background-color: #DCDAED;
-          border-color: #DCDAED; }
+          background-color: #b2baef;
+          border-color: #b2baef;
+          color: #FEFEFE; }
 
 .error {
   color: #FFFFFF;

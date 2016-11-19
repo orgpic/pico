@@ -68,7 +68,7 @@ class App extends React.Component {
         <div>        
           <div className="homepage-container">
             <div className="logo">
-              <img href="/" src="/images/logo.svg"></img>
+              <a href="/"><img src="/images/logo.svg"></img></a>
               <a href="/">picoShell</a>
             </div>
             <div className="header">
