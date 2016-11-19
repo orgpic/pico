@@ -12,8 +12,8 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(obj, done) {
-    console.log('deserializeUser userasdfasdfasdfasd', obj)
-    done(null, obj);
+  console.log('deserializeUser userasdfasdfasdfasd', obj)
+  done(null, obj);
 });
 
 passport.use(new Strategy({  
@@ -24,26 +24,27 @@ passport.use(new Strategy({
     console.log('username', username)
     User.findOne({where: { username: username }})
     .then( function(user) { 
-      console.log('found one', user)
       if (!user) {
+        console.log('No user found');
         return done(null, false, { message: 'No User Found.' });        
       } else {
+        console.log('Found one user', user);
         bcrypt.compare(password, user.dataValues.password, function(err, isMatch) {
           if (err) {
             console.log('bycrupt match error');
-              done(err);
+            done(err);
           } 
           if (isMatch) {
-            console.log('bycrypt match good');
-              done(null, user);
+            console.log('bycrypt match true');
+            done(null, user);
           } else {
-            console.log('bycrtup match bad', isMatch);
-              done(null, false, { message: 'No User Found.' });
+            console.log('bycrtup match false', isMatch);
+            done(null, false, { message: 'No User Found.' });
           }
         });
       }
     }).catch(function(err) {
-      console.log('err', err)
+      console.error('err', err)
       done(err, null, null);
     });
   }
