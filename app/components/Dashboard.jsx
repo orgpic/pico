@@ -56,7 +56,7 @@ class Dashboard extends React.Component {
           lastName: user.lastName,
           email: user.email,
           createdAt: user.createdAt,
-          commandHistory: JSON.parse(localStorage['0_commands']),
+          commandHistory: [], //JSON.parse(localStorage['0_commands']),
           profilePictureUrl: user.profilePicture,
           github: user.githubHandle,
           bio: user.bio

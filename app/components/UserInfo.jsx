@@ -96,7 +96,6 @@ class UserInfo extends React.Component {
               change={this.dataChanged}
               style = {this.style}
             />
-            {this.props.github}
           </div>
         </div>
       );
