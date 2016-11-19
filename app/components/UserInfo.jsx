@@ -54,7 +54,7 @@ class UserInfo extends React.Component {
         githubHandle: data.github
       }
 
-      axios.post('/updateUser', { username: this.state.username, toUpdate: toUpdate})
+      axios.post('/users/updateUser', { username: this.state.username, toUpdate: toUpdate})
         .then(function(res) {
           console.log(res);
         })
@@ -67,26 +67,8 @@ class UserInfo extends React.Component {
   render() {
     return (
         <div className="card-container user-info-container">
-          <div className="title">
-            Username
-          </div>
-          <div className="info">
-            {this.props.username}
-          </div>
-          <div className="title">
-            Email
-          </div>
-          <div className="info">
-            <InlineEdit
-              activeClassName="editing"
-              text={this.state.email}
-              paramName="email"
-              change={this.dataChanged}
-              style = {this.style}
-            />
-          </div>
-          <div className="title">
-            Github
+          <div className="header">
+            Information
           </div>
           <div className="info">
             <InlineEdit
@@ -96,8 +78,40 @@ class UserInfo extends React.Component {
               change={this.dataChanged}
               style = {this.style}
             />
+          <div className="information">
+            <div className="title">
+              Username
+            </div>
+            <div className="info">
+              {this.props.username}
+            </div>
+            <div className="title">
+              Email
+            </div>
+            <div className="info">
+              <InlineEdit
+                activeClassName="editing"
+                text={this.state.email}
+                paramName="email"
+                change={this.dataChanged}
+                style = {this.style}
+              />
+            </div>
+            <div className="title">
+              Github
+            </div>
+            <div className="info">
+              <InlineEdit
+                activeClassName="editing"
+                text={this.state.github}
+                paramName="github"
+                change={this.dataChanged}
+                style = {this.style}
+              />
+            </div>
           </div>
         </div>
+      </div>
       );
   }
 }

@@ -16,7 +16,8 @@ class Collaborators extends React.Component {
       collabWith: []
     };
 
-    axios.post('/pendingInvites', {username: this.state.username})
+
+    axios.post('/users/pendingInvites', {username: this.state.username})
     .then(function(res) {
       const pendingUsernames = res.data.map(function(pending) {
         return pending.requesterUsername;
@@ -26,23 +27,21 @@ class Collaborators extends React.Component {
       });
     });
 
-    axios.post('/myCollaborators', {username: this.state.username})
+    axios.post('/users/myCollaborators', {username: this.state.username})
     .then(function(res) {
       const acceptedUsernames = res.data.map(function(accepted) {
         return accepted.recieverUsername;
       });
-      console.log('MYCOLLAB', acceptedUsernames);
       context.setState({
         collaborators: acceptedUsernames
       });
     });
 
-    axios.post('/collaboratingWith', {username: this.state.username})
+    axios.post('/users/collaboratingWith', {username: this.state.username})
     .then(function(res) {
       const acceptedUsernames = res.data.map(function(accepted) {
         return accepted.requesterUsername;
       });
-      console.log('COLLABWITH', acceptedUsernames);
       context.setState({
         collabWith: acceptedUsernames
       });
@@ -76,12 +75,11 @@ class Collaborators extends React.Component {
       const context = this;
       e.preventDefault();
       document.getElementById('inviteUsernameInput').value = '';
-      axios.post('/sendInvite', {usernameToInvite: user, username: context.state.username})
+      axios.post('users/sendInvite', {usernameToInvite: user, username: context.state.username})
       .then(function(res) {
         if(res.data.fail) {
           alert(res.data.fail);
         } else if (res.data.success) {
-          context.socket.emit('/DASH/INVITE/', {recipient: user, sender: context.state.username});
           alert(res.data.success);
         }
       })
@@ -93,7 +91,7 @@ class Collaborators extends React.Component {
 
   handleAcceptCollab(username) {
     const context = this;
-    axios.post('/acceptInvite', {invited: username, accepter: this.state.username})
+    axios.post('/users/acceptInvite', {invited: username, accepter: this.state.username})
     .then(function(res) {
       var pending = context.state.pendingInvites;
       pending.splice(pending.indexOf(username), 1);
@@ -109,7 +107,7 @@ class Collaborators extends React.Component {
 
   handleRejectCollab(username) {
     const context = this;
-    axios.post('/rejectInvite', {invited: username, rejecter: this.state.username})
+    axios.post('/users/rejectInvite', {invited: username, rejecter: this.state.username})
     .then(function(res) {
       var pending = context.state.pendingInvites;
       pending.splice(pending.indexOf(username), 1);
@@ -123,59 +121,64 @@ class Collaborators extends React.Component {
     var context = this;
     return (
       <div className = "card-container">
-        <div className="title">
-          Currently Collaborating With
+        <div className="header">
+          Collaborators
         </div>
-        <div>
-          {this.state.collabWith.length ? this.state.collabWith.map(function(accepted) {
-            return (<div className="collaborators">{accepted}</div>)
-          }) : (<div className="none"> None </div>)}
-        </div>
-        <div className="title">
-          Collaborators on Your Computer
-        </div>
-        <div>
-          {this.state.collaborators.length ? this.state.collaborators.map(function(accepted) {
-            return (<div className="collaborators">{accepted}</div>)
-          }) : (<div className="none"> None </div>)}
-        </div>
-        <div className="title">
-        Invite a New Collaborator To Your Computer
-        </div>
-      <div className="row">
-        <form onSubmit={
-          function(e) {
-            this.handleSubmit(e, this.state.invUsername)
-          }.bind(this)}>
-          <div className="form-inputs col-md-8">
-            <input 
-            onChange={this.changeUserNameInput}
-            id="inviteUsernameInput"
-            type='text' 
-            placeholder='username'
-            className="collaborators-input"
-            />
+        <div className="information">
+          <div className="title">
+            Currently Collaborating With
           </div>
-          <div className="col-md-4">
-            <button type="submit" className="btn btn-success">Send Invite</button>
+          <div>
+            {this.state.collabWith.length ? this.state.collabWith.map(function(accepted) {
+              return (<div className="collaborators">{accepted}</div>)
+            }) : <div className="none"> None </div>}
           </div>
-        </form>
-      </div>
-      <div>
-        <div className="title">
-        Pending Collaboration Invites
-        </div>
-        {
-          this.state.pendingInvites.length ? this.state.pendingInvites.map(function(pending) {
-          return (
-            <div className="collaborator">{pending} 
-            <span onClick={() => {context.handleAcceptCollab(pending)}}> Accept </span>
-            <span onClick={() => {context.handleRejectCollab(pending)}}> Reject </span>           
+          <div className="title">
+            Collaborators on Your Computer
+          </div>
+          <div>
+            {this.state.collaborators.length ? this.state.collaborators.map(function(accepted) {
+              return (<div className="collaborators">{accepted}</div>)
+            }) : <div className="none"> None </div>}
+          </div>
+          <div className="title">
+          Invite a New Collaborator To Your Computer
+          </div>
+        <div className="row">
+          <form onSubmit={
+            function(e) {
+              this.handleSubmit(e, this.state.invUsername)
+            }.bind(this)}>
+            <div className="form-inputs col-md-8">
+              <input 
+              onChange={this.changeUserNameInput}
+              id="inviteUsernameInput"
+              type='text' 
+              placeholder='username'
+              className="collaborators-input"
+              />
             </div>
-            );
-        }) : 
-          <div className="none"> None </div>
-        }
+            <div className="col-md-4">
+              <button type="submit" className="btn btn-success">Send Invite</button>
+            </div>
+          </form>
+        </div>
+        <div>
+          <div className="title">
+          Pending Collaboration Invites
+          </div>
+          {
+            this.state.pendingInvites.length ? this.state.pendingInvites.map(function(pending) {
+            return (
+              <div className="collaborator">{pending} 
+              <span onClick={() => {context.handleAcceptCollab(pending)}}> Accept </span>
+              <span onClick={() => {context.handleRejectCollab(pending)}}> Reject </span>           
+              </div>
+              );
+          }) : 
+            <div className="none"> None </div>
+          }
+        </div>
       </div>
     </div>
     );
