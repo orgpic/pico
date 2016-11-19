@@ -106,7 +106,7 @@ class CodeEditor extends React.Component {
     const fileName = this.state.fileName;
     console.log('filename is: ', fileName);
     const containerName = this.state.containerName;
-    axios.post('/handleCodeSave', {
+    axios.post('/docker/handleCodeSave', {
       codeValue: code,
       fileName: fileName,
       containerName: containerName

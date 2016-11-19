@@ -3,6 +3,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
 @import url("https://fonts.googleapis.com/css?family=Montserrat");
 @import url("https://fonts.googleapis.com/css?family=Work+Sans");
+@import url("https://fonts.googleapis.com/css?family=Libre+Franklin");
 body {
   font: 14px "Dosis", Helvetica, Arial, sans-serif;
   background-color: #242327;
@@ -142,62 +143,97 @@ body {
   .homepage-container .header {
     background-image: url("/images/background.svg");
     width: 100%;
-    height: 498px;
+    height: 720px;
     padding: 0;
     margin: 0;
     overflow: hidden; }
-    .homepage-container .header .overlay {
+    .homepage-container .header img {
+      width: 500px; }
+  .homepage-container .subtitle {
+    color: #FEFEFE;
+    text-align: center;
+    padding-top: 100px;
+    font-family: "Work Sans", sans-serif;
+    font-size: 3em; }
+  .homepage-container .subsubtitle {
+    color: #CFCED6;
+    text-align: center;
+    padding-top: 0;
+    font-family: "Libre Franklin", sans-serif;
+    font-size: 1em;
+    padding-bottom: 30px; }
+  .homepage-container .logo {
+    background-color: #271F42;
+    margin: 0;
+    padding: 5px; }
+    .homepage-container .logo a {
+      font-family: Dosis-Regular;
+      font-size: 20px;
+      color: #FFFFFF;
+      text-align: left;
+      text-decoration: none; }
+      .homepage-container .logo a:hover {
+        text-decoration: none; }
+    .homepage-container .logo img {
+      width: 40px; }
+  .homepage-container .logo-container {
+    padding-top: 10px;
+    text-align: center; }
+    .homepage-container .logo-container .title {
+      font-family: Dosis-Regular;
+      font-size: 120px;
+      color: #FFFFFF;
       text-align: center; }
-      .homepage-container .header .overlay .logo-container {
-        padding-top: 120px;
-        text-align: center; }
-        .homepage-container .header .overlay .logo-container .title {
-          font-family: Dosis-Regular;
-          font-size: 120px;
-          color: #FFFFFF;
-          text-align: center; }
-        .homepage-container .header .overlay .logo-container .login-header {
-          background: rgba(36, 35, 39, 0.6);
-          color: #F4F6F7;
-          margin-left: 50px;
-          margin-right: 100px;
-          padding: 10px;
-          height: 100%;
-          font-family: Montserrat-Bold;
-          font-size: 20px; }
-        .homepage-container .header .overlay .logo-container .login-box {
-          margin-left: 50px;
-          margin-right: 100px;
-          margin-bottom: 100px;
-          height: 100%;
-          background: rgba(36, 35, 39, 0.4); }
-          .homepage-container .header .overlay .logo-container .login-box .login .login-input {
-            margin: 5px;
-            background: rgba(36, 35, 39, 0.6);
-            border: 0;
-            color: #F4F6F7;
-            width: 90%;
-            padding: 5px; }
-            .homepage-container .header .overlay .logo-container .login-box .login .login-input:focus {
-              outline: none; }
-          .homepage-container .header .overlay .logo-container .login-box .login .login-query-container {
-            padding: 5px; }
-            .homepage-container .header .overlay .logo-container .login-box .login .login-query-container .login-query {
-              color: #191919;
-              cursor: pointer; }
-              .homepage-container .header .overlay .logo-container .login-box .login .login-query-container .login-query:hover {
-                color: #F4F6F7;
-                text-decoration: none; }
-          .homepage-container .header .overlay .logo-container .login-box .login .btn-success {
-            background-color: #03CEA1;
-            border-color: #03CEA1;
-            border-radius: 0;
-            width: 90%;
-            padding: 2px;
-            margin: 2px; }
-            .homepage-container .header .overlay .logo-container .login-box .login .btn-success:hover {
-              background-color: #b2baef;
-              border-color: #b2baef; }
+  .homepage-container .login-container {
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+    margin: auto;
+    height: 100%; }
+    .homepage-container .login-container .login-header {
+      background: rgba(36, 35, 39, 0.6);
+      color: #F4F6F7;
+      margin-left: 100px;
+      margin-right: 100px;
+      padding: 10px;
+      height: 100%;
+      font-family: 'Work Sans', sans-serif;
+      font-size: 20px; }
+    .homepage-container .login-container .login-box {
+      margin-left: 100px;
+      margin-right: 100px;
+      margin-bottom: 100px;
+      height: 100%;
+      background: rgba(36, 35, 39, 0.4);
+      font-family: 'Work Sans', sans-serif; }
+      .homepage-container .login-container .login-box .login .login-input {
+        margin: 5px;
+        background: rgba(36, 35, 39, 0.6);
+        border: 0;
+        color: #F4F6F7;
+        width: 90%;
+        padding: 5px; }
+        .homepage-container .login-container .login-box .login .login-input:focus {
+          outline: none; }
+      .homepage-container .login-container .login-box .login .login-query-container {
+        padding: 5px; }
+        .homepage-container .login-container .login-box .login .login-query-container .login-query {
+          color: #191919;
+          cursor: pointer; }
+          .homepage-container .login-container .login-box .login .login-query-container .login-query:hover {
+            color: #FEFEFE;
+            text-decoration: none; }
+      .homepage-container .login-container .login-box .login .btn-success {
+        background-color: #90728C;
+        border-color: #90728C;
+        border-radius: 0;
+        width: 90%;
+        padding: 2px;
+        margin: 2px; }
+        .homepage-container .login-container .login-box .login .btn-success:hover {
+          background-color: #DCDAED;
+          border-color: #DCDAED; }
 
 .error {
   color: #FFFFFF;

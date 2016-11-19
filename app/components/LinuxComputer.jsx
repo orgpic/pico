@@ -28,7 +28,7 @@ componentWillMount() {
     username: user.username,
     collabWith: []
   });
-  axios.post('/collaboratingWith', {username: user.username})
+  axios.post('/users/collaboratingWith', {username: user.username})
   .then(function(res) {
     const acceptedUsernames = res.data.map(function(accepted) {
     return accepted.requesterUsername;

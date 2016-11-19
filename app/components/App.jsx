@@ -67,30 +67,32 @@ class App extends React.Component {
       return (
         <div>        
           <div className="homepage-container">
+            <div className="logo">
+              <img href="/" src="/images/logo.svg"></img>
+              <a href="/">picoShell</a>
+            </div>
             <div className="header">
-              <div className="overlay">
-                <div className="row">
-                  <div className="col-md-6">
+                    <div className="subtitle">
+                      Coding Made Simple
+                    </div>
+                    <div className="subsubtitle">
+                      Sign Up Today to Simplify the Programming Process
+                    </div>
                     <div className="logo-container">
-                      <div className="title"> picoShell</div>
+                      <img src="/images/logo.svg"></img>
+                    </div>
+            </div>
+                <div className="login-container">
+                  <div className="login-header">
+                    <div className="login">
+                      Reinvent Programming Today
                     </div>
                   </div>
+                  <div className="login-box">
+                    <div className="login">
+                     {authenticate}
                 </div>
-              </div>
-                <div className="col-md-6">
-                  <div className="logo-container">
-                    <div className="login-header">
-                      <div className="login">
-                        Reinvent the Interview Process
-                      </div>
-                    </div>
-                    <div className="login-box">
-                      <div className="login">
-                       {authenticate}
-                      </div>
-                    </div>
-                  </div>
-              </div>
+             </div>
             </div>
           </div>
         </div>

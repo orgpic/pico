@@ -79,7 +79,7 @@ class Login extends React.Component {
           </div>
   			</form>
         <a href="/github"> 
-          <Button>Login With Github</Button>
+          <button className="btn btn-success">Login With Github</button>
         </a>
         <div className="login-query-container">
   				<a className="login-query" onClick={this.props.GoToSignUp}> Need to signup?</a><br/>
