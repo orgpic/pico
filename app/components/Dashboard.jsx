@@ -23,54 +23,50 @@ class Dashboard extends React.Component {
       commandHistory: [],
       profilePictureUrl: '',
       bio: ''
-    }
+    };
   }
 
   componentWillMount() {
+    // axios.get('/oAuth').then(response => {
+    //   var context = this;
+    //   const user = response.data;
+    //   console.log('storage in Dashboard', localStorage['user']);
+
+    //   context.setState({
+    //     containerName: user.username,
+    //     username: user.username
+    //   });
     var context = this;
-    const token = localStorage['jwtToken'];
-    //const history = JSON.parse(localStorage['0_commands']);
-    const history = [];
-    
-    if (token) {
-      axios.get('/decode', {
+    console.log(localStorage['user']);
+    if (localStorage['user']) {
+      var user = JSON.parse(localStorage['user']);
+      axios.get('/infodashboard', {
         params: {
-          token: token
+          username: user.username
         }
       })
-      .then (function(response) {
+      .then(function(response) {
+        console.log('222222222222222222', response);
         const user = response.data;
-
         context.setState({
+          username: user.username,
           containerName: user.username,
-          username: user.username
+          bio: user.bio,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          createdAt: user.createdAt,
+          commandHistory: JSON.parse(localStorage['0_commands']),
+          profilePictureUrl: user.profilePicture,
+          github: user.githubHandle,
+          bio: user.bio
         });
-
-        axios.get('/infodashboard', {
-          params: {
-            username: user.username
-          }
-        })
-        .then(function(response){
-          const user = response.data;
-          context.setState({
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            createdAt: user.createdAt,
-            commandHistory: history,
-            profilePictureUrl: user.profilePicture,
-            github: user.githubHandle,
-            bio: user.bio
-          })
-        })
+        context.forceUpdate();
       });
     }
   }
-
-
   render() {
-   if (this.state.lastName.length) {
+   if (this.state.containerName.length) {
       return (
          <div>
           <NavBar username={this.state.username} />
@@ -89,6 +85,8 @@ class Dashboard extends React.Component {
               <div className="col-md-4 contain">
                 <div className="card">
                   <Bio username={this.state.username} bio={this.state.bio}/>
+                <div className="card">                                
+                  <Bio firstName={this.state.firstName} lastName={this.state.lastName} username={this.state.username}/>
                 </div>
               </div>
             </div>
@@ -100,19 +98,20 @@ class Dashboard extends React.Component {
               </div>
               <div className="col-md-5 contain">
                 <div className="card">
-                  <Stats containerName={this.state.username} commandHistory={this.state.commandHistory} username={this.state.username} email={this.state.email} github="somegithub"/>
+                  <Stats containerName={this.state.username} commandHistory={this.state.commandHistory} username={this.state.username} email={this.state.email} github={this.state.github}/>
                 </div>
               </div> 
             </div>
            </div>
          </div>
+        </div>
        );
     } else {
-     return (
-       <div>
-         Loading...
-       </div>
-     )
+      return(
+        <div>
+          Loading...
+        </div>
+      )
     }
   }
 }

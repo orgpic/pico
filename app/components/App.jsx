@@ -24,26 +24,29 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const token = localStorage['jwtToken'];
+  componentWillMount() {
     const context = this;
-
-    if (token) {
-      axios.get('/decode', {
-        params: {
-          token: token
+    axios.get('/oAuth', {
+    })
+    .then(function(response) {
+      if (response.data) {
+        var myUser = response.data;
+        localStorage['user'] = JSON.stringify(myUser);
+        if (myUser) {
+          context.setState({
+            authenticated: true,
+            username: myUser.username,
+            containerName: myUser.containerName,
+          });
+          console.log('state in app', context.state);
         }
-      })
-      .then(function(response) {
-        const user = response.data;
-
-        context.setState({
-         authenticated: true,
-         username: user.username,
-         containerName: user.containerName,
-       });
-      });
-    } 
+      }
+    })
+    .catch(function(err) {
+      console.log('no user');
+      console.log(err);
+    });
+   
   }
 
   GoToLogin() {
@@ -118,33 +121,31 @@ class App extends React.Component {
   }
 }
 
-function requireAuth(nextState, replace) {
-  const token = localStorage['jwtToken'];
-
-  if (token) {
-    axios.get('/decode', {
-      params: {
-        token: token
-      }
-    })
-    .then(function(response) {
-      if (!response) {
-        replace('/');
-      } 
-    })
-    .catch(function(err) {
-      console.log(err)
-    })
-  } else {
-    window.location = '/';
-  }
-}
+// function requireAuth(nextState, replace) {
+//   const user = localStorage['user'];
+//   if (user) {
+//     axios.get('/oAuth', {
+//     })
+//     .then(function(response) {
+//       if (response.data) {
+//         localStorage['user'] = JSON.parse(response.data);
+//       }
+//     })
+//     .catch(function(err) {
+//       console.log('no user');
+//       console.log(err);
+//     });
+//   } else {
+//     console.log('no user2');
+//     window.location = '/';
+//   }
+// }
 
 
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}></Route>
-    <Route path="/linuxcomputer" component = {LinuxComputer} onEnter={requireAuth}></Route>
-    <Route path="/dashboard" component={Dashboard} onEnter={requireAuth}></Route>
+    <Route path="/linuxcomputer" component = {LinuxComputer} ></Route>
+    <Route path="/dashboard" component={Dashboard} ></Route>
   </Router>
 ), document.getElementById('app'))

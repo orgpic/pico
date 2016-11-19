@@ -28,7 +28,6 @@ class UserInfo extends React.Component {
   }
 
   dataChanged(data) {
-
     if (data.email && utils.isValidEmail(data.email)) {
       this.setState({
         email: data.email
@@ -37,7 +36,6 @@ class UserInfo extends React.Component {
       const toUpdate = {
         email: data.email
       }
-
       axios.post('/updateUser', { username: this.state.username, toUpdate: toUpdate})
         .then(function(res) {
           console.log(res);
@@ -73,7 +71,7 @@ class UserInfo extends React.Component {
             Username
           </div>
           <div className="info">
-            {this.state.username}
+            {this.props.username}
           </div>
           <div className="title">
             Email
@@ -98,6 +96,7 @@ class UserInfo extends React.Component {
               change={this.dataChanged}
               style = {this.style}
             />
+            {this.props.github}
           </div>
         </div>
       );

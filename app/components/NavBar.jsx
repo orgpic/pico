@@ -1,21 +1,43 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
+const axios = require('axios');
 
 class NavBar extends React.Component {
 	constructor (props) {
 		super(props);
 
     this.handleLogOut = this.handleLogOut.bind(this);
-
-		this.state = {
-			username: this.props.username
-		};	
 	}
 
-	handleLogOut() {
-		localStorage.removeItem('jwtToken');
-		location.reload(); 
-	}
+componentWillMount() {
+  if (!localStorage['user']) {
+    var context = this;
+    axios.get('/oAuth')
+    .then(function(response) {
+      if (response.data.username) {
+        localStorage['user'] = JSON.stringify(response.data);
+        console.log('this is the state', this.state);
+      } else {
+        context.handleLogOut();
+      }
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+  }  
+}
+
+handleLogOut() {
+	localStorage.removeItem('user');
+  axios.get('/logout')
+  .then(function(response) {
+    console.log('logging them out');
+    window.location = '/'; 
+  })
+  .catch(function(err) {
+    console.log(err);
+  });
+}
 
 	render() {
 		return (
@@ -25,7 +47,7 @@ class NavBar extends React.Component {
       			<li> <a href="/"> Home </a> </li>
       			<li> <a href="/linuxcomputer"> Computer </a> </li>
       			<li> <a href="/dashboard"> Dashboard </a> </li>
-      			<li className="username"><a href="/"> {this.state.username} </a></li>
+            <li className="username">{this.props.username}</li>
     			</ul>
   			</div>	
 			)

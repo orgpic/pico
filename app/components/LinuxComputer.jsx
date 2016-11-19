@@ -12,43 +12,43 @@ class LinuxComputer extends React.Component {
 
     this.state = {
       username: '',
-      containerName: ''
+      containerName: '',
+      collabWith: []
     }
 
     this.selectChange = this.selectChange.bind(this);
   }
 
 
- componentWillMount() {
-   var context = this;
-   const token = localStorage['jwtToken'];
+componentWillMount() {
+  var context = this;
+  const user = JSON.parse(localStorage['user']);
 
-   if (token) {
-     axios.get('/decode', {
-       params: {
-         token: token
-       }
-     })
-     .then (function(response) {
-        const user = response.data;
-        console.log('setting state!');
-        context.setState({
-         containerName: user.username,
-         username: user.username,
-         collabWith: []
-        });
-        axios.post('/collaboratingWith', {username: user.username})
-          .then(function(res) {
-            const acceptedUsernames = res.data.map(function(accepted) {
-              return accepted.requesterUsername;
-            });
-            context.setState({
-              collabWith: acceptedUsernames
-            });
-          })
-     });
-   }
- } 
+  context.setState({
+    containerName: user.username,
+    username: user.username,
+    collabWith: []
+  });
+  axios.post('/collaboratingWith', {username: user.username})
+  .then(function(res) {
+    const acceptedUsernames = res.data.map(function(accepted) {
+    return accepted.requesterUsername;
+    });
+    context.setState({
+      collabWith: acceptedUsernames
+    });
+  });
+
+   // if (user) {
+   //   axios.get('/oAuth', {
+   //   })
+   //   .then (function(response) {
+   //      const user = response.data;
+   //      console.log('setting state!');
+        
+   // }
+} 
+ 
 
   selectChange(event) {
     //alert(event.target.value);
@@ -57,9 +57,9 @@ class LinuxComputer extends React.Component {
     });
   }
 
-	render() {
-    if (this.state.containerName.length) {
-         return (
+    render() {
+      if (this.state.containerName.length) {
+           return (
             <div>
               <NavBar username={this.state.username} />
               <select onChange={this.selectChange}>
@@ -85,9 +85,9 @@ class LinuxComputer extends React.Component {
       <div>
         Loading...
       </div>
-    )
-   }
+    );
 	}
+}
 }
 
 
