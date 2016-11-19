@@ -48,6 +48,7 @@ class Collaborators extends React.Component {
     });
 
     this.socket.on('/DASH/INVITE/' + this.props.username, function(invite) {
+      console.log('INVITE', invite);
       context.setState({
         pendingInvites: context.state.pendingInvites.concat(invite.sender)
       });
@@ -75,11 +76,12 @@ class Collaborators extends React.Component {
       const context = this;
       e.preventDefault();
       document.getElementById('inviteUsernameInput').value = '';
-      axios.post('users/sendInvite', {usernameToInvite: user, username: context.state.username})
+      axios.post('/users/sendInvite', {usernameToInvite: user, username: context.state.username})
       .then(function(res) {
         if(res.data.fail) {
           alert(res.data.fail);
         } else if (res.data.success) {
+          context.socket.emit('/DASH/INVITE/', {recipient: user, sender: context.state.username});
           alert(res.data.success);
         }
       })
