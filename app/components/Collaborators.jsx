@@ -84,7 +84,9 @@ class Collaborators extends React.Component {
 
   handleSubmit(e, user) {
     if(user.toUpperCase() === this.state.username.toUpperCase()) {
+      e.preventDefault();
       alert('Sorry, but you cannot collaborate with yourself! Sad but true.');
+      document.getElementById('inviteUsernameInput').value = '';
     }
     else {
       const context = this;
