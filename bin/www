@@ -95,6 +95,10 @@ io.on('connection', function(socket) {
     io.sockets.emit('/DASH/INVITE/' + invite.recipient, invite);
   });
 
+  socket.on('/DASH/INVITE/ACCEPT/', function(invite) {
+    io.sockets.emit('/DASH/INVITE/ACCEPT/' + invite.recipient, invite);
+  });
+
 });
 
 /**

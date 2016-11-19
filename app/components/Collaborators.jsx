@@ -31,6 +31,7 @@ class Collaborators extends React.Component {
       const acceptedUsernames = res.data.map(function(accepted) {
         return accepted.recieverUsername;
       });
+      console.log('MYCOLLAB', acceptedUsernames);
       context.setState({
         collaborators: acceptedUsernames
       });
@@ -41,15 +42,22 @@ class Collaborators extends React.Component {
       const acceptedUsernames = res.data.map(function(accepted) {
         return accepted.requesterUsername;
       });
+      console.log('COLLABWITH', acceptedUsernames);
       context.setState({
         collabWith: acceptedUsernames
       });
     });
 
     this.socket.on('/DASH/INVITE/' + this.props.username, function(invite) {
-      console.log('RECIEVED INVITE', invite);
       context.setState({
         pendingInvites: context.state.pendingInvites.concat(invite.sender)
+      });
+    });
+
+    this.socket.on('/DASH/INVITE/ACCEPT/' + this.props.username, function(invite) {
+      console.log('ACCEPTED', invite);
+      context.setState({
+        collaborators: context.state.collaborators.concat(invite.accepter)
       });
     });
   }
@@ -87,7 +95,6 @@ class Collaborators extends React.Component {
     const context = this;
     axios.post('/acceptInvite', {invited: username, accepter: this.state.username})
     .then(function(res) {
-      console.log(res);
       var pending = context.state.pendingInvites;
       pending.splice(pending.indexOf(username), 1);
       var collabs = context.state.collabWith;
@@ -96,11 +103,20 @@ class Collaborators extends React.Component {
         pendingInvites: pending,
         collabWith: collabs
       });
+      context.socket.emit('/DASH/INVITE/ACCEPT/', {recipient: username, accepter: context.state.username});
     });
   }
 
   handleRejectCollab(username) {
-    //remove row from DB
+    const context = this;
+    axios.post('/rejectInvite', {invited: username, rejecter: this.state.username})
+    .then(function(res) {
+      var pending = context.state.pendingInvites;
+      pending.splice(pending.indexOf(username), 1);
+      context.setState({
+        pendingInvites: pending
+      });
+    });
   }
 
   render() {
@@ -113,15 +129,15 @@ class Collaborators extends React.Component {
         <div>
           {this.state.collabWith.length ? this.state.collabWith.map(function(accepted) {
             return (<div className="collaborators">{accepted}</div>)
-          }) : <div className="none"> None </div>}
+          }) : (<div className="none"> None </div>)}
         </div>
         <div className="title">
           Collaborators on Your Computer
         </div>
         <div>
-          {this.state.collabWith.length ? this.state.collaborators.map(function(accepted) {
+          {this.state.collaborators.length ? this.state.collaborators.map(function(accepted) {
             return (<div className="collaborators">{accepted}</div>)
-          }) : <div className="none"> None </div>}
+          }) : (<div className="none"> None </div>)}
         </div>
         <div className="title">
         Invite a New Collaborator To Your Computer

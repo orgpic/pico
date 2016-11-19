@@ -35,13 +35,25 @@ router.post('/acceptInvite', function(req, res) {
       recieverUsername: accepter
     }
   }).then(function (resp) {
-    console.log('ACCEPT RESP', resp);
     res.status(200).send(resp);
   });
 });
 
 router.post('/rejectInvite', function(req, res) {
-
+  const rejected = req.body.invited;
+  const rejecter = req.body.rejecter;
+  console.log('INREJECT');
+  Collaborator.destroy({
+    where: {
+      requesterUsername: rejected,
+      recieverUsername: rejecter,
+      confirmed: 'unconfirmed'
+    }
+  }).then(function(resp) {
+    res.status(200).send(resp);
+  }).catch(function(resp) {
+    console.log('REJECT_RESP', resp);
+  });
 });
 
 router.post('/pendingInvites', function(req, res) {
