@@ -57,13 +57,25 @@ router.post('/authenticate',
   }),
   function(req, res) {
     console.log('trying to send status', req.user);
-    req.session.user = req.user;
-    res.send(req.user.dataValues);
+    var user = req.user;
+    var user = {
+      username: user.username,
+      id: user.id,
+      bio: user.bio,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      authenticatedWith: user.authenticatedWith,
+      githubHandle: user.githubHandle,
+      profilePicture: user.profilePicture
+    };
+    req.session.user = user;
+    res.send(user);
   }
 );
 router.get('/logout', function(req, res) {
   req.session.destroy(function(err) {
-    res.redirect('/')
+    res.redirect('/');
   });
 });
 
