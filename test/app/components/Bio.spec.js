@@ -7,6 +7,7 @@ describe("Bio component", function() {
   
   it("should exist", function() {
     const wrapper = shallow(<Bio/>);
+    expect(wrapper).to.exist;
   });
 
 });

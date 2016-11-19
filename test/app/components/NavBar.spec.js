@@ -1,12 +1,12 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
-// import Collaborators from '../../../app/components/Collaborators';
+import NavBar from '../../../app/components/NavBar';
 
-xdescribe("Collaborators component", function() {
+xdescribe("NavBar component", function() {
   
   it("should exist", function() {
-    const wrapper = shallow(<Collaborators/>);
+    const wrapper = shallow(<NavBar/>);
     expect(wrapper).to.exist;
   });
 

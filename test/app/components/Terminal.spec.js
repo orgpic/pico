@@ -1,12 +1,13 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
-// import Collaborators from '../../../app/components/Collaborators';
+// import Terminal from '../../../app/components/Terminal';
+// import $ from 'jquery';
 
-xdescribe("Collaborators component", function() {
-  
+xdescribe("Terminal component", function() {
+
   it("should exist", function() {
-    const wrapper = shallow(<Collaborators/>);
+    const wrapper = shallow(<Terminal/>);
     expect(wrapper).to.exist;
   });
 
