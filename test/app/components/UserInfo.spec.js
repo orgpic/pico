@@ -7,7 +7,7 @@ describe("UserInfo component", function() {
   
   it("should exist", function() {
     var wrapper = shallow(<UserInfo />);
-    // wrapper.setState({github: "szhou1"});
+    expect(wrapper).to.exist;
   });
 
 });

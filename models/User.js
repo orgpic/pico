@@ -23,7 +23,7 @@ const User = db.define('user', {
       },
       updateOrCreate: function(newUser, cb) {
         if (newUser.authenticatedWith !== 'local') {
-          console.log('gethubbbbbbbbbing1', newUser.username);
+          // console.log('gethubbbbbbbbbing1', newUser.username);
           var findUser = User.findOne({where: {username: newUser.username}})
           .then(function(oldUser) {
             // console.log('gethubbbbbbbbbing2');
@@ -35,22 +35,22 @@ const User = db.define('user', {
                 cb(null, newUser);
               })
               .catch(function(err) {
-                console.log('gethubbbbbbbbbing5', err);
+                // console.log('gethubbbbbbbbbing5', err);
                 cb(err);
               });
             } else {
-              console.log('no old user no old user no old user')
+              // console.log('no old user no old user no old user')
               User.create(newUser)
               .then(function(userResponse) {
-                console.log('containercontainercontainercontainercontainercontainercontainer', Container)
+                // console.log('containercontainercontainercontainercontainercontainercontainer', Container)
                 Container.create({
                   ownerID: newUser.username
                 })
                 .then(function(containerResponse) {
                   docker.startContainer('evenstevens/picoshell', newUser.username, '/bin/bash', function(err, dockerResponse) {
                     if (err) {
-                      console.error('Error in creating container with docker');
-                      console.log('Error', err);
+                      console.error('Error in creating container with docker', err);
+                      // console.log('Error', err);
                       cb(err);
                     } else {
                       cb(null, newUser);

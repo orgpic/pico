@@ -7,6 +7,7 @@ xdescribe("LinuxComputer component", function() {
   
   it("should exist", function() {
     const wrapper = shallow(<LinuxComputer/>);
+    expect(wrapper).to.exist;
   });
 
 });

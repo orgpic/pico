@@ -10,6 +10,7 @@ describe("Stats component", function() {
     // wrapper.setProps({ commandHistory: ['ls'] });
     // wrapper = mount(<Stats/>);
     // console.log('state:', wrapper.state().commandHistory);
+    expect(wrapper).to.exist;
     expect(wrapper.state().commandHistory).to.eql(['ls']);
 
   });

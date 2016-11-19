@@ -7,6 +7,7 @@ xdescribe("App component", function() {
   
   it("should exist", function() {
     const wrapper = shallow(<App/>);
+    expect(wrapper).to.exist;
   });
 
 });
