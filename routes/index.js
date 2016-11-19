@@ -25,8 +25,6 @@ router.get('/dashboard', function(req, res) {
 });
 
 
-
-
 router.get('/infodashboard', function(req, res) {
   const username = req.query.username;
   User.findOne({

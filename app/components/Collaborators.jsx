@@ -6,7 +6,7 @@ class Collaborators extends React.Component {
     super(props);
 
     const context = this;
-
+    this.socket = io();
     this.changeUserNameInput = this.changeUserNameInput.bind(this);
     this.state = {
       invUsername: '',
@@ -46,6 +46,20 @@ class Collaborators extends React.Component {
         collabWith: acceptedUsernames
       });
     });
+
+    this.socket.on('/DASH/INVITE/' + this.props.username, function(invite) {
+      console.log('INVITE', invite);
+      context.setState({
+        pendingInvites: context.state.pendingInvites.concat(invite.sender)
+      });
+    });
+
+    this.socket.on('/DASH/INVITE/ACCEPT/' + this.props.username, function(invite) {
+      console.log('ACCEPTED', invite);
+      context.setState({
+        collaborators: context.state.collaborators.concat(invite.accepter)
+      });
+    });
   }
 
   changeUserNameInput(event) {
@@ -62,11 +76,12 @@ class Collaborators extends React.Component {
       const context = this;
       e.preventDefault();
       document.getElementById('inviteUsernameInput').value = '';
-      axios.post('/sendInvite', {usernameToInvite: user, username: context.state.username})
+      axios.post('/users/sendInvite', {usernameToInvite: user, username: context.state.username})
       .then(function(res) {
         if(res.data.fail) {
           alert(res.data.fail);
         } else if (res.data.success) {
+          context.socket.emit('/DASH/INVITE/', {recipient: user, sender: context.state.username});
           alert(res.data.success);
         }
       })
@@ -77,14 +92,31 @@ class Collaborators extends React.Component {
   }
 
   handleAcceptCollab(username) {
+    const context = this;
     axios.post('/users/acceptInvite', {invited: username, accepter: this.state.username})
     .then(function(res) {
-      console.log(res);
+      var pending = context.state.pendingInvites;
+      pending.splice(pending.indexOf(username), 1);
+      var collabs = context.state.collabWith;
+      collabs.push(username);
+      context.setState({
+        pendingInvites: pending,
+        collabWith: collabs
+      });
+      context.socket.emit('/DASH/INVITE/ACCEPT/', {recipient: username, accepter: context.state.username});
     });
   }
 
   handleRejectCollab(username) {
-    //remove row from DB
+    const context = this;
+    axios.post('/users/rejectInvite', {invited: username, rejecter: this.state.username})
+    .then(function(res) {
+      var pending = context.state.pendingInvites;
+      pending.splice(pending.indexOf(username), 1);
+      context.setState({
+        pendingInvites: pending
+      });
+    });
   }
 
   render() {

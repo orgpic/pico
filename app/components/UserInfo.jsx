@@ -70,6 +70,14 @@ class UserInfo extends React.Component {
           <div className="header">
             Information
           </div>
+          <div className="info">
+            <InlineEdit
+              activeClassName="editing"
+              text={this.state.github}
+              paramName="github"
+              change={this.dataChanged}
+              style = {this.style}
+            />
           <div className="information">
             <div className="title">
               Username
@@ -103,6 +111,7 @@ class UserInfo extends React.Component {
             </div>
           </div>
         </div>
+      </div>
       );
   }
 }
