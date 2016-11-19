@@ -110,8 +110,8 @@ class Signup extends React.Component {
        })
        .then(function (response) {
          axios.post('/authenticate', {
-           username: this.state.username,
-           password: this.state.password
+           username: context.state.username,
+           password: context.state.password
          })
          .then(function(response) {
            if (response.data.token) {
