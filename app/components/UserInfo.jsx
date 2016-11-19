@@ -9,7 +9,7 @@ class UserInfo extends React.Component {
 
     this.dataChanged = this.dataChanged.bind(this);
     this.style = {
-      backgroundColor: '#191919',
+      backgroundColor: '#e1d35b',
       minWidth: 300,
       fontFamily: 'Roboto-Regular',
       display: 'inline-block',
@@ -70,14 +70,6 @@ class UserInfo extends React.Component {
           <div className="header">
             Information
           </div>
-          <div className="info">
-            <InlineEdit
-              activeClassName="editing"
-              text={this.state.github}
-              paramName="github"
-              change={this.dataChanged}
-              style = {this.style}
-            />
           <div className="information">
             <div className="title">
               Username
@@ -111,7 +103,6 @@ class UserInfo extends React.Component {
             </div>
           </div>
         </div>
-      </div>
       );
   }
 }

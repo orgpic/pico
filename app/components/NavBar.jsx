@@ -42,9 +42,9 @@ handleLogOut() {
 	render() {
 		return (
   			<div className = "navbar">
+          <span className="logo"> <a href="/"><img src="/images/logo.svg"></img></a><a className="logo" href="/">picoShell</a></span>
     			<ul>
       			<li> <a className="logout" onClick={this.handleLogOut}> Log Out </a> </li>
-      			<li> <a href="/"> Home </a> </li>
       			<li> <a href="/linuxcomputer"> Computer </a> </li>
       			<li> <a href="/dashboard"> Dashboard </a> </li>
             <li className="username">{this.props.username}</li>
