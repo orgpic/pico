@@ -8,7 +8,7 @@ class Bio extends React.Component {
 
     this.style = {
       minWidth: 300,
-      fontFamily: 'Dosis',
+      fontFamily: 'Disos',
       display: 'inline-block',
       margin: 0,
       padding: 0,
