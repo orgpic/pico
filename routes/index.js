@@ -58,7 +58,7 @@ router.post('/authenticate',
   function(req, res) {
     console.log('trying to send status', req.user);
     var user = req.user;
-    var user = {
+    var userNoPw = {
       username: user.username,
       id: user.id,
       bio: user.bio,
@@ -69,8 +69,8 @@ router.post('/authenticate',
       githubHandle: user.githubHandle,
       profilePicture: user.profilePicture
     };
-    req.session.user = user;
-    res.send(user);
+    req.session.user = userNoPw;
+    res.send(userNoPw);
   }
 );
 router.get('/logout', function(req, res) {
