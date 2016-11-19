@@ -99,6 +99,13 @@ io.on('connection', function(socket) {
     io.sockets.emit('/DASH/INVITE/ACCEPT/' + invite.recipient, invite);
   });
 
+  socket.on('/DASH/REMOVE/COLLABORATOR/', function(rejection) {
+    io.sockets.emit('/DASH/REMOVE/COLLABORATOR/' + rejection.recipient, rejection);
+  });
+
+  socket.on('/DASH/REMOVE/COLLABWITH/', function(rejection) {
+    io.sockets.emit('/DASH/REMOVE/COLLABWITH/' + rejection.recipient, rejection);
+  });
 });
 
 /**

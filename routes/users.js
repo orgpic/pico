@@ -3,6 +3,34 @@ const router = express.Router();
 const User = require('../models/User');
 var Collaborator = require('../models/Collaborator');
 
+router.post('/removeCollaborator', function(req, res) {
+  Collaborator.destroy({
+    where: {
+      requesterUsername: req.body.remover,
+      recieverUsername: req.body.collaborator,
+      confirmed: 'confirmed'
+    }
+  }).then(function(resp) {
+    res.status(200).send('REMOVED');
+  }).catch(function(resp) {
+    res.status(200).send('FAILED');
+  })
+});
+
+router.post('/removeCollabWith', function(req, res) {
+  Collaborator.destroy({
+    where: {
+      recieverUsername: req.body.remover,
+      requesterUsername: req.body.collaborator,
+      confirmed: 'confirmed'
+    }
+  }).then(function(resp) {
+    res.status(200).send('REMOVED');
+  }).catch(function(resp) {
+    res.status(200).send('FAILED');
+  });
+});
+
 router.post('/collaboratingWith', function(req, res) {
   Collaborator.findAll({
     where: {

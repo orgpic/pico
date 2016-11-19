@@ -48,16 +48,30 @@ class Collaborators extends React.Component {
     });
 
     this.socket.on('/DASH/INVITE/' + this.props.username, function(invite) {
-      console.log('INVITE', invite);
       context.setState({
         pendingInvites: context.state.pendingInvites.concat(invite.sender)
       });
     });
 
     this.socket.on('/DASH/INVITE/ACCEPT/' + this.props.username, function(invite) {
-      console.log('ACCEPTED', invite);
       context.setState({
         collaborators: context.state.collaborators.concat(invite.accepter)
+      });
+    });
+
+    this.socket.on('/DASH/REMOVE/COLLABORATOR/' + this.props.username, function(rejection) {
+      var collabs = context.state.collaborators;
+      collabs.splice(collabs.indexOf(rejection.remover, 1));
+      context.setState({
+        collaborators: collabs
+      });
+    });
+
+    this.socket.on('/DASH/REMOVE/COLLABWITH/' + this.props.username, function(rejection) {
+      var collabWith = context.state.collabWith;
+      collabWith.splice(collabWith.indexOf(rejection.remover, 1));
+      context.setState({
+        collabWith: collabWith
       });
     });
   }
@@ -119,6 +133,32 @@ class Collaborators extends React.Component {
     });
   }
 
+  handleRemoveCollabWith(username) {
+    const context = this;
+    axios.post('/users/removeCollabWith', {collaborator: username, remover: this.state.username})
+    .then(function(res) {
+      var collabWith = context.state.collabWith;
+      collabWith.splice(collabWith.indexOf(username), 1);
+      context.setState({
+        collabWith: collabWith
+      });
+      context.socket.emit('/DASH/REMOVE/COLLABORATOR/', {recipient: username, remover: context.state.username});
+    });
+  }
+
+  handleRemoveCollaborator(username) {
+    const context = this;
+    axios.post('/users/removeCollaborator', {collaborator: username, remover: this.state.username})
+    .then(function(res) {
+      var collaborators = context.state.collaborators;
+      collaborators.splice(collaborators.indexOf(username), 1);
+      context.setState({
+        collaborators: collaborators
+      });
+      context.socket.emit('/DASH/REMOVE/COLLABWITH/', {recipient: username, remover: context.state.username});
+    });
+  }
+
   render() {
     var context = this;
     return (
@@ -132,7 +172,11 @@ class Collaborators extends React.Component {
           </div>
           <div>
             {this.state.collabWith.length ? this.state.collabWith.map(function(accepted) {
-              return (<div className="collaborators">{accepted}</div>)
+              return (
+                <div className="collaborators">
+                  {accepted}
+                  <span onClick={() => {context.handleRemoveCollabWith(accepted)}}>  [ X ]  </span>
+                </div>)
             }) : <div className="none"> None </div>}
           </div>
           <div className="title">
@@ -140,7 +184,11 @@ class Collaborators extends React.Component {
           </div>
           <div>
             {this.state.collaborators.length ? this.state.collaborators.map(function(accepted) {
-              return (<div className="collaborators">{accepted}</div>)
+              return (
+                <div className="collaborators">
+                  {accepted}
+                  <span onClick={() => {context.handleRemoveCollaborator(accepted)}}>  [ X ]  </span>
+                </div>)
             }) : <div className="none"> None </div>}
           </div>
           <div className="title">
