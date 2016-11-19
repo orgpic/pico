@@ -4,15 +4,9 @@ import Sequelize from 'sequelize';
 import User from '../../models/User.js';
 const express = require('express');
 const router = express.Router();
-<<<<<<< 00003382de8ba4b78636387d0275d3bce4bdeada
 // const port = process.env.PORT || 3000;
 const host = 'http://picoshell.com/';
 const request = require('request');
-=======
-const port = process.env.PORT || 3000;
-const host = `http://localhost:${port}`;
-const request  = require("request");
->>>>>>> finish local login/signup test
 
 describe('Local Signup/Login test', function () {
   const requestWithSession = request.defaults({jar: true});
