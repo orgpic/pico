@@ -43,6 +43,7 @@ class Terminal extends React.Component {
   }
 
   recievedTermInput(code) {
+    console.log(code, this.state);
     if(code.username !== this.state.username) {
       this.terminal.set_command(code.cmd, false);
       this.setState({

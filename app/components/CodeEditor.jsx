@@ -39,7 +39,7 @@ class CodeEditor extends React.Component {
         filePath: filePath
       });
     }
-    if(code.username !== this.username || code.fileOpen) {
+    if(code.fileOpen || code.username !== this.username) {
       this.setState({
         codeValue: codeValue
       });
