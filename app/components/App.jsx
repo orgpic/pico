@@ -60,6 +60,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.state);
     if (!this.state.authenticated) {
 
       this.state.authenticate === 'login' ? authenticate = <Login GoToSignUp={this.GoToSignUp}/> : authenticate = <SignUp GoToLogin={this.GoToLogin}/>;

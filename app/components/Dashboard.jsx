@@ -63,6 +63,7 @@ class Dashboard extends React.Component {
             <div>
              <NavBar username={this.state.username} />
              <div className="dashboard-container">
+              <div className="overlay">
                <div className="row">
                  <div className="col-md-4 contain">
                    <div className="card">
@@ -92,6 +93,7 @@ class Dashboard extends React.Component {
                    </div>
                  </div> 
                </div>
+              </div>
               </div>
             </div>
           );
