@@ -38,7 +38,7 @@ describe('Local Signup/Login test', function () {
       } else {
         console.log('creating user, no user found');
         request(options, function(err, data) {
-          console.log('data data data data data data', err, data.body);
+          console.log('data data data data data data', err, data);
           console.log('err err err err errr', err);
           if (err) {
             console.log('we have an error creating a user222', err);
