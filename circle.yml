@@ -1,4 +1,7 @@
 machine:
+  hosts:
+    circlehosts: 127.0.0.1
+    
   environment:
     APP_ENV: test
     APP_URL: 127.0.0.1
@@ -12,10 +15,12 @@ database:
     - mysql -u root -e 'CREATE DATABASE picodb'
 
 test:
+  pre:
+    - npm start:
+        background: true
   override:
     - sequelize db:migrate:undo:all
     - sequelize db:migrate
-    - npm start &
     - npm test
 
 deployment:

@@ -4,7 +4,7 @@ import Sequelize from 'sequelize';
 import User from '../../models/User.js';
 const express = require('express');
 const router = express.Router();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const host = `http://localhost:${port}`;
 const request = require('request');
 
