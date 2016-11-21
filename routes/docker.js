@@ -15,7 +15,7 @@ router.post('/handleCodeSave', function (req, res) {
 
   docker.runCommand(containerName, command, function(err, response) {
     if (err) {
-      res.status(200).send(err);
+      res.status(500).send(err);
     } else {
       res.status(200).send(response);
     }

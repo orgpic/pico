@@ -1,7 +1,5 @@
 const React = require('react');
 const axios = require('axios');
-// const CodeMirror = require('react-codemirror');
-// import '../../node_modules/codemirror/mode/javascript/javascript';
 
 class CodeEditor extends React.Component {
   constructor(props) {
@@ -12,7 +10,8 @@ class CodeEditor extends React.Component {
       containerName: this.props.containerName,
       username: this.props.username,
       fileName: '',
-      fileNamePath: ''
+      fileNamePath: '',
+      codeSaved: true
     }
     this.recievedCEChange = this.recievedCEChange.bind(this);
     this.username = JSON.parse(localStorage['user']).username;
@@ -96,6 +95,17 @@ class CodeEditor extends React.Component {
     });
   }
 
+  handleOnKeyDown(e) {
+    if(!e.metaKey && !e.shiftKey && !e.altKey && !e.ctrlKey) {
+      this.setState({ codeSaved: false });
+    }
+
+    if(e.metaKey && e.key === 's') {
+      e.preventDefault();
+      console.log('save file');
+      this.handleCodeSave(e);
+    }
+  }
 
   handleCodeChange() {
       var code = document.getElementById('code-editor').value;
@@ -103,6 +113,7 @@ class CodeEditor extends React.Component {
   }
 
   handleCodeSave(e) {
+    var context = this;
     var code = document.getElementById('code-editor').value;
     const fileName = this.state.fileName;
     console.log('filename is: ', fileName);
@@ -113,7 +124,8 @@ class CodeEditor extends React.Component {
       containerName: containerName
     })
     .then(function(response) {
-      console.log(response);
+      console.log('Successfully saved file', response);
+      context.setState({ codeSaved: true })
     })
     .catch(function(err) {
       console.error(err);
@@ -122,13 +134,16 @@ class CodeEditor extends React.Component {
 
   render() {
     return (
-      <div className="code-editor-container">
+      <div className="code-editor-container" onKeyDown={this.handleOnKeyDown.bind(this)}>
         <textarea id="code-editor">
           {this.state.codeValue}
           </textarea><br/>
           <div className="row">
             <div className="col-md-6">
-              <button onClick={this.handleCodeSave.bind(this)}> Save </button>
+            <button onClick={this.handleCodeSave.bind(this)}> Save </button>
+            <div className={this.state.codeSaved ? "code-saved-indicator" : "code-modified-indicator"}>
+              {this.state.codeSaved ? "Saved" : "Modified"}
+            </div>
           </div>
           <div className="col-md-6 current-file">
             {this.state.fileName ? this.state.filePath + '/' + this.state.fileName : <p> No File </p>}
