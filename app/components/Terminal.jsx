@@ -22,6 +22,7 @@ class Terminal extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const context = this;
+    console.log('GOT PROPS', nextProps);
     this.socket.off('/TERM/' + this.state.containerName);
     this.socket.off('/TERM/RES/' + this.state.containerName);
     this.socket.off('/TERM/CD/' + this.state.containerName);
@@ -53,6 +54,7 @@ class Terminal extends React.Component {
   }
 
   recievedTermResponse(code) {
+    console.log('TR', code);
     if(code.username !== this.state.username) {
       console.log('in term response');
       this.terminal.echo(this.terminal.get_prompt() + code.cmd);
@@ -145,7 +147,7 @@ class Terminal extends React.Component {
           context.setState({
             curCommand: command
           })
-          context.socket.emit('/ANALYZE/', {command: command, containerName: containerName});
+          context.socket.emit('/ANALYZE/', {command: command, containerName: context.state.containerName});
         }
       }, {
           greetings: 'Welcome to ' + context.state.containerName + '\'s computer.',
@@ -153,7 +155,7 @@ class Terminal extends React.Component {
           prompt: prompt,
           tabcompletion: true,
           completion: function(terminal, command, callback) {
-            axios.post('/docker/cmd', { cmd: 'ls', containerName: containerName })
+            axios.post('/docker/cmd', { cmd: 'ls', containerName: context.state.containerName })
               .then(function(res) {
                 console.log(res.data);
                 const possibilities = (res.data.split('\n'));
@@ -163,7 +165,7 @@ class Terminal extends React.Component {
           onInit: function(term) {
             context.terminal = term;
             var command = 'cd /picoShell';
-            context.socket.emit('/ANALYZE/', {command: command, containerName: containerName});
+            context.socket.emit('/ANALYZE/', {command: command, containerName: context.state.containerName});
           },
           onCommandChange: function(command, term) {
             if(command !== context.state.curCommand) {

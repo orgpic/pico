@@ -30,6 +30,7 @@ class CodeEditor extends React.Component {
   }
 
   recievedCEChange(code) {
+    console.log('RECIEVEDCECHANGE', code);
     const fileName = code.fileName;
     const filePath = code.filePath;
     const codeValue = code.code;
