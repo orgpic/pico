@@ -38,7 +38,7 @@ describe('Local Signup/Login test', function () {
       } else {
         console.log('creating user, no user found');
         request(options, function(err, data) {
-          console.log('data data data data data data', data.body);
+          console.log('data data data data data data', err, data.body);
           console.log('err err err err errr', err);
           if (err) {
             console.log('we have an error creating a user222', err);
@@ -51,7 +51,6 @@ describe('Local Signup/Login test', function () {
     })
     .catch(function(err) {
       console.error('we have a find errorrrrr', err);
-      done();
     });
   });
 
@@ -67,6 +66,7 @@ describe('Local Signup/Login test', function () {
       }
     };
     request(options, function(err, data) {
+      console.log('daaaaaataaaaa', data.body);
       if (err) {
         console.log('ererererererererere', err);
       } else {
