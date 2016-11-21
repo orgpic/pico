@@ -4,15 +4,16 @@ import Sequelize from 'sequelize';
 import User from '../../models/User.js';
 const express = require('express');
 const router = express.Router();
-// const port = process.env.PORT || 3000;
-const host = 'http://picoshell.com/';
+const port = process.env.PORT || 3000;
+const host = `http://localhost:${port}`;
 const request = require('request');
 
 describe('Local Signup/Login test', function () {
   const requestWithSession = request.defaults({jar: true});
-  before(function(done) { 
+  before(function(done) {   
     User.find({username: 'user'})
     .then(function(user) {
+      console.log(`${host}/auth/signup`);
       const options = {
         method: 'POST',
         uri: `${host}/auth/signup`,
@@ -24,19 +25,32 @@ describe('Local Signup/Login test', function () {
       if (user) {
         console.log('found user, destring then creatings');
         user.destroy().then(function() {
-          request(options, function() {
-            done();
+          request(options, function(err, data) {
+            console.log('first set of data', data);
+            if (err) {
+              console.log('we have an error creating a user111', err);
+              done(err);
+            } else {
+              done();
+            }
           });
         });
       } else {
         console.log('creating user, no user found');
-        request(options, function() {
-          done();
+        request(options, function(err, data) {
+          console.log('data data data data data data', data.body);
+          console.log('err err err err errr', err);
+          if (err) {
+            console.log('we have an error creating a user222', err);
+            done(err);
+          } else {
+            done();
+          }
         });
       }
     })
     .catch(function(err) {
-      console.error(err);
+      console.error('we have a find errorrrrr', err);
       done();
     });
   });
@@ -52,11 +66,13 @@ describe('Local Signup/Login test', function () {
         password: 'pass11'
       }
     };
-    request(options, function(err, res, body) {
-      console.log('ererererererererere', err);
-      console.log('resresresresresresresresres', res, body);
-      expect(body.username).to.equal('user');
-      done();
+    request(options, function(err, data) {
+      if (err) {
+        console.log('ererererererererere', err);
+      } else {
+        expect(data.body.username).to.equal('user');
+        done();
+      }
     });
   });
 
