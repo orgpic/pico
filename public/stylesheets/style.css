@@ -23,6 +23,15 @@ html {
   height: 100%;
   width: 100%; }
 
+.modalDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 10;
+  margin-top: 20;
+}
+
 .centered {
   text-align: center;
   font-size: 0; }
@@ -31,6 +40,32 @@ html {
     display: inline-block;
     text-align: left;
     font-size: 13px; }
+
+
+#terminal {
+  width: 100%;
+  height: 400px; }
+
+.code-editor-container {
+  padding: 0;
+  margin: 0;
+  height: 620px; }
+  .code-editor-container .current-file {
+    color: #03CEA1;
+    font-weight: bold;
+    text-align: right;
+    padding: 0;
+    margin: 0; }
+  .code-editor-container .code-saved-indicator {
+    color: #03CEA1;
+    font-weight: bold;
+    padding: 0;
+    margin: 0; }
+  .code-editor-container .code-modified-indicator {
+    color: #E1905B;
+    font-weight: bold;
+    padding: 0;
+    margin: 0; }
 
 .profile-picture-container .img-container {
   text-align: center;

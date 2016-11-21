@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const docker = require('../utils/dockerAPI');
 const Container = require('../models/Container');
-const passport = require('passport')
+const passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 router.post('/signup', function(req, res) {
