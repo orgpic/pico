@@ -50,7 +50,9 @@ class Login extends React.Component {
       }
     })
     .catch(function(err) {
-      console.log(err);  
+      console.log('Error during login submit', err);
+      ReactDOM.render(<div>Please make sure you enter a valid username and password.</div>, 
+        document.getElementById('error'));
     });
   }
 
@@ -69,8 +71,9 @@ class Login extends React.Component {
         <a href="/github"> 
           <button className="btn btn-success">Login With Github</button>
         </a>
+        <div id='error'></div>
         <div className="login-query-container">
-  				<a className="login-query" onClick={this.props.GoToSignUp}> Need to signup?</a><br/>
+          <a className="login-query" onClick={this.props.GoToSignUp}> Need to signup?</a><br/>
         </div>
   		</div>
   	);
