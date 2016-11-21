@@ -15,6 +15,7 @@ test:
   override:
     - sequelize db:migrate:undo:all
     - sequelize db:migrate
+    - npm start &
     - npm test
 
 deployment:
