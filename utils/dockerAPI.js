@@ -12,14 +12,28 @@ const run = "docker run -t -d --name"
 const runCommand = function(containerName, command, callback) {
   const runCommandCommand = dockex + ' ' + containerName + ' ' + command;
   console.log('this is the command', runCommandCommand);
-  exec(runCommandCommand, function(err, stdout, stderr) {
-    if (stderr && !stdout) {
-      console.log('error', stderr);
-      callback(stderr, null);
-    } else {
-      callback(null, stdout);
-    }
+
+  const com = exec(runCommandCommand);
+  
+  com.stdout.on('data', function(data) {
+    console.log('this is data!!!!!', data.toString('utf-8'));
+    const output = data.toString('utf-8');
+    callback(null, output);
   });
+
+  com.stderr.on('err', function(err) {
+    const output = err.toString('utf-8');
+    callback(output, null);
+  })
+
+  // exec(runCommandCommand, function(err, stdout, stderr) {
+  //   if (stderr && !stdout) {
+  //     console.log('error', stderr);
+  //     callback(stderr, null);
+  //   } else {
+  //     callback(null, stdout);
+  //   }
+  // });
 }
 
 const buildImage = function(dockerfile, command, callback) {
@@ -30,7 +44,6 @@ const buildImage = function(dockerfile, command, callback) {
 const startContainer = function(imageName, containerName, command, callback) {
   const startContainerCommand = run + ' ' + containerName + ' ' + imageName + ' ' + command;
   console.log(startContainerCommand);
-
   exec(startContainerCommand, function(err, stdout, stderr) {
     console.log('executed start container command');
     if (stderr) {
