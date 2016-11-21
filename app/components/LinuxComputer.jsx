@@ -4,6 +4,7 @@ const CodeEditor = require('./CodeEditor.jsx')
 const Terminal = require('./Terminal.jsx')
 const axios = require('axios');
 const NavBar = require('./NavBar.jsx');
+const Chatbox = require('./Chatbox.jsx');
 
 
 class LinuxComputer extends React.Component {
@@ -77,6 +78,9 @@ componentWillMount() {
                 <div className="col-md-4 card-container">
                   <Terminal username={this.state.username} containerName={this.state.containerName}/>
                 </div>
+              </div>
+              <div>
+                <Chatbox username={this.state.username} containerName={this.state.containerName}/>
               </div>
             </div>
           );

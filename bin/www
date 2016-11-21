@@ -230,6 +230,10 @@ io.on('connection', function(socket) {
   socket.on('/DASH/REMOVE/COLLABWITH/', function(rejection) {
     io.sockets.emit('/DASH/REMOVE/COLLABWITH/' + rejection.recipient, rejection);
   });
+
+  socket.on('/CHAT/', function(msg) {
+    io.sockets.emit('/CHAT/' + msg.containerName, msg);
+  });
 });
 
 /**
