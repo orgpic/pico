@@ -53,6 +53,7 @@ componentWillMount() {
 
   selectChange(event) {
     //alert(event.target.value);
+    console.log('containerName', event.target.value);
     this.setState({
       containerName: event.target.value
     });
