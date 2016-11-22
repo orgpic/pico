@@ -71,7 +71,8 @@ class Chatbox extends React.Component {
 
 
         context.setState({
-          messages: messageArray
+          messages: messageArray,
+          active: true
         });
 
         // if(!msg.joined) {
