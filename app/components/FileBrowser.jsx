@@ -40,7 +40,8 @@ class FileBrowser extends React.Component {
             });
           });
         } else {
-          const newDir = context.state.curDir + '/' + resp.data.newDir;
+          var newDir = context.state.curDir + '/' + resp.data.newDir;
+          if(newDir.startsWith('//')) newDir = newDir.slice(1);
           axios.post('/docker/cmd', { cmd: 'ls ' + newDir + ' -a', containerName: context.state.containerName })
           .then(function(res) {
             const contents = res.data.split('\n');
@@ -56,13 +57,13 @@ class FileBrowser extends React.Component {
         }
       } else if (resp.data.type === 'file') {
         //alert(resp.data.fileContents);
+
         context.socket.emit('/TE/', {filePath: context.state.curDir, fileName: entry, fileOpen: true, containerName: context.state.containerName, username: 'FILEBROWSER', code: resp.data.fileContents});
       }
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('FB GOT PROPS', nextProps);
     const context = this;
     this.setState({
       containerName: nextProps.containerName

@@ -32,14 +32,14 @@ class CodeEditor extends React.Component {
   }
 
   recievedCEChange(code) {
-    console.log('RECIEVEDCECHANGE', code);
     const fileName = code.fileName;
     const filePath = code.filePath;
     const codeValue = code.code;
     if(code.fileOpen) {
       this.setState({
         fileName: fileName,
-        filePath: filePath
+        filePath: filePath,
+        codeSaved: true
       });
     }
     if(code.fileOpen || code.username !== this.username) {

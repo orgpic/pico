@@ -82,7 +82,7 @@ componentWillMount() {
                 <FileBrowser containerName={this.state.containerName}/>
 
               <Chatbox username={this.state.username} containerName={this.state.containerName}/>
-              <footer> className="footer" </footer>
+              <footer></footer>
             </div>
           );
    } else {
