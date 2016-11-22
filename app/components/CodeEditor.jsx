@@ -111,12 +111,12 @@ class CodeEditor extends React.Component {
       } else {
         axios.post('/docker/executeFile', {code: document.getElementById('code-editor').value, containerName: this.state.containerName, fileName: this.state.fileName, filePath: this.state.filePath})
         .then(function(resp) {
-          const exResponse = resp.data;
-          //context.socket.emit('/TE/RES/', {})
-          alert(exResponse);
+          const exResponse = resp.data.res;
+          var filePath = context.state.filePath.endsWith('/') ? context.state.filePath + context.state.fileName : context.state.filePath + '/' + context.state.fileName;
+          context.socket.emit('/TERM/RES/', {cmd: resp.data.cmd + ' ' + filePath, res: exResponse, username: 'FILEBROWSER', containerName: context.state.containerName});
         })
         .catch(function(err) {
-          alert(JSON.stringify(err));
+          alert(err);
         });
       }
     }
@@ -125,7 +125,7 @@ class CodeEditor extends React.Component {
       this.setState({ codeSaved: false });
     }
 
-    if(e.metaKey && e.key === 's') {
+    if((e.metaKey && e.key === 's') || (e.ctrlKey && e.key === 's')) {
       e.preventDefault();
       console.log('save file');
       this.handleCodeSave(e);
