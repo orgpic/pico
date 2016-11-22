@@ -100,6 +100,7 @@ class Terminal extends React.Component {
       const command = context.state.curCommand;
 
       if(typeof res === 'object') {
+        console.log(res.newFile);
         if(res.fileOpen) {
           console.log(res);
           context.socket.emit('/TE/', {filePath: res.filePath, fileOpen: res.fileOpen, fileName: res.fileName, code: res.termResponse, username: context.state.username, containerName: context.state.containerName});
@@ -115,6 +116,9 @@ class Terminal extends React.Component {
           console.log('PROMPT', context.terminal.get_prompt());
           context.socket.emit('/TERM/CD/', {dir: res.pwd, username: context.state.username, containerName: context.state.containerName});
           context.socket.emit('/TERM/RES/', {cmd: command, res: res.res, username: context.state.username, containerName: context.state.containerName});
+        } else if(res.newFile === true) {
+          console.log('NEWFILE', res);
+          context.socket.emit('/TE/', {filePath: res.filePath, fileOpen: res.newFile, fileName: res.fileName, containerName: context.state.containerName, username: context.state.username});
         } else {
           term.echo(String(JSON.stringify(res)));
           context.socket.emit('/TERM/RES/', {cmd: command, res: JSON.stringify(res), username: context.state.username, containerName: context.state.containerName});
