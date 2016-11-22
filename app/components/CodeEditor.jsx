@@ -168,7 +168,7 @@ class CodeEditor extends React.Component {
     });
   }
 
-  render() {
+   render() {
     return (
       <div className="code-editor-container" onKeyDown={this.handleOnKeyDown.bind(this)}>
         <div className="code-editor-menu">
