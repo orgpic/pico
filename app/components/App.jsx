@@ -21,7 +21,6 @@ const customStyles = {
     backgroundColor:'rgba(72,72,72,0.55)',
     alignItems: 'center',
     justifyContent: 'center'
-
   },
 };
  
@@ -135,7 +134,7 @@ class App extends React.Component {
                 </div>
                 <Modal
                   isOpen={this.state.modalIsOpen}
-                  style={customStyles}
+                  style={customStyles.content}
                   contentLabel="Example Modal"
                   >  
                   <div className='modalDiv'>

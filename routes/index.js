@@ -12,6 +12,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var domain = 'picoshell.com';
 var api_key = process.env.MAILGUN_SECRET;
 var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+const generator = require('generate-password');
+
 /* GET home page. */
 router.get('/', function(req, res) {
   res.render('index', { title: 'picoShell' });
@@ -27,31 +29,49 @@ router.get('/dashboard', function(req, res) {
 
 
 router.post('/email', function(req, res) {
-  console.log('reqreqreqreqreqrqewrqwrqw', req.body);
-  User.findOne({
-    where: {
-      email: req.body.email
-    }
-  })
-  .then(function(response) {
-    console.log('response', response);
-    var data = {
-      from: 'The Pico Team <support@picoshell.com>',
-      to: 'jchristian01@gmail.com',
-      subject: 'Reseting you pasword',
-      text: 'Testing some Mailgun awesomness!'
-    };
-    mailgun.messages().send(data, function (error, body) {
-      if (error) {
-        console.log(error);
+  console.log('reqreqreqreqreqrqewrqwrqw', req.body.email);
+  var myPassword = generator.generate({
+    length: 10,
+    numbers: true
+  });
+  console.log('passwordpasswordpassword', myPassword);
+  bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+    const salty = salt;
+    bcrypt.hash(myPassword, salty, function(err, hash) {
+      if (err) {
+        return console.log('Error hashing the password', err);
+      } else {
+        User.update({
+          password: hash,
+          salt: salty
+        }, {
+          where: {
+            email: req.body.email
+          }
+        })
+        .then(function(response) {
+          console.log('response', response[0])
+          console.log('reponse2222', response[1])
+          var data = {
+            from: 'The Pico Team <support@picoshell.com>',
+            to: req.body.email,
+            subject: 'Reseting you pasword',
+            text: `Hey there! \n We reset your password for you and it is now ${myPassword} . Remeber to keep it in a safe place! \n Sincerley, \n The Pico Team`
+          };
+          mailgun.messages().send(data, function (error, body) {
+            if (error) {
+              console.log(error);
+            }
+            console.log('bodybodybodybodybodybody', body);
+            res.send(body);
+          });
+        })
+        .catch(function(err) {
+          console.log(err);
+          res.send(err);
+        });
       }
-      console.log('bodybodybodybodybodybody', body);
-      res.send(body);
     });
-  })
-  .catch(function(err) {
-    console.log(err);
-    res.send(err);
   });
 });
 
