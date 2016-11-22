@@ -8,7 +8,6 @@ const ProfilePicture = require('./ProfilePicture.jsx');
 const axios = require('axios');
 const Loader = require('react-loader');
 
-
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
