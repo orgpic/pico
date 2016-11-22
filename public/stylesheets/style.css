@@ -23,15 +23,6 @@ html {
   height: 100%;
   width: 100%; }
 
-.modalDiv {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  margin-bottom: 10;
-  margin-top: 20;
-}
-
 .centered {
   text-align: center;
   font-size: 0; }
@@ -40,32 +31,6 @@ html {
     display: inline-block;
     text-align: left;
     font-size: 13px; }
-
-
-#terminal {
-  width: 100%;
-  height: 400px; }
-
-.code-editor-container {
-  padding: 0;
-  margin: 0;
-  height: 620px; }
-  .code-editor-container .current-file {
-    color: #03CEA1;
-    font-weight: bold;
-    text-align: right;
-    padding: 0;
-    margin: 0; }
-  .code-editor-container .code-saved-indicator {
-    color: #03CEA1;
-    font-weight: bold;
-    padding: 0;
-    margin: 0; }
-  .code-editor-container .code-modified-indicator {
-    color: #E1905B;
-    font-weight: bold;
-    padding: 0;
-    margin: 0; }
 
 .profile-picture-container .img-container {
   text-align: center;
@@ -474,6 +439,37 @@ html {
         font-weight: bold;
         flex: 1;
         flex-wrap: wrap; }
+  .linux-computer-container .file-browser-container {
+    height: 100%;
+    max-height: 600px;
+    width: 100%;
+    flex: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    color: #F4F6F7;
+    cursor: default;
+    padding: 2px;
+    font-size: 15px; }
+    .linux-computer-container .file-browser-container .fileBrowser:hover {
+      background-color: #242327; }
+    .linux-computer-container .file-browser-container .ion-ios-arrow-down {
+      color: #F4F6F7;
+      font-size: 15px; }
+    .linux-computer-container .file-browser-container .ion-ios-arrow-up {
+      color: #F4F6F7;
+      font-size: 15px; }
+  .linux-computer-container .terminal-menu {
+    height: 30px;
+    width: 100%;
+    flex: 1;
+    flex-wrap: wrap; }
+    .linux-computer-container .terminal-menu .ion-ios-folder-outline {
+      color: white;
+      float: right;
+      padding-right: 20px;
+      font-size: 20px;
+      cursor: pointer; }
   .linux-computer-container .terminal-container {
     height: 100%;
     max-height: 600px;
@@ -481,14 +477,15 @@ html {
     padding: 0;
     margin: 0;
     flex: 1;
+    flex-direction: row;
     flex-wrap: wrap;
     overflow-y: auto; }
     .linux-computer-container .terminal-container #terminal {
       width: 100%;
       height: 100%;
-      padding: 10px;
-      padding-top: 25px;
-      margin: 0; }
+      padding: 0;
+      margin: 0;
+      padding-left: 10px; }
   .linux-computer-container .footer {
     background-color: #271F42;
     padding: 10px;
@@ -546,7 +543,6 @@ html {
     color: #F4F6F7;
     overflow: auto; }
   .chat-box-container .collaborators-input {
-    width: 295px;
     background-color: rgba(225, 91, 105, 0.95);
     text-decoration: none;
     border: 0px;
@@ -1026,3 +1022,4 @@ span.CodeMirror-selectedtext {
 
 
 /*# sourceMappingURL=style.css.map */
+
