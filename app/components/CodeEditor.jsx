@@ -116,7 +116,7 @@ class CodeEditor extends React.Component {
           context.socket.emit('/TERM/RES/', {cmd: resp.data.cmd + ' ' + filePath, res: exResponse, username: 'FILEBROWSER', containerName: context.state.containerName});
         })
         .catch(function(err) {
-          alert(err);
+          alert(err.response.data.msg);
         });
       }
     }
