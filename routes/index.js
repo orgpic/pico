@@ -9,14 +9,9 @@ var User = require('../models/User');
 var Collaborator = require('../models/Collaborator');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-// var sendgrid = require("sendgrid")("SENDGRID_APIKEY");
-// var email = new sendgrid.Email();
-
-// email.addTo("test@sendgrid.com");
-// email.setFrom("you@youremail.com");
-// email.setSubject("Sending with SendGrid is Fun");
-// email.setHtml("and easy to do anywhere, even with Node.js");
-
+var domain = 'picoshell.com';
+var api_key = process.env.MAILGUN_SECRET;
+var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 /* GET home page. */
 router.get('/', function(req, res) {
   res.render('index', { title: 'picoShell' });
@@ -33,8 +28,31 @@ router.get('/dashboard', function(req, res) {
 
 router.post('/email', function(req, res) {
   console.log('reqreqreqreqreqrqewrqwrqw', req.body);
-  sendgrid.send(req.body.email);
-  res.send(req.body.email);
+  User.findOne({
+    where: {
+      email: req.body.email
+    }
+  })
+  .then(function(response) {
+    console.log('response', response);
+    var data = {
+      from: 'The Pico Team <support@picoshell.com>',
+      to: 'jchristian01@gmail.com',
+      subject: 'Reseting you pasword',
+      text: 'Testing some Mailgun awesomness!'
+    };
+    mailgun.messages().send(data, function (error, body) {
+      if (error) {
+        console.log(error);
+      }
+      console.log('bodybodybodybodybodybody', body);
+      res.send(body);
+    });
+  })
+  .catch(function(err) {
+    console.log(err);
+    res.send(err);
+  });
 });
 
 router.get('/infodashboard', function(req, res) {
