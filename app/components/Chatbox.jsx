@@ -18,24 +18,8 @@ class Chatbox extends React.Component {
 
   }
 
-  componentWillMount() {
-    const context = this;
-    axios.get('/messages', {params: {containerName: this.props.containerName}})
-      .then(function(res) {
-        console.log('these are the results', res);
-        let arr = [];
-
-        for (var i = res.data.length - 1; i >= 0; i--) {
-          arr.push(res.data[i].containerID + ': ' + res.data[i].message);
-        }
-
-        context.setState({
-          messages: arr
-        });
-      })
-      .catch(function(err) {
-        console.log(err);
-      })
+  componentDidUpdate() {
+    this.updateScroll();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -47,8 +31,6 @@ class Chatbox extends React.Component {
 
     axios.get('/messages', {params: {containerName: nextProps.containerName}})
       .then(function(res) {
-        console.log('this is the container name in chat box', nextProps.containerName);
-        console.log('these are the results', res);
         let arr = [];
 
         for (var i = res.data.length - 1; i >= 0; i--) {
@@ -110,8 +92,13 @@ class Chatbox extends React.Component {
     });
 
     this.socket.emit('/CHAT/', {msg: message, sender: this.state.username, containerName: this.state.containerName});
+  }
 
-
+  updateScroll() {
+    const element = document.getElementById("chatText");
+    console.log('this is the element', element);
+    console.log(element.scrollHeight);
+    element.scrollTop = element.scrollHeight
   }
 
   // componentWillUpdate() {
