@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const docker = require('../utils/dockerAPI');
 const Container = require('../models/Container');
-const passport = require('passport')
+const passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 router.post('/signup', function(req, res) {
@@ -26,7 +26,8 @@ router.post('/signup', function(req, res) {
         return console.log('Error hashing the password', err);
       }
       passwordHashed = hash;
-
+      console.log('about to create local user');
+      console.log('username', username, 'firstname', firstname);
       User.create({
         username: username,
         password: passwordHashed,
@@ -39,26 +40,31 @@ router.post('/signup', function(req, res) {
         githubHandle: githubHandle
       })
       .then(function(userResponse) {
-        Container.create({
+        if (firstname) {
+          Container.create({
           ownerID: username
-        })
-        .then(function(containerResponse) {
-          console.log('this is the username');
-          docker.startContainer('evenstevens/picoshell', username, '/bin/bash', function(err, dockerResponse) {
-            if (err) {
-              console.error('Error in creating container with docker');
-              console.log('Error', err);
-
-              res.status(500).send(err);
-            } else {
-              res.status(201).send({username: username, password: password});
-            }
           })
-        })
-        .catch(function(err) {
-          console.log('Error in container creation in DB');
-          res.status(500).send(err);
-        })
+          .then(function(containerResponse) {
+            console.log('this is the username');
+            docker.startContainer('evenstevens/picoshell', username, '/bin/bash', function(err, dockerResponse) {
+              if (err) {
+                console.error('Error in creating container with docker');
+                console.log('Error', err);
+
+                res.status(500).send(err);
+              } else {
+                res.status(201).send({username: username, password: password});
+              }
+            })
+          })
+          .catch(function(err) {
+            console.log('Error in container creation in DB');
+            res.status(500).send(err);
+          })
+        } else {
+          console.log('sending test back');
+          res.send({username: username, password: password});
+        }
       })
       .catch(function(err) {
         console.log(err);

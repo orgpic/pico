@@ -6,6 +6,7 @@ const UserInfo = require('./UserInfo.jsx');
 const NavBar = require('./NavBar.jsx');
 const ProfilePicture = require('./ProfilePicture.jsx');
 const axios = require('axios');
+const Loader = require('react-loader');
 
 
 class Dashboard extends React.Component {
@@ -22,7 +23,9 @@ class Dashboard extends React.Component {
       github: '',
       commandHistory: [],
       profilePictureUrl: '',
-      bio: ''
+      bio: '',
+      loaded: false
+
     };
   }
 
@@ -52,13 +55,14 @@ class Dashboard extends React.Component {
           github: user.githubHandle,
           bio: user.bio
         });
-        context.forceUpdate();
-
       });
     }
   }
     render() {
       if (this.state.lastName.length) {
+        this.setState = ({
+          loaded: true
+        });
          return (
             <div>
              <NavBar username={this.state.username} />
@@ -99,8 +103,8 @@ class Dashboard extends React.Component {
           );
        } else {
         return (
-          <div>
-            Loading...
+          <div className="dashboard-container">
+            <Loader loaded={this.state.loaded}/>
           </div>
         )
        }

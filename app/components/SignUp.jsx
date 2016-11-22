@@ -2,6 +2,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const axios = require('axios');
 const utils = require('../../utils/validationHelpers');
+const Loader = require('react-loader');
 
 class Signup extends React.Component {
   constructor (props) {
@@ -24,7 +25,8 @@ class Signup extends React.Component {
         firstNameValid: false,
         lastNameValid: false,
         githubValid: false,
-        emailValid: false
+        emailValid: false,
+        loaded: true
     };
   }
 
@@ -52,7 +54,7 @@ class Signup extends React.Component {
         } else {
           context.setState({
             usernameValid: false
-          })
+          });
         }
       }
     });
@@ -96,6 +98,9 @@ class Signup extends React.Component {
   handleSubmit(e) {
     const context = this;
     e.preventDefault();
+    this.setState({
+      loaded: false
+    })
     console.log('submitting', github);
     if (this.state.usernameValid && this.state.firstNameValid && this.state.githubValid && this.state.lastNameValid && this.state.emailValid && this.state.passwordValid) {
       var username = this.state.username;
@@ -114,6 +119,9 @@ class Signup extends React.Component {
            password: password
          })
          .then(function(response) {
+            context.setState({
+              loaded: true
+            })
            if (response.data) {
              localStorage['user'] = JSON.stringify(response.data);
              window.location = window.location + 'dashboard';
@@ -141,6 +149,7 @@ class Signup extends React.Component {
       <div className="signup-container">
         <form onSubmit={this.handleSubmit}>
           <div className="form-inputs">
+          <Loader loaded={this.state.loaded}/>
             <input 
               onChange={this.changeUserNameInput}
               className="login-input"

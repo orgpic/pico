@@ -7,7 +7,24 @@ const Login = require('./Login.jsx');
 const Dashboard = require('./Dashboard.jsx');
 const NavBar = require('./NavBar.jsx');
 const axios = require('axios');
+const Modal = require('react-modal');
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)',
+    height: 300,
+    width: 600,
+    backgroundColor:'rgba(72,72,72,0.55)',
+    alignItems: 'center',
+    justifyContent: 'center'
 
+  },
+};
+ 
 let authenticate;
 
 class App extends React.Component {
@@ -15,12 +32,18 @@ class App extends React.Component {
     super(props);
     this.GoToLogin = this.GoToLogin.bind(this);
     this.GoToSignUp = this.GoToSignUp.bind(this);
+    this.OpenModal = this.OpenModal.bind(this);
+    this.SendEmail = this.SendEmail.bind(this);
+    this.CloseModal = this.CloseModal.bind(this);
+    this.changeEmailInput = this.changeEmailInput.bind(this);
     this.state = {
       authenticate: 'login',
       authenticated: false,
       username: '',
       containerName: '',
-      render: false
+      render: false,
+      modalIsOpen: false,
+      email: ''
     };
   }
 
@@ -58,64 +81,113 @@ class App extends React.Component {
       authenticate: 'signup'
     });
   }
-
+  OpenModal() {
+    this.setState({
+      modalIsOpen: true
+    });
+  }
+  CloseModal() {
+    this.setState({
+      modalIsOpen: false
+    });
+  }
+  SendEmail(e) {
+    e.preventDefault();
+    var context = this;
+    var email = this.state.email;
+    console.log('emial', this.state.email, 'nonstate', email, this.state);
+    axios.post('/email', {
+      email: email
+    })
+    .then(function(response) {
+      context.setState({
+        email: ''
+      });
+      console.log(response);
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+  }
+  changeEmailInput(e) {
+    this.setState({email: e.target.value});
+  }
   render() {
-    console.log(this.state);
     if (!this.state.authenticated) {
 
-      this.state.authenticate === 'login' ? authenticate = <Login GoToSignUp={this.GoToSignUp}/> : authenticate = <SignUp GoToLogin={this.GoToLogin}/>;
+      this.state.authenticate === 'login' ? authenticate = <Login OpenModal={this.OpenModal} GoToSignUp={this.GoToSignUp}/> : authenticate = <SignUp OpenModal={this.OpenModal} GoToLogin={this.GoToLogin}/>;
       return (
-        <div>        
-          <div className="homepage-container">
-            <div className="logo">
-              <a href="/"><img src="/images/logo.svg"></img></a>
-              <a href="/">picoShell</a>
-            </div>
-            <div className="header">
-                    <div className="subtitle">
-                      Coding Made Simple
-                    </div>
-                    <div className="subsubtitle">
-                      Sign Up Today to Simplify the Programming Process
-                    </div>
-                    <div className="logo-container">
-                      <img src="/images/logo.svg"></img>
-                    </div>
-            </div>
-                <div className="login-container">
-                  <div className="login-header">
-                    <div className="login">
-                      Reinvent Programming Today
-                    </div>
-                  </div>
-                  <div className="login-box">
-                    <div className="login">
-                     {authenticate}
+        <div> 
+            <div className="homepage-container">
+              <div className="logo">
+                <a href="/"><img src="/images/logo.svg"></img></a>
+                <a href="/">picoShell</a>
+              </div>
+              <div className="header">
+                <div className="subtitle">
+                  Coding Made Simple
                 </div>
-             </div>
+                <div className="subsubtitle">
+                  Sign Up Today to Simplify the Programming Process
+                </div>
+                <div className="logo-container">
+                  <img src="/images/logo.svg"></img>
+                </div>
+                <Modal
+                  isOpen={this.state.modalIsOpen}
+                  style={customStyles}
+                  contentLabel="Example Modal"
+                  >  
+                  <div className='modalDiv'>
+                    <form className='modalDiv' onSubmit={this.SendEmail}>
+                      <div style={{color: 'white', fontSize: 20}}>Enter Your Email to Reset your Password</div>
+                      <input style={{width: 400, marginTop: 15, marginBottom: 15}} onChange={this.changeEmailInput} className="login-input" placeholder='Email' value={this.state.email}/>
+                      <div className="submit">
+                       <button type="submit" className="btn">Submit</button>
+                      </div>
+                    </form>
+                    <button style={{marginTop: 15, marginBottom: 15}} className="btn" onClick={this.CloseModal}>Close Modal</button>
+                  </div>
+                </Modal> 
+              </div>
+              <div className="login-container">
+                <div className="login-header">
+                  <div className="login">
+                    Reinvent Programming Today
+                  </div>
+                </div>
+                <div className="login-box">
+                  <div className="login">
+                    {authenticate}
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
         </div>
       );
     } else {
       return (
-        <div>        
-          <div className="homepage-container">
-          <div>
+        <div className="homepage-container">
+          <div className="header">
             <NavBar username={this.state.username}/>
+            <div className="subtitle">
+              Coding Made Simple
+            </div>
+            <div className="subsubtitle">
+              Sign Up Today to Simplify the Programming Process
+            </div>
+            <div className="logo-container">
+              <img src="/images/logo.svg"></img>
+            </div>
             <div className="header">
               <div className="overlay">
                 <div className="row">
                   <div className="col-xs-12">
-                    <div className="logo-container">
-                      <div className="title"> picoShell</div>
-                    </div>
                   </div>
                 </div>
               </div>
             </div> 
           </div>
-        </div>
         </div>
       );
     }
