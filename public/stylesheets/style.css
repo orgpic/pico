@@ -29,7 +29,18 @@ body {
   height: 620px; }
   .code-editor-container .current-file {
     color: #03CEA1;
+    font-weight: bold;
     text-align: right;
+    padding: 0;
+    margin: 0; }
+  .code-editor-container .code-saved-indicator {
+    color: #03CEA1;
+    font-weight: bold;
+    padding: 0;
+    margin: 0; }
+  .code-editor-container .code-modified-indicator {
+    color: #E1905B;
+    font-weight: bold;
     padding: 0;
     margin: 0; }
 
