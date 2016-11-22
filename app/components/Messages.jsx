@@ -8,7 +8,7 @@ const Messages = ({messages}) => {
 	return (
 		<div className="chatText" id="chatText">
 		{
-			messages.map(message =>  <Message message={message} />)
+			messages.map((message, i) =>  <Message message={message} counter={messages.length - 1 - i}/>)
 		}
 	</div>)
 }

@@ -67,6 +67,7 @@
     "react-loader": "^2.4.0",
     "react-modal": "^1.5.2",
     "react-router": "^2.8.1",
+    "react-scrollbar": "^0.4.2",
     "reactify": "^1.1.1",
     "sendgrid": "^4.7.1",
     "sequelize": "^3.24.5",
