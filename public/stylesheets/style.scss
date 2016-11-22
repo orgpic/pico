@@ -81,7 +81,20 @@ body {
   height: 620px;
   .current-file {
     color: $brightgreen;
+    font-weight: bold;
     text-align: right;
+    padding: 0;
+    margin: 0;
+  }
+  .code-saved-indicator {
+    color: $brightgreen;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+  }
+  .code-modified-indicator {
+    color: $themeorange;
+    font-weight: bold;
     padding: 0;
     margin: 0;
   }
