@@ -6,7 +6,7 @@ const axios = require('axios');
 const NavBar = require('./NavBar.jsx');
 const Chatbox = require('./Chatbox.jsx');
 const FileBrowser = require('./FileBrowser.jsx');
-
+const SplitPane = require('react-split-pane');
 
 class LinuxComputer extends React.Component {
   constructor(props) {
@@ -23,7 +23,6 @@ class LinuxComputer extends React.Component {
 
 
 componentWillMount() {
-
   var context = this;
   const user = JSON.parse(localStorage['user']);
   context.setState({
@@ -75,9 +74,10 @@ componentWillMount() {
                 })}
               </select>
               <div className="row">
-                   <CodeEditor username={this.state.username} containerName={this.state.containerName}/>
-                   <div id="vertical" className="resizer ui-draggable ui-draggable-handle"></div>
-                  <Terminal username={this.state.username} containerName={this.state.containerName}/>
+                <SplitPane split="vertical" defaultSize='50%'>
+                   <div><CodeEditor username={this.state.username} containerName={this.state.containerName}/></div>
+                  <div><Terminal username={this.state.username} containerName={this.state.containerName}/></div>
+                </SplitPane>        
               </div>
                 <FileBrowser containerName={this.state.containerName}/>
 
