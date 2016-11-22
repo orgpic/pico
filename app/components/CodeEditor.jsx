@@ -12,7 +12,7 @@ class CodeEditor extends React.Component {
       containerName: this.props.containerName,
       username: this.props.username,
       fileName: '',
-      fileNamePath: ''
+      filePath: ''
     }
     this.recievedCEChange = this.recievedCEChange.bind(this);
     this.username = JSON.parse(localStorage['user']).username;
@@ -22,8 +22,11 @@ class CodeEditor extends React.Component {
     const context = this;
     this.socket.off('/TE/' + this.state.containerName);
     this.setState({
-      containerName: nextProps.containerName
+      containerName: nextProps.containerName,
+      fileName: '',
+      filePath: '',
     })
+    this.editor.getDoc().setValue('');
     this.socket.on('/TE/' + nextProps.containerName, function(code) {
       context.recievedCEChange(code);
     });
@@ -107,6 +110,10 @@ class CodeEditor extends React.Component {
     const fileName = this.state.fileName;
     console.log('filename is: ', fileName);
     const containerName = this.state.containerName;
+    if(!fileName.length || !this.state.filePath.length) {
+      alert('Must specify a filename first!');
+      return;
+    }
     axios.post('/docker/handleCodeSave', {
       codeValue: code,
       fileName: fileName,
