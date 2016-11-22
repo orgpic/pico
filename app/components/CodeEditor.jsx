@@ -15,6 +15,7 @@ class CodeEditor extends React.Component {
     }
     this.recievedCEChange = this.recievedCEChange.bind(this);
     this.username = JSON.parse(localStorage['user']).username;
+    this.handleFileRun = this.handleFileRun.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -103,22 +104,27 @@ class CodeEditor extends React.Component {
     });
   }
 
+  handleFileRun() {
+    const context = this;
+    if(!this.state.fileName) {
+      alert('Please select a file before attempting to run.');
+    } else {
+      axios.post('/docker/executeFile', {code: document.getElementById('code-editor').value, containerName: this.state.containerName, fileName: this.state.fileName, filePath: this.state.filePath})
+      .then(function(resp) {
+        const exResponse = resp.data.res;
+        var filePath = context.state.filePath.endsWith('/') ? context.state.filePath + context.state.fileName : context.state.filePath + '/' + context.state.fileName;
+        context.socket.emit('/TERM/RES/', {cmd: resp.data.cmd + ' ' + filePath, res: exResponse, username: 'FILEBROWSER', containerName: context.state.containerName});
+      })
+      .catch(function(err) {
+        alert(err.response.data.msg);
+      });
+    }
+  }
+
   handleOnKeyDown(e) {
     const context = this;
     if(e.ctrlKey && e.key === 'Enter') {
-      if(!this.state.fileName) {
-        alert('Please select a file before attempting to run.');
-      } else {
-        axios.post('/docker/executeFile', {code: document.getElementById('code-editor').value, containerName: this.state.containerName, fileName: this.state.fileName, filePath: this.state.filePath})
-        .then(function(resp) {
-          const exResponse = resp.data.res;
-          var filePath = context.state.filePath.endsWith('/') ? context.state.filePath + context.state.fileName : context.state.filePath + '/' + context.state.fileName;
-          context.socket.emit('/TERM/RES/', {cmd: resp.data.cmd + ' ' + filePath, res: exResponse, username: 'FILEBROWSER', containerName: context.state.containerName});
-        })
-        .catch(function(err) {
-          alert(err.response.data.msg);
-        });
-      }
+      this.handleFileRun();
     }
 
     if(!e.metaKey && !e.shiftKey && !e.altKey && !e.ctrlKey) {
@@ -167,6 +173,7 @@ class CodeEditor extends React.Component {
       <div className="code-editor-container" onKeyDown={this.handleOnKeyDown.bind(this)}>
         <div className="code-editor-menu">
             <button onClick={this.handleCodeSave.bind(this)}> Save </button>
+            <font size="7"><i className="ion-ios-play" onClick={this.handleFileRun}></i></font>
             <span className={this.state.codeSaved ? "code-saved-indicator" : "code-modified-indicator"}>
               {this.state.codeSaved  ? "Saved" : "Modified"}
             </span>
