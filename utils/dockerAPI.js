@@ -13,7 +13,7 @@ const runCommand = function(containerName, command, callback) {
   const runCommandCommand = dockex + ' ' + containerName + ' ' + command;
   console.log('this is the command', runCommandCommand);
 
-  const com = exec(runCommandCommand);
+  //const com = exec(runCommandCommand);
 
   // com.stdout.on('data', function(data) {
   //   console.log('this is data!!!!!', data.toString('utf-8'));

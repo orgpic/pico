@@ -5,6 +5,7 @@ const Terminal = require('./Terminal.jsx')
 const axios = require('axios');
 const NavBar = require('./NavBar.jsx');
 const Chatbox = require('./Chatbox.jsx');
+const FileBrowser = require('./FileBrowser.jsx');
 
 
 class LinuxComputer extends React.Component {
@@ -81,6 +82,7 @@ componentWillMount() {
                 </div>
               </div>
               <div>
+                <FileBrowser containerName={this.state.containerName}/>
                 <Chatbox username={this.state.username} containerName={this.state.containerName}/>
               </div>
             </div>
