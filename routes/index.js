@@ -9,13 +9,13 @@ var User = require('../models/User');
 var Collaborator = require('../models/Collaborator');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var sendgrid = require("sendgrid")("SENDGRID_APIKEY");
-var email = new sendgrid.Email();
+// var sendgrid = require("sendgrid")("SENDGRID_APIKEY");
+// var email = new sendgrid.Email();
 
-email.addTo("test@sendgrid.com");
-email.setFrom("you@youremail.com");
-email.setSubject("Sending with SendGrid is Fun");
-email.setHtml("and easy to do anywhere, even with Node.js");
+// email.addTo("test@sendgrid.com");
+// email.setFrom("you@youremail.com");
+// email.setSubject("Sending with SendGrid is Fun");
+// email.setHtml("and easy to do anywhere, even with Node.js");
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -32,7 +32,7 @@ router.get('/dashboard', function(req, res) {
 
 
 router.post('/email', function(req, res) {
-  console.log('reqreqreqreqreqrqewrqwrqw', req.body)
+  console.log('reqreqreqreqreqrqewrqwrqw', req.body);
   sendgrid.send(req.body.email);
   res.send(req.body.email);
 });

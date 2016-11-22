@@ -8,7 +8,7 @@ class NavBar extends React.Component {
     this.handleLogOut = this.handleLogOut.bind(this);
 	}
 
-componentWillMount() {
+componentWillRender() {
   if (!localStorage['user']) {
     var context = this;
     axios.get('/auth/oAuth')

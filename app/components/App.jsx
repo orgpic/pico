@@ -167,23 +167,27 @@ class App extends React.Component {
       );
     } else {
       return (
-        <div>        
-          <div className="homepage-container">
-          <div>
+        <div className="homepage-container">
+          <div className="header">
             <NavBar username={this.state.username}/>
+            <div className="subtitle">
+              Coding Made Simple
+            </div>
+            <div className="subsubtitle">
+              Sign Up Today to Simplify the Programming Process
+            </div>
+            <div className="logo-container">
+              <img src="/images/logo.svg"></img>
+            </div>
             <div className="header">
               <div className="overlay">
                 <div className="row">
                   <div className="col-xs-12">
-                    <div className="logo-container">
-                      <div className="title"> picoShell</div>
-                    </div>
                   </div>
                 </div>
               </div>
             </div> 
           </div>
-        </div>
         </div>
       );
     }

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test": "mocha --require test/helpers/setup.js test/**/*",
-    "start": "node ./bin/www",
+    "start": "node ./bin/www &",
     "dev-start": "nodemon ./bin/www",
     "dev-react": "webpack -d --watch",
     "coverage": "nyc --reporter=lcov --reporter=text --reporter=html --require babel-register --extension .jsx npm test"
@@ -64,6 +64,7 @@
     "react-cookie": "^0.4.8",
     "react-dropzone": "^3.7.3",
     "react-edit-inline": "^1.0.8",
+    "react-loader": "^2.4.0",
     "react-modal": "^1.5.2",
     "react-router": "^2.8.1",
     "reactify": "^1.1.1",
