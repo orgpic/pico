@@ -13,9 +13,7 @@ router.post('/executeFile', function(req,res) {
     var newCode = code.replace(/\n/g, '\\n');
     newCode = newCode.replace(/\"/g, '\\\"');
     newCode = newCode.replace(/'/g, "\\\"");
-    //newCode = newCode.replace(/'\''/g, '\\\"');
     var command = 'bash -c "echo -e \'' + newCode + '\' > ' + req.body.filePath + '/' + fileName + '"'
-    //command.replace(/'/g, "\\\"");
     docker.runCommand(req.body.containerName, command, function(err, response) {
       if(err) {
         res.status(500).send(err);
@@ -24,7 +22,26 @@ router.post('/executeFile', function(req,res) {
           if(err1) {
             res.status(500).send(err);
           } else {
-            res.status(200).send(response1);
+            res.status(200).send({res: response1, cmd: 'node'});
+          }
+        });
+      }
+    });
+  } else if (fileType === '.rb') {
+    var code = req.body.code;
+    var newCode = code.replace(/\n/g, '\\n');
+    newCode = newCode.replace(/\"/g, '\\\"');
+    newCode = newCode.replace(/'/g, "\\\"");
+    var command = 'bash -c "echo -e \'' + newCode + '\' > ' + req.body.filePath + '/' + fileName + '"'
+    docker.runCommand(req.body.containerName, command, function(err, response) {
+      if(err) {
+        res.status(500).send(err);
+      } else {
+        docker.runCommand(req.body.containerName, 'ruby ' + req.body.filePath + '/' + fileName, function(err1, response1) {
+          if(err1) {
+            res.status(500).send(err);
+          } else {
+            res.status(200).send({res: response1, cmd: 'ruby'});
           }
         });
       }
