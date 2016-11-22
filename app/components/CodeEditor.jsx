@@ -104,6 +104,20 @@ class CodeEditor extends React.Component {
   }
 
   handleOnKeyDown(e) {
+    if(e.ctrlKey && e.key === 'Enter') {
+      if(!this.state.fileName) {
+        alert('Please select a file before attempting to run.');
+      } else {
+        axios.post('/docker/executeFile', {code: document.getElementById('code-editor').value, containerName: this.state.containerName, fileName: this.state.fileName, filePath: this.state.filePath})
+        .then(function(resp) {
+          alert(JSON.stringify(resp));
+        })
+        .catch(function(err) {
+          alert(JSON.stringify(err));
+        });
+      }
+    }
+
     if(!e.metaKey && !e.shiftKey && !e.altKey && !e.ctrlKey) {
       this.setState({ codeSaved: false });
     }
@@ -133,7 +147,8 @@ class CodeEditor extends React.Component {
     axios.post('/docker/handleCodeSave', {
       codeValue: code,
       fileName: fileName,
-      containerName: containerName
+      containerName: containerName,
+      filePath: this.state.filePath
     })
     .then(function(response) {
       console.log('Successfully saved file', response);
