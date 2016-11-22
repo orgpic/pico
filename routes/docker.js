@@ -5,6 +5,29 @@ const docker = require('../utils/dockerAPI');
 var db = require('../db/config');
 var User = require('../models/User');
 
+router.post('/handleFileBrowserChange', function(req, res) {
+  var dir;
+  if(req.body.dir.endsWith('/')) {
+    dir = req.body.dir + req.body.entry;
+  } else {
+    dir = req.body.dir + '/' + req.body.entry;
+  }
+  //const dir = req.body.dir + '/' + req.body.entry
+  docker.directoryExists(req.body.containerName, dir, function(dirExists) {
+    if(dirExists.indexOf('Directory exists') !== -1) {
+      res.status(200).send({type: 'dir', newDir: req.body.entry});
+    } else {
+      docker.runCommand(req.body.containerName, 'cat ' + dir, function(err, response) {
+        if(err) {
+          res.status(500).send(err);
+        } else {
+          res.status(200).send({type: 'file', fileContents: response});
+        }
+      })
+    }
+  });
+});
+
 router.post('/handleCodeSave', function (req, res) {
   const fileName = req.body.fileName;
   const containerName = req.body.containerName;

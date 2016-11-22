@@ -23,6 +23,9 @@ body {
   width: 100%;
   height: 400px; }
 
+.fileBrowser {
+  color: #03CEA1; }
+
 .code-editor-container {
   padding: 0;
   margin: 0;
