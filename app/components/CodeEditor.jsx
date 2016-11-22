@@ -104,13 +104,16 @@ class CodeEditor extends React.Component {
   }
 
   handleOnKeyDown(e) {
+    const context = this;
     if(e.ctrlKey && e.key === 'Enter') {
       if(!this.state.fileName) {
         alert('Please select a file before attempting to run.');
       } else {
         axios.post('/docker/executeFile', {code: document.getElementById('code-editor').value, containerName: this.state.containerName, fileName: this.state.fileName, filePath: this.state.filePath})
         .then(function(resp) {
-          alert(JSON.stringify(resp));
+          const exResponse = resp.data;
+          //context.socket.emit('/TE/RES/', {})
+          alert(exResponse);
         })
         .catch(function(err) {
           alert(JSON.stringify(err));
