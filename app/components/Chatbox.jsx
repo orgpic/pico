@@ -1,5 +1,6 @@
 const React = require('react');
 const Messages = require('./Messages.jsx');
+const axios = require('axios');
 
 class Chatbox extends React.Component {
   constructor(props) {
@@ -14,6 +15,27 @@ class Chatbox extends React.Component {
     };
     this.changeMessageInput = this.changeMessageInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+  }
+
+  componentWillMount() {
+    const context = this;
+    axios.get('/messages', {params: {containerName: this.props.containerName}})
+      .then(function(res) {
+        console.log('these are the results', res);
+        let arr = [];
+
+        for (var i = res.data.length - 1; i >= 0; i--) {
+          arr.push(res.data[i].containerID + ': ' + res.data[i].message);
+        }
+
+        context.setState({
+          messages: arr
+        });
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -22,6 +44,25 @@ class Chatbox extends React.Component {
     this.setState({
       containerName: nextProps.containerName
     });
+
+    axios.get('/messages', {params: {containerName: nextProps.containerName}})
+      .then(function(res) {
+        console.log('this is the container name in chat box', nextProps.containerName);
+        console.log('these are the results', res);
+        let arr = [];
+
+        for (var i = res.data.length - 1; i >= 0; i--) {
+          arr.push(res.data[i].userID + ': ' + res.data[i].message);
+        }
+
+        context.setState({
+          messages: arr
+        });
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+
     this.socket.on('/CHAT/' + nextProps.containerName, function(msg) {
       if(context.state.username !== msg.sender) {
         const messageFromSender = msg.sender + ': ' + msg.msg;
@@ -68,7 +109,14 @@ class Chatbox extends React.Component {
     });
 
     this.socket.emit('/CHAT/', {msg: message, sender: this.state.username, containerName: this.state.containerName});
+
+
   }
+
+  // componentWillUpdate() {
+  //   const node = document.getElementById("chatText");
+  //   node.scrollTop = node.scrollHeight;
+  // }
 
   handleChangeActive(e) {
     e.preventDefault();
@@ -90,7 +138,7 @@ class Chatbox extends React.Component {
                 <div className="form-inputs">
                   <input 
                   onChange={this.changeMessageInput}
-                  autocomplete="off"
+                  autoComplete="off"
                   id="messageText"
                   type='text' 
                   placeholder='message'
