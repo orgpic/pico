@@ -13,7 +13,8 @@ class Collaborators extends React.Component {
       username: this.props.username,
       pendingInvites: [],
       collaborators: [],
-      collabWith: []
+      collabWith: [],
+      allRoles: {}
     };
 
 
@@ -29,9 +30,11 @@ class Collaborators extends React.Component {
 
     axios.post('/users/myCollaborators', {username: this.state.username})
     .then(function(res) {
-      const acceptedUsernames = res.data.map(function(accepted) {
-        return accepted.recieverUsername;
-      });
+      // const acceptedUsernames = res.data.map(function(accepted) {
+      //   return accepted.recieverUsername;
+      // });
+      const acceptedUsernames = res.data;
+      console.log('accepted users', acceptedUsernames);
       context.setState({
         collaborators: acceptedUsernames
       });
@@ -47,6 +50,19 @@ class Collaborators extends React.Component {
       });
     });
 
+    axios.get('/users/roles')
+    .then(function(res) {
+      // console.log('rolesssssssssssssss', res.data);
+      const allRoles = {};
+      res.data.forEach(function(role) {
+        allRoles[role.id] = role.name;
+      });
+      // console.log(allRoles);
+      context.setState({
+        allRoles: allRoles
+      });
+    });
+
     this.socket.on('/DASH/INVITE/' + this.props.username, function(invite) {
       context.setState({
         pendingInvites: context.state.pendingInvites.concat(invite.sender)
@@ -54,8 +70,13 @@ class Collaborators extends React.Component {
     });
 
     this.socket.on('/DASH/INVITE/ACCEPT/' + this.props.username, function(invite) {
+      console.log('/DASH/INVITE/ACCEPT/', invite);
       context.setState({
-        collaborators: context.state.collaborators.concat(invite.accepter)
+        collaborators: context.state.collaborators.concat({
+          recieverUsername: invite.accepter,
+          requesterUsername: invite.recipient,
+          role: 1
+        })
       });
     });
 
@@ -161,8 +182,16 @@ class Collaborators extends React.Component {
     });
   }
 
+  handleSelectRoleChange(event, username) {
+    axios.post('/users/changeRole', {collaborator: username, host: this.state.username, newRole: event.target.value})
+      .then(function(res) {
+        console.log('changed role', res);
+      });
+  }
+
   render() {
     var context = this;
+    console.log('render collab');
     return (
       <div className = "card-container">
         <div className="header">
@@ -178,11 +207,13 @@ class Collaborators extends React.Component {
                   Currently Collaborating With
                 </div>
                 <div>
-                {this.state.collabWith.length ? this.state.collabWith.map(function(accepted) {
+                {this.state.collabWith.length ? this.state.collabWith.map(function(accepted, i) {
                   return (
-                    <div className="collaborators">
+                    <div className="collaborators" key={i}>
                       {accepted}
-                      <span onClick={() => {context.handleRemoveCollabWith(accepted)}}>  [ X ]  </span>
+                      <span onClick={() => {context.handleRemoveCollabWith(accepted)}} key={i}>
+                        <i className="ion-trash-a"></i>
+                      </span>
                     </div>)
                 }) : <div className="none"> None </div>}
                 </div>
@@ -195,11 +226,22 @@ class Collaborators extends React.Component {
                 Collaborators on Your Computer
               </div>
               <div>
-              {this.state.collaborators.length ? this.state.collaborators.map(function(accepted) {
+              {this.state.collaborators.length ? this.state.collaborators.map(function(collaboration, i) {
+                console.log('collaboration', collaboration);
                 return (
-                  <div className="collaborators">
-                    {accepted}
-                    <span onClick={() => {context.handleRemoveCollaborator(accepted)}}>  [ X ]  </span>
+                  <div className="collaborators" key={i}>
+                    {collaboration.recieverUsername}
+                    <select onChange={(e) => {context.handleSelectRoleChange(e, collaboration.recieverUsername)} }>
+                      <option> {context.state.allRoles[collaboration.role]} </option>
+                      { Object.keys(context.state.allRoles).map(function(key, i) {
+                        if(key !== collaboration.role + '') {
+                          return <option key={key} > {context.state.allRoles[key]} </option>
+                        }
+                      })}
+                    </select>
+                    <span onClick={() => {context.handleRemoveCollaborator(collaboration.recieverUsername)}}>
+                      <i className="ion-trash-a"></i>
+                    </span>
                   </div>)
               }) : <div className="none"> None </div>}
               </div>
