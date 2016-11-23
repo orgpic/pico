@@ -12,6 +12,37 @@ class FileBrowser extends React.Component {
       contents: []
     };
     this.doubleClick = this.doubleClick.bind(this);
+    this.updateFileBrowser = this.updateFileBrowser.bind(this);
+  }
+
+  updateFileBrowser(path) {
+    const context = this;
+    axios.post('/docker/cmd', { cmd: 'ls ' + path + ' -al', containerName: context.state.containerName })
+    .then(function(res) {
+      const contents = res.data.split('\n');
+
+      let contentsArr = [];
+
+      for (var i = 0; i < contents.length; i++) {
+        const arr = contents[i].split(" ");
+        let type;
+        if (arr[0].substring(0, 1) === "d") {
+          type = "folder"
+        } else if (arr[0].substring(0, 2) === "-r") {
+          type = "file"
+        }
+        const name = arr[arr.length - 1];
+        if(name !== '.pico') contentsArr.push({type: type, name: name});
+      }
+      //remove the last element, which is ''
+      //remove the first element, which is '.'
+      contentsArr.shift();
+      contentsArr.pop();
+      context.setState({
+        contents: contentsArr,
+        curDir: path
+      });
+    });
   }
 
   componentWillMount() {
@@ -19,31 +50,7 @@ class FileBrowser extends React.Component {
     this.setState({
       containerName: this.state.containerName
     });
-    axios.post('/docker/cmd', { cmd: 'ls -al', containerName: context.state.containerName })
-    .then(function(res) {
-      const contents = res.data.split('\n');
-
-      let contentsArr = [];
-
-      for (var i = 0; i < contents.length; i++) {
-        const arr = contents[i].split(" ");
-        let type;
-        if (arr[0].substring(0, 1) === "d") {
-          type = "folder"
-        } else if (arr[0].substring(0, 2) === "-r") {
-          type = "file"
-        }
-        const name = arr[arr.length - 1];
-        contentsArr.push({type: type, name: name});
-      }
-      //remove the last element, which is ''
-      //remove the first element, which is '.'
-      contentsArr.shift();
-      contentsArr.pop();
-      context.setState({
-        contents: contentsArr
-      });
-    });
+    this.updateFileBrowser('/picoShell');
   }
 
 
@@ -52,64 +59,7 @@ class FileBrowser extends React.Component {
     this.setState({
       containerName: nextProps.containerName
     });
-    axios.post('/docker/cmd', { cmd: 'ls -al', containerName: nextProps.containerName })
-    .then(function(res) {
-      const contents = res.data.split('\n');
-
-      let contentsArr = [];
-
-      for (var i = 0; i < contents.length; i++) {
-        const arr = contents[i].split(" ");
-        let type;
-        if (arr[0].substring(0, 1) === "d") {
-          type = "folder"
-        } else if (arr[0].substring(0, 2) === "-r") {
-          type = "file"
-        }
-        const name = arr[arr.length - 1];
-        contentsArr.push({type: type, name: name});
-      }
-      //remove the last element, which is ''
-      //remove the first element, which is '.'
-      contentsArr.shift();
-      contentsArr.pop();
-      context.setState({
-        contents: contentsArr
-      });
-    });
-  }
-
-
-  componentWillReceiveProps(nextProps) {
-    const context = this;
-    this.setState({
-      containerName: nextProps.containerName
-    });
-    axios.post('/docker/cmd', { cmd: 'ls -al', containerName: nextProps.containerName })
-    .then(function(res) {
-      const contents = res.data.split('\n');
-
-      let contentsArr = [];
-
-      for (var i = 0; i < contents.length; i++) {
-        const arr = contents[i].split(" ");
-        let type;
-        if (arr[0].substring(0, 1) === "d") {
-          type = "folder"
-        } else if (arr[0].substring(0, 2) === "-r") {
-          type = "file"
-        }
-        const name = arr[arr.length - 1];
-        contentsArr.push({type: type, name: name});
-      }
-      //remove the last element, which is ''
-      //remove the first element, which is '.'
-      contentsArr.shift();
-      contentsArr.pop();
-      context.setState({
-        contents: contentsArr
-      });
-    });
+    this.updateFileBrowser('/picoShell');
   }
 
   doubleClick(e, entry) {
@@ -125,67 +75,13 @@ class FileBrowser extends React.Component {
           } else {
             sliced = '/';
           }
+          console.log('newDir', newDir);
           console.log('sliced', sliced);
-          axios.post('/docker/cmd', { cmd: 'ls ' + sliced + ' -al', containerName: context.state.containerName })
-          .then(function(res) {
-            const contents = res.data.split('\n');
-            console.log(contents);
-
-            let contentsArr = [];
-
-            for (var i = 0; i < contents.length; i++) {
-              const arr = contents[i].split(" ");
-              let type;
-              if (arr[0].substring(0, 1) === "d") {
-                type = "folder"
-              } else if (arr[0].substring(0, 2) === "-r") {
-                type = "file"
-              }
-              const name = arr[arr.length - 1];
-              contentsArr.push({type: type, name: name});
-            }
-            //remove the last element, which is ''
-            //remove the first element, which is '.'
-            contentsArr.shift();
-            contentsArr.pop();
-            context.setState({
-              contents: contentsArr,
-              curDir: sliced
-            });
-          });
+          context.updateFileBrowser(sliced);
         } else {
           var newDir = context.state.curDir + '/' + resp.data.newDir;
           if(newDir.startsWith('//')) newDir = newDir.slice(1);
-          axios.post('/docker/cmd', { cmd: 'ls ' + newDir + ' -al', containerName: context.state.containerName })
-          .then(function(res) {
-            console.log(res.data);
-            const contents = res.data.split('\n');
-
-
-            let contentsArr = [];
-
-            for (var i = 0; i < contents.length; i++) {
-              const arr = contents[i].split(" ");
-              let type;
-              if (arr[0].substring(0, 1) === "d") {
-                type = "folder"
-              } else if (arr[0].substring(0, 2) === "-r") {
-                type = "file"
-              }
-              const name = arr[arr.length - 1];
-              contentsArr.push({type: type, name: name});
-            }
-
-            console.log(contentsArr);
-            //remove the last element, which is ''
-            //remove the first element, which is '.'
-            contentsArr.shift();
-            contentsArr.pop();
-            context.setState({
-              contents: contentsArr,
-              curDir: newDir
-            });
-          });
+          context.updateFileBrowser(newDir);
         }
       } else if (resp.data.type === 'file') {
         //alert(resp.data.fileContents);
