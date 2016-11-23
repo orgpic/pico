@@ -23,16 +23,35 @@ class CodeEditor extends React.Component {
     console.log(this.state);
     const context = this;
     this.socket.off('/TE/' + this.state.containerName);
-    this.setState({
-      containerName: nextProps.containerName,
-      fileName: this.state.fileName,
-      filePath: this.state.filePath,
-      codeValue: this.state.codeValue
-    });
-    //this.editor.getDoc().setValue('');
+    this.socket.off('/TE/JOIN/');
+    if(nextProps.containerName === this.state.containerName) {
+      this.setState({
+        fileName: this.state.fileName,
+        filePath: this.state.filePath,
+        codeValue: this.state.codeValue
+      });
+    } else {
+      this.setState({
+        containerName: nextProps.containerName,
+        fileName: '',
+        filePath: '',
+        codeValue: ''
+      })
+      this.editor.getDoc().setValue('');
+    }
+    
     this.socket.on('/TE/' + nextProps.containerName, function(code) {
       context.recievedCEChange(code);
     });
+    this.socket.on('/TE/JOIN/' + nextProps.containerName, function(code) {
+      if(context.username !== code.username) {
+        console.log('EMITTING JOIN');
+        var code = document.getElementById('code-editor').value;
+        context.socket.emit('/TE/', {code: code, username: context.username, containerName: nextProps.containerName, fileName: context.state.fileName, filePath: context.state.filePath});
+      }
+    });
+    this.socket.emit('/TE/JOIN/', {containerName: nextProps.containerName, username: this.username});
+
   }
 
   recievedCEChange(code) {

@@ -13,7 +13,6 @@ router.post('/executeFile', function(req,res) {
     var newCode = code.replace(/\n/g, '\\n');
     newCode = newCode.replace(/\"/g, '\\\"');
     newCode = newCode.replace(/'/g, "\\\"");
-    if(newCode.endsWith('\n')) newCode = newCode.slice(0, newCode.length - 1);
     var command = 'bash -c "echo -e \'' + newCode + '\' > ' + req.body.filePath + '/' + fileName + '"'
     
     docker.runCommand(req.body.containerName, command, function(err, response) {
@@ -111,8 +110,6 @@ router.post('/handleCodeSave', function (req, res) {
   var newCode = code.replace(/\n/g, '\\n');
   newCode = newCode.replace(/\"/g, '\\\"');
   newCode = newCode.replace(/'/g, "\\\"");
-  if(newCode.endsWith('\n')) newCode = newCode.slice(0, newCode.length - 1);
-  if(newCode.endsWith('\n')) newCode = newCode.slice(0, newCode.length - 1);
   var command = 'bash -c "echo -e \'' + newCode + '\' > ' + req.body.filePath + '/' + req.body.fileName + '"'
   console.log('SAVE_CMD', command);
   docker.runCommand(containerName, command, function(err, response) {
