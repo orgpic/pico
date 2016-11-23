@@ -7,6 +7,7 @@ const NavBar = require('./NavBar.jsx');
 const Chatbox = require('./Chatbox.jsx');
 const FileBrowser = require('./FileBrowser.jsx');
 const SplitPane = require('react-split-pane');
+const YoutubeVideo = require('./YoutubeVideo.jsx');
 
 class LinuxComputer extends React.Component {
   constructor(props) {
@@ -100,10 +101,10 @@ componentWillMount() {
                     </div>
                     :
                   <div className="terminal-container">
-                  <div className="terminal-menu">
-                   <i className="ion-ios-folder-outline" onClick={this.handleToggle.bind(this)}></i>
-                  </div>
-                  <Terminal username={this.state.username} containerName={this.state.containerName}/>
+                    <div className="terminal-menu">
+                     <i className="ion-ios-folder-outline" onClick={this.handleToggle.bind(this)}></i>
+                    </div>
+                      <Terminal username={this.state.username} containerName={this.state.containerName}/>
                   </div> 
                 }
                 </SplitPane>
