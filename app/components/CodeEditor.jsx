@@ -36,8 +36,10 @@ class CodeEditor extends React.Component {
         fileName: '',
         filePath: '',
         codeValue: ''
-      })
+      });
+
       this.editor.getDoc().setValue('');
+      this.socket.emit('/TE/JOIN/', {containerName: nextProps.containerName, username: this.username});
     }
     
     this.socket.on('/TE/' + nextProps.containerName, function(code) {
@@ -45,12 +47,10 @@ class CodeEditor extends React.Component {
     });
     this.socket.on('/TE/JOIN/' + nextProps.containerName, function(code) {
       if(context.username !== code.username) {
-        console.log('EMITTING JOIN');
         var code = document.getElementById('code-editor').value;
-        context.socket.emit('/TE/', {code: code, username: context.username, containerName: nextProps.containerName, fileName: context.state.fileName, filePath: context.state.filePath});
+        context.socket.emit('/TE/', {join: true, code: code, username: context.username, containerName: nextProps.containerName, fileName: context.state.fileName, filePath: context.state.filePath});
       }
     });
-    this.socket.emit('/TE/JOIN/', {containerName: nextProps.containerName, username: this.username});
 
   }
 
@@ -118,6 +118,7 @@ class CodeEditor extends React.Component {
 
     this.editor = editor;
     this.lastUpdate = Date.now();
+    this.socket.emit('/TE/JOIN/', {containerName: this.state.containerName, username: this.username});
   }
 
   componentWillMount() {
@@ -165,11 +166,19 @@ class CodeEditor extends React.Component {
       console.log('save file');
       this.handleCodeSave(e);
     }
+
+    if(e.key === 'Backspace') {
+      if(document.getElementById('code-editor').value.length === 0) {
+        this.handleCodeChange(true);
+      }
+    }
   }
 
-  handleCodeChange() {
+  handleCodeChange(sendBlank) {
     var code = document.getElementById('code-editor').value;
-    this.socket.emit('/TE/', {code: code, username: this.username, containerName: this.state.containerName, fileName: this.state.fileName, filePath: this.state.filePath});
+    if(code !== '' || sendBlank) {
+      this.socket.emit('/TE/', {code: code, username: this.username, containerName: this.state.containerName, fileName: this.state.fileName, filePath: this.state.filePath});
+    }
   }
 
   handleCodeSave(e) {
