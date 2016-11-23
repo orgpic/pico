@@ -1,17 +1,17 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const expressValidator = require('express-validator');
-const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
 var LocalStrategy = require('passport-local'), Strategy;
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const db = require('./db/config');
-const Passport = require('./db/config/passport')
+const Passport = require('./db/config/passport');
 const routes = require('./routes/index');
 const users = require('./routes/users');
 const auth = require('./routes/auth');

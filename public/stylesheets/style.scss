@@ -460,6 +460,12 @@ html {
 
 //HOMEPAGE
 
+.modalDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 .homepage-container {
   overflow-x: hidden;
   overflow-y: auto;
