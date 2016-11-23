@@ -52,14 +52,27 @@ componentWillMount() {
       });
     }
   });
+
+  this.socket.on('/TERM/SHOW/' + user.username, function(show) {
+    console.log('SHOWING');
+    context.setState({
+      toggle: false
+    });
+  });
 } 
 
   selectChange(event) {
     //alert(event.target.value);
-    console.log('IN SELECT CHANGE');
-    console.log('containerName', event.target.value);
+    const context = this;
+    this.socket.off('/TERM/SHOW/' + this.state.containerName);
     this.setState({
       containerName: event.target.value
+    });
+    this.socket.on('/TERM/SHOW/' + event.target.value, function(show) {
+      console.log('SHOWING1');
+      context.setState({
+        toggle: false
+      });
     });
   }
 
@@ -92,21 +105,13 @@ componentWillMount() {
               <div className="row">
                 <SplitPane split="vertical" defaultSize='50%'>
                    <CodeEditor username={this.state.username} containerName={this.state.containerName}/>
-                  {this.state.toggle ? 
                     <div className="file-browser-container">
                       <div className="terminal-menu">
                        <i className="ion-ios-folder-outline" onClick={this.handleToggle.bind(this)}></i>
                       </div>
-                      <FileBrowser containerName={this.state.containerName}/>
+                      <FileBrowser containerName={this.state.containerName} hidden={!this.state.toggle}/>
+                      <Terminal username={this.state.username} containerName={this.state.containerName} hidden={this.state.toggle}/>
                     </div>
-                    :
-                  <div className="terminal-container">
-                    <div className="terminal-menu">
-                     <i className="ion-ios-folder-outline" onClick={this.handleToggle.bind(this)}></i>
-                    </div>
-                      <Terminal username={this.state.username} containerName={this.state.containerName}/>
-                  </div> 
-                }
                 </SplitPane>
               </div>
                 <Chatbox username={this.state.username} containerName={this.state.containerName}/>

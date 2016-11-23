@@ -14,6 +14,7 @@ router.post('/executeFile', function(req,res) {
     newCode = newCode.replace(/\"/g, '\\\"');
     newCode = newCode.replace(/'/g, "\\\"");
     var command = 'bash -c "echo -e \'' + newCode + '\' > ' + req.body.filePath + '/' + fileName + '"'
+    
     docker.runCommand(req.body.containerName, command, function(err, response) {
       if(err) {
         res.status(500).send(err);
