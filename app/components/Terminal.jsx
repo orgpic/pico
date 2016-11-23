@@ -203,7 +203,6 @@ class Terminal extends React.Component {
           completion: function(terminal, command, callback) {
             axios.post('/docker/cmd', { cmd: 'ls', containerName: context.state.containerName })
               .then(function(res) {
-                console.log(res.data);
                 const possibilities = (res.data.split('\n'));
                 callback(possibilities);
               });
