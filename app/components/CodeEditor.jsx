@@ -23,7 +23,7 @@ class CodeEditor extends React.Component {
     console.log(this.state);
     const context = this;
     this.socket.off('/TE/' + this.state.containerName);
-    this.socket.off('/TE/JOIN/');
+    this.socket.off('/TE/JOIN/' + this.state.containerName);
     if(nextProps.containerName === this.state.containerName) {
       this.setState({
         fileName: this.state.fileName,
