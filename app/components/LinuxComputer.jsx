@@ -63,8 +63,13 @@ componentWillMount() {
 
   selectChange(event) {
     //alert(event.target.value);
+<<<<<<< HEAD
     const context = this;
     this.socket.off('/TERM/SHOW/' + this.state.containerName);
+=======
+    console.log('IN SELECT CHANGE');
+    console.log('containerName', event.target.value);
+>>>>>>> 3846140303c66c0ba59efc024d2f0a61949e26d7
     this.setState({
       containerName: event.target.value
     });
@@ -105,6 +110,10 @@ componentWillMount() {
               <div className="row">
                 <SplitPane split="vertical" defaultSize='50%'>
                    <CodeEditor username={this.state.username} containerName={this.state.containerName}/>
+<<<<<<< HEAD
+=======
+                  {this.state.toggle ? 
+>>>>>>> 3846140303c66c0ba59efc024d2f0a61949e26d7
                     <div className="file-browser-container">
                       <div className="terminal-menu">
                        <i className="ion-ios-folder-outline" onClick={this.handleToggle.bind(this)}></i>
@@ -112,6 +121,17 @@ componentWillMount() {
                       <FileBrowser containerName={this.state.containerName} hidden={!this.state.toggle}/>
                       <Terminal username={this.state.username} containerName={this.state.containerName} hidden={this.state.toggle}/>
                     </div>
+<<<<<<< HEAD
+=======
+                    :
+                  <div className="terminal-container">
+                    <div className="terminal-menu">
+                     <i className="ion-ios-folder-outline" onClick={this.handleToggle.bind(this)}></i>
+                    </div>
+                      <Terminal username={this.state.username} containerName={this.state.containerName}/>
+                  </div> 
+                }
+>>>>>>> 3846140303c66c0ba59efc024d2f0a61949e26d7
                 </SplitPane>
               </div>
                 <Chatbox username={this.state.username} containerName={this.state.containerName}/>
