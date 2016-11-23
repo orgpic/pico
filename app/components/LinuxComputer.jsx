@@ -55,6 +55,7 @@ componentWillMount() {
 
   selectChange(event) {
     //alert(event.target.value);
+    console.log('IN SELECT CHANGE');
     console.log('containerName', event.target.value);
     this.setState({
       containerName: event.target.value
@@ -67,19 +68,33 @@ componentWillMount() {
     });
   }
 
+  componentDidMount() {
+    document.getElementById("thisSelect").select2({
+      dropdownCssClass: 'dropdown-inverse'
+    })
+  }
+
     render() {
+      const context = this;
       if (this.state.containerName.length) {
            return (
             <div className="linux-computer-container">
               <NavBar username={this.state.username} />
-              <select onChange={this.selectChange}>
-                <option value={this.state.username}>{this.state.username}</option>
-                {this.state.collabWith.map(function(user) {
-                  return (
-                      <option value={user}>{user}</option>
-                    );
-                })}
-              </select>
+              <div className="collaborator-bar"> 
+                  <i className="ion-ios-monitor-outline"></i>
+                <select id="thisSelect" className="form-control" onChange={this.selectChange}>
+                  <optgroup label="Collaborators">
+                  <option value={this.state.username}>{this.state.username}</option>
+                  {
+                    this.state.collabWith.map(function(user) {
+                    return (
+                        <option value={user}>{user}</option>
+                      );
+                  })}
+                  </optgroup>
+                </select>
+              </div>
+
               <div className="row">
                 <SplitPane split="vertical" defaultSize='50%'>
                    <CodeEditor username={this.state.username} containerName={this.state.containerName}/>
