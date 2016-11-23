@@ -250,6 +250,10 @@ io.on('connection', function(socket) {
       console.log('Failed to send message to the database', err);
     })
   });
+
+  socket.on('/TERM/SHOW/', function(show) {
+    io.sockets.emit('/TERM/SHOW/' + show.containerName, show);
+  });
 });
 
 /**

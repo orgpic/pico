@@ -454,6 +454,58 @@ html {
   }
 }
 
+.collaborator-bar {
+  width: 200px;
+  flex: 1;
+  display: flex;
+  position: relative;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  .ion-ios-monitor-outline {
+    font-size: 1.7em;
+    color: $brightgreen;
+  }
+}
+#thisSelect {
+  width: 150px;
+  height: 100%;
+  font-family: $dosis;
+  height: 30px;
+  padding: 0px;
+  padding-left: 15px;
+  border-radius: 0px;
+  color: $brightgreen;
+  background-color: black;
+  // background-color: $translucentred;
+  cursor: pointer;
+
+  margin:   0px;
+  border: 0px;
+  option {
+    font-family: $dosis;
+  }
+
+  &:hover {
+    // background-color: $brightgreen;
+    color: $themebrightpurple;
+    outline: none;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+select {
+  -webkit-appearance: none;
+  background-size: 10px;
+  padding: 0;
+  margin: 0;
+
+}
 
 
 
@@ -660,25 +712,42 @@ html {
       margin: 0;
       flex: 1;
       flex-wrap: wrap;
-      .current-file {
+
+      .ion-ios-play-outline {
         color: $brightgreen;
-        font-weight: bold;
-        flex: 1;
-        flex-wrap: wrap;
+        font-size: 25px;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
         float: right;
+
+        &:hover {
+          color: $themebrightpurple;
+        }
       }
     }
+
+    .current-file {
+      color: $brightgreen;
+      font-weight: bold;
+      flex: 1;
+      flex-wrap: wrap;
+      float: right;
+    }
+
     .code-saved-indicator {
       color: $brightgreen;
       font-weight: bold;
       flex: 1;
       flex-wrap: wrap;
+      float: left;
     }
     .code-modified-indicator {
       color: $themeorange;
       font-weight: bold;
       flex: 1;
       flex-wrap: wrap;
+      float: left;
     }
   }
 
@@ -722,6 +791,10 @@ html {
       padding-right: 20px;
       font-size: 20px;
       cursor: pointer;
+
+      &:hover {
+        color: $themebrightpurple;
+      }
     }
   }
 
@@ -906,7 +979,6 @@ Resizer.disabled {
 Resizer.disabled:hover {
   border-color: transparent;
 }
-
 
 
 
@@ -1252,6 +1324,7 @@ div.CodeMirror-dragcursors {
   background: #ffa;
   background: rgba(255, 255, 0, .4);
 }
+
 
 /* Used to force a border model for a node */
 .cm-force-border { padding-right: .1px; }

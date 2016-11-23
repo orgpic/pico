@@ -9,15 +9,16 @@ class FileBrowser extends React.Component {
     this.state = {
       containerName: this.props.containerName,
       curDir: '/picoShell',
-      contents: []
+      contents: [],
+      hidden: true
     };
     this.doubleClick = this.doubleClick.bind(this);
     this.updateFileBrowser = this.updateFileBrowser.bind(this);
   }
 
-  updateFileBrowser(path) {
+  updateFileBrowser(path, containerName) {
     const context = this;
-    axios.post('/docker/cmd', { cmd: 'ls ' + path + ' -al', containerName: context.state.containerName })
+    axios.post('/docker/cmd', { cmd: 'ls ' + path + ' -al', containerName: containerName })
     .then(function(res) {
       const contents = res.data.split('\n');
 
@@ -50,16 +51,18 @@ class FileBrowser extends React.Component {
     this.setState({
       containerName: this.state.containerName
     });
-    this.updateFileBrowser('/picoShell');
+    this.updateFileBrowser('/picoShell', this.state.containerName);
   }
 
 
   componentWillReceiveProps(nextProps) {
     const context = this;
+    console.log('FB GOT PROPS', nextProps);
     this.setState({
-      containerName: nextProps.containerName
+      containerName: nextProps.containerName,
+      hidden: nextProps.hidden
     });
-    this.updateFileBrowser('/picoShell');
+    this.updateFileBrowser('/picoShell', nextProps.containerName);
   }
 
   doubleClick(e, entry) {
@@ -77,11 +80,11 @@ class FileBrowser extends React.Component {
           }
           console.log('newDir', newDir);
           console.log('sliced', sliced);
-          context.updateFileBrowser(sliced);
+          context.updateFileBrowser(sliced, context.state.containerName);
         } else {
           var newDir = context.state.curDir + '/' + resp.data.newDir;
           if(newDir.startsWith('//')) newDir = newDir.slice(1);
-          context.updateFileBrowser(newDir);
+          context.updateFileBrowser(newDir, context.state.containerName);
         }
       } else if (resp.data.type === 'file') {
         //alert(resp.data.fileContents);
@@ -95,23 +98,30 @@ class FileBrowser extends React.Component {
 
   render() {
     const context = this;
-    return (
-        <div>
-          {this.state.contents.map(function(entry) {
-            if (entry.type === "file") {
-              return (
-                <div className="fileBrowser" onDoubleClick={(e) => {context.doubleClick(e, entry.name)}}><i className="ion-ios-paper-outline">{" " + entry.name}</i></div>
-              )
-            } else if (entry.type === "folder" && entry.name !== ".") {
-              return (
-                <div id={entry.name} className="fileBrowser" onDoubleClick={(e) => {context.doubleClick(e, entry.name)}}>
-                  { entry.name === ".." ? <i className="ion-ios-arrow-up">{entry.name}</i> : <i className="ion-ios-arrow-down">{" " + entry.name}</i> }
-                </div>
-              )
-            }
-          })}
-        </div>
-      );
+    if(!this.state.hidden) {
+      return (
+          <div>
+            {this.state.contents.map(function(entry) {
+              if (entry.type === "file") {
+                return (
+                  <div className="fileBrowser" onDoubleClick={(e) => {context.doubleClick(e, entry.name)}}><i className="ion-ios-paper-outline">{" " + entry.name}</i></div>
+                )
+              } else if (entry.type === "folder" && entry.name !== ".") {
+                return (
+                  <div id={entry.name} className="fileBrowser" onDoubleClick={(e) => {context.doubleClick(e, entry.name)}}>
+                    { entry.name === ".." ? <i className="ion-ios-arrow-up">{entry.name}</i> : <i className="ion-ios-arrow-down">{" " + entry.name}</i> }
+                  </div>
+                )
+              }
+            })}
+          </div>
+        );
+    } else {
+      return (
+          <div>
+          </div>
+        );
+    }
   }
 }
 

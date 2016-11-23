@@ -12,21 +12,25 @@ class Terminal extends React.Component {
       curCommand: null,
       curDir: '/',
       username: this.props.username,
-      response: ''
+      response: '',
+      hidden: false
 		}
     this.renderTerminal();
     this.recievedTermInput = this.recievedTermInput.bind(this);
     this.recievedTermResponse = this.recievedTermResponse.bind(this);
     this.recievedTermCD = this.recievedTermCD.bind(this);
+    console.log('TERM CONSTRUCTOR');
 	}
 
   componentWillReceiveProps(nextProps) {
+    console.log('TERM GOT PROPS', nextProps);
     const context = this;
     this.socket.off('/TERM/' + this.state.containerName);
     this.socket.off('/TERM/RES/' + this.state.containerName);
     this.socket.off('/TERM/CD/' + this.state.containerName);
     this.setState({
-      containerName: nextProps.containerName
+      containerName: nextProps.containerName,
+      hidden: nextProps.hidden
     })
     this.terminal.clear();
     if(nextProps.containerName !== this.props.containerName) this.terminal.echo('Welcome to ' + nextProps.containerName + '\'s computer.');
@@ -41,6 +45,7 @@ class Terminal extends React.Component {
     this.socket.on('/TERM/CD/' + nextProps.containerName, function(path) {
       context.recievedTermCD(path);
     });
+    this.renderTerminal();
   }
 
   recievedTermInput(code) {
@@ -243,12 +248,19 @@ class Terminal extends React.Component {
   }
 
 	render() {
-		return (
-      <div>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/0.11.13/css/jquery.terminal.min.css" rel="stylesheet"></link>
-        <div id="terminal"></div><br/>
-			</div>
-		)
+    if(!this.state.hidden) {
+  		return (
+        <div>
+          <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/0.11.13/css/jquery.terminal.min.css" rel="stylesheet"></link>
+          <div id="terminal"></div><br/>
+  			</div>
+  		);
+    } else {
+      return (
+        <div>
+        </div>
+        );
+    }
 	}
 }
 

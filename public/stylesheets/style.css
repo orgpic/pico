@@ -281,6 +281,46 @@ html {
     box-sizing: border-box;
     background-size: cover; }
 
+.collaborator-bar {
+  width: 200px;
+  flex: 1;
+  display: flex;
+  position: relative;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0; }
+  .collaborator-bar .ion-ios-monitor-outline {
+    font-size: 1.7em;
+    color: #03CEA1; }
+
+#thisSelect {
+  width: 150px;
+  height: 100%;
+  font-family: "Dosis", Helvetica, Arial, sans-serif;
+  height: 30px;
+  padding: 0px;
+  padding-left: 15px;
+  border-radius: 0px;
+  color: #03CEA1;
+  background-color: black;
+  cursor: pointer;
+  margin: 0px;
+  border: 0px; }
+  #thisSelect option {
+    font-family: "Dosis", Helvetica, Arial, sans-serif; }
+  #thisSelect:hover {
+    color: #7156FB;
+    outline: none; }
+  #thisSelect:focus {
+    outline: none; }
+
+select {
+  -webkit-appearance: none;
+  background-size: 10px;
+  padding: 0;
+  margin: 0; }
+
 .modalDiv {
   display: flex;
   justify-content: center;
@@ -433,22 +473,33 @@ html {
       margin: 0;
       flex: 1;
       flex-wrap: wrap; }
-      .linux-computer-container .code-editor-container .code-editor-menu .current-file {
+      .linux-computer-container .code-editor-container .code-editor-menu .ion-ios-play-outline {
         color: #03CEA1;
-        font-weight: bold;
-        flex: 1;
-        flex-wrap: wrap;
+        font-size: 25px;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
         float: right; }
+        .linux-computer-container .code-editor-container .code-editor-menu .ion-ios-play-outline:hover {
+          color: #7156FB; }
+    .linux-computer-container .code-editor-container .current-file {
+      color: #03CEA1;
+      font-weight: bold;
+      flex: 1;
+      flex-wrap: wrap;
+      float: right; }
     .linux-computer-container .code-editor-container .code-saved-indicator {
       color: #03CEA1;
       font-weight: bold;
       flex: 1;
-      flex-wrap: wrap; }
+      flex-wrap: wrap;
+      float: left; }
     .linux-computer-container .code-editor-container .code-modified-indicator {
       color: #E1905B;
       font-weight: bold;
       flex: 1;
-      flex-wrap: wrap; }
+      flex-wrap: wrap;
+      float: left; }
   .linux-computer-container .file-browser-container {
     height: 100%;
     max-height: 600px;
@@ -481,6 +532,8 @@ html {
       padding-right: 20px;
       font-size: 20px;
       cursor: pointer; }
+      .linux-computer-container .terminal-menu .ion-ios-folder-outline:hover {
+        color: #7156FB; }
   .linux-computer-container .terminal-container {
     height: 100%;
     max-height: 600px;

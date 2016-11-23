@@ -7,6 +7,7 @@ const NavBar = require('./NavBar.jsx');
 const Chatbox = require('./Chatbox.jsx');
 const FileBrowser = require('./FileBrowser.jsx');
 const SplitPane = require('react-split-pane');
+const YoutubeVideo = require('./YoutubeVideo.jsx');
 
 class LinuxComputer extends React.Component {
   constructor(props) {
@@ -51,13 +52,27 @@ componentWillMount() {
       });
     }
   });
+
+  this.socket.on('/TERM/SHOW/' + user.username, function(show) {
+    console.log('SHOWING');
+    context.setState({
+      toggle: false
+    });
+  });
 } 
 
   selectChange(event) {
     //alert(event.target.value);
-    console.log('containerName', event.target.value);
+    const context = this;
+    this.socket.off('/TERM/SHOW/' + this.state.containerName);
     this.setState({
       containerName: event.target.value
+    });
+    this.socket.on('/TERM/SHOW/' + event.target.value, function(show) {
+      console.log('SHOWING1');
+      context.setState({
+        toggle: false
+      });
     });
   }
 
@@ -66,39 +81,37 @@ componentWillMount() {
       toggle: !this.state.toggle
     });
   }
-
     render() {
+      const context = this;
       if (this.state.containerName.length) {
            return (
             <div className="linux-computer-container">
               <NavBar username={this.state.username} />
-              <select onChange={this.selectChange}>
-                <option value={this.state.username}>{this.state.username}</option>
-                {this.state.collabWith.map(function(user) {
-                  return (
-                      <option value={user}>{user}</option>
-                    );
-                })}
-              </select>
+              <div className="collaborator-bar"> 
+                  <i className="ion-ios-monitor-outline"></i>
+                <select id="thisSelect" className="form-control" onChange={this.selectChange}>
+                  <optgroup label="Collaborators">
+                  <option value={this.state.username}>{this.state.username}</option>
+                  {
+                    this.state.collabWith.map(function(user) {
+                    return (
+                        <option value={user}>{user}</option>
+                      );
+                  })}
+                  </optgroup>
+                </select>
+              </div>
+
               <div className="row">
                 <SplitPane split="vertical" defaultSize='50%'>
                    <CodeEditor username={this.state.username} containerName={this.state.containerName}/>
-
-                  {this.state.toggle ? 
                     <div className="file-browser-container">
                       <div className="terminal-menu">
                        <i className="ion-ios-folder-outline" onClick={this.handleToggle.bind(this)}></i>
                       </div>
-                      <FileBrowser containerName={this.state.containerName}/>
+                      <FileBrowser containerName={this.state.containerName} hidden={!this.state.toggle}/>
+                      <Terminal username={this.state.username} containerName={this.state.containerName} hidden={this.state.toggle}/>
                     </div>
-                    :
-                  <div className="terminal-container">
-                  <div className="terminal-menu">
-                   <i className="ion-ios-folder-outline" onClick={this.handleToggle.bind(this)}></i>
-                  </div>
-                  <Terminal username={this.state.username} containerName={this.state.containerName}/>
-                  </div> 
-                }
                 </SplitPane>
               </div>
                 <Chatbox username={this.state.username} containerName={this.state.containerName}/>

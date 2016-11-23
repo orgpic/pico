@@ -19,14 +19,17 @@ class CodeEditor extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('CE GOT PROPS', nextProps);
+    console.log(this.state);
     const context = this;
     this.socket.off('/TE/' + this.state.containerName);
     this.setState({
       containerName: nextProps.containerName,
-      fileName: '',
-      filePath: '',
-    })
-    this.editor.getDoc().setValue('');
+      fileName: this.state.fileName,
+      filePath: this.state.filePath,
+      codeValue: this.state.codeValue
+    });
+    //this.editor.getDoc().setValue('');
     this.socket.on('/TE/' + nextProps.containerName, function(code) {
       context.recievedCEChange(code);
     });
@@ -109,11 +112,17 @@ class CodeEditor extends React.Component {
     if(!this.state.fileName) {
       alert('Please select a file before attempting to run.');
     } else {
+      context.socket.emit('/TERM/SHOW/', {containerName: context.state.containerName});
       axios.post('/docker/executeFile', {code: document.getElementById('code-editor').value, containerName: this.state.containerName, fileName: this.state.fileName, filePath: this.state.filePath})
       .then(function(resp) {
         const exResponse = resp.data.res;
+        console.log('filePath', context.state.filePath, 'fileName', context.state.fileName);
         var filePath = context.state.filePath.endsWith('/') ? context.state.filePath + context.state.fileName : context.state.filePath + '/' + context.state.fileName;
+        //context.socket.emit('/TERM/SHOW/', {containerName: context.state.containerName});
         context.socket.emit('/TERM/RES/', {cmd: resp.data.cmd + ' ' + filePath, res: exResponse, username: 'FILEBROWSER', containerName: context.state.containerName});
+        context.setState({
+          codeSaved: true
+        });
       })
       .catch(function(err) {
         alert(err.response.data.msg);
@@ -169,21 +178,35 @@ class CodeEditor extends React.Component {
   }
 
    render() {
-    return (
-      <div className="code-editor-container" onKeyDown={this.handleOnKeyDown.bind(this)}>
-        <div className="code-editor-menu">
-            <button onClick={this.handleCodeSave.bind(this)}> Save </button>
-            <font size="7"><i className="ion-ios-play" onClick={this.handleFileRun}></i></font>
-            <span className={this.state.codeSaved ? "code-saved-indicator" : "code-modified-indicator"}>
-              {this.state.codeSaved  ? "Saved" : "Modified"}
-            </span>
+    if (this.state.fileName) {
+      return (
+        <div className="code-editor-container" onKeyDown={this.handleOnKeyDown.bind(this)}>
+          <div className="code-editor-menu">
+              <i className="ion-ios-play-outline" onClick={this.handleFileRun}></i>
+          </div>
+          <textarea id="code-editor" >{this.state.codeValue}</textarea>
+          <span className={this.state.codeSaved ? "code-saved-indicator" : "code-modified-indicator"}>
+            {this.state.codeSaved  ? "Saved" : "Modified"}
+          </span>
           <span className="current-file">
-            {this.state.fileName ? this.state.filePath + '/' + this.state.fileName : <span> No File </span> }
+            {this.state.filePath + '/' + this.state.fileName}
           </span>
         </div>
-        <textarea id="code-editor" >{this.state.codeValue}</textarea><br/>
-      </div>
-    )
+      )
+    } else {
+      return (
+        <div className="code-editor-container" onKeyDown={this.handleOnKeyDown.bind(this)}>
+          <div className="code-editor-menu">
+              <i className="ion-ios-play-outline" onClick={this.handleFileRun}></i>
+          </div>
+          <textarea id="code-editor" >{this.state.codeValue}</textarea>
+          <span className="current-file">
+             <span> No File </span>
+          </span> 
+        </div>
+      )
+    }
+ 
   }
 }
 
