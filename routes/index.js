@@ -55,8 +55,8 @@ router.post('/email', function(req, res) {
           var data = {
             from: 'The Pico Team <support@picoshell.com>',
             to: req.body.email,
-            subject: 'Reseting you pasword',
-            text: `Hey there! \n We reset your password for you and it is now ${myPassword} . Remeber to keep it in a safe place! \n Sincerley, \n The Pico Team`
+            subject: 'Resetting you password',
+            text: `Hey there! \n We reset your password for you and it is now ${myPassword} . Remember to keep it in a safe place! \n Sincerely, \n The Pico Team`
           };
           mailgun.messages().send(data, function (error, body) {
             if (error) {
