@@ -321,6 +321,12 @@ select {
   padding: 0;
   margin: 0; }
 
+.modalDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; }
+
 .homepage-container {
   overflow-x: hidden;
   overflow-y: auto;
@@ -467,22 +473,33 @@ select {
       margin: 0;
       flex: 1;
       flex-wrap: wrap; }
-      .linux-computer-container .code-editor-container .code-editor-menu .current-file {
+      .linux-computer-container .code-editor-container .code-editor-menu .ion-ios-play-outline {
         color: #03CEA1;
-        font-weight: bold;
-        flex: 1;
-        flex-wrap: wrap;
+        font-size: 25px;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
         float: right; }
+        .linux-computer-container .code-editor-container .code-editor-menu .ion-ios-play-outline:hover {
+          color: #7156FB; }
+    .linux-computer-container .code-editor-container .current-file {
+      color: #03CEA1;
+      font-weight: bold;
+      flex: 1;
+      flex-wrap: wrap;
+      float: right; }
     .linux-computer-container .code-editor-container .code-saved-indicator {
       color: #03CEA1;
       font-weight: bold;
       flex: 1;
-      flex-wrap: wrap; }
+      flex-wrap: wrap;
+      float: left; }
     .linux-computer-container .code-editor-container .code-modified-indicator {
       color: #E1905B;
       font-weight: bold;
       flex: 1;
-      flex-wrap: wrap; }
+      flex-wrap: wrap;
+      float: left; }
   .linux-computer-container .file-browser-container {
     height: 100%;
     max-height: 600px;
@@ -1040,13 +1057,6 @@ div.CodeMirror-dragcursors {
 
 .CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection {
   background: #d7d4f0; }
-
-.modalDiv {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
 
 .cm-searching {
   background: #ffa;

@@ -67,13 +67,6 @@ componentWillMount() {
       toggle: !this.state.toggle
     });
   }
-
-  componentDidMount() {
-    document.getElementById("thisSelect").select2({
-      dropdownCssClass: 'dropdown-inverse'
-    })
-  }
-
     render() {
       const context = this;
       if (this.state.containerName.length) {
@@ -98,7 +91,6 @@ componentWillMount() {
               <div className="row">
                 <SplitPane split="vertical" defaultSize='50%'>
                    <CodeEditor username={this.state.username} containerName={this.state.containerName}/>
-
                   {this.state.toggle ? 
                     <div className="file-browser-container">
                       <div className="terminal-menu">

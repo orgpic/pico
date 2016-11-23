@@ -169,21 +169,35 @@ class CodeEditor extends React.Component {
   }
 
    render() {
-    return (
-      <div className="code-editor-container" onKeyDown={this.handleOnKeyDown.bind(this)}>
-        <div className="code-editor-menu">
-            <button onClick={this.handleCodeSave.bind(this)}> Save </button>
-            <font size="7"><i className="ion-ios-play" onClick={this.handleFileRun}></i></font>
-            <span className={this.state.codeSaved ? "code-saved-indicator" : "code-modified-indicator"}>
-              {this.state.codeSaved  ? "Saved" : "Modified"}
-            </span>
+    if (this.state.fileName) {
+      return (
+        <div className="code-editor-container" onKeyDown={this.handleOnKeyDown.bind(this)}>
+          <div className="code-editor-menu">
+              <i className="ion-ios-play-outline" onClick={this.handleFileRun}></i>
+          </div>
+          <textarea id="code-editor" >{this.state.codeValue}</textarea>
+          <span className={this.state.codeSaved ? "code-saved-indicator" : "code-modified-indicator"}>
+            {this.state.codeSaved  ? "Saved" : "Modified"}
+          </span>
           <span className="current-file">
-            {this.state.fileName ? this.state.filePath + '/' + this.state.fileName : <span> No File </span> }
+            {this.state.filePath + '/' + this.state.fileName}
           </span>
         </div>
-        <textarea id="code-editor" >{this.state.codeValue}</textarea><br/>
-      </div>
-    )
+      )
+    } else {
+      return (
+        <div className="code-editor-container" onKeyDown={this.handleOnKeyDown.bind(this)}>
+          <div className="code-editor-menu">
+              <i className="ion-ios-play-outline" onClick={this.handleFileRun}></i>
+          </div>
+          <textarea id="code-editor" >{this.state.codeValue}</textarea>
+          <span className="current-file">
+             <span> No File </span>
+          </span> 
+        </div>
+      )
+    }
+ 
   }
 }
 
