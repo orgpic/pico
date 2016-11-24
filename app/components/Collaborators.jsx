@@ -214,7 +214,7 @@ class Collaborators extends React.Component {
                     return (
                       <div className="collaborators" key={i}>
                         {accepted}
-                        <span onClick={() => { context.handleRemoveCollabWith(accepted)}} key={i}>
+                        <span className='list' onClick={() => { context.handleRemoveCollabWith(accepted)}} key={i}>
                           <i className="ion-trash-a"></i>
                         </span>
                       </div>);
@@ -225,19 +225,24 @@ class Collaborators extends React.Component {
                 <div className="col-md-4 collab-card-top">
                   <div className="right">
                   <div className="title">
-                    Collaborators on Your Computer
+                      Your Computer
                   </div>
+                  
                   <div>
                   {this.state.collaborators.length ? this.state.collaborators.map(function(collaboration, i) {
                     console.log('collaboration', collaboration);
                     return (
-                      <div className="collaborators" key={i}>
+
+                      <div className="collaborators" key={i}> 
+                      <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between'}}>
+                  <div>Username</div><div>Permission</div><div>Delete</div>
+                  </div>
                         {collaboration.recieverUsername}
                         <select className='collabAccess' onChange={(e) => { context.handleSelectRoleChange(e, collaboration.recieverUsername); }}>
                           <option > {context.state.allRoles[collaboration.role]} </option>
                           { Object.keys(context.state.allRoles).map(function(key, i) {
                             if (key !== collaboration.role + '') {
-                              return <option key={key} > {context.state.allRoles[key]} </option>;
+                              return <option className='option'key={key} >{context.state.allRoles[key]} </option>;
                             }
                           })}
                         </select>
@@ -290,7 +295,7 @@ class Collaborators extends React.Component {
                     {
                       this.state.pendingInvites.length ? this.state.pendingInvites.map(function(pending) {
                       return (
-                        <div className="">{pending} 
+                        <div className="pending">{pending} 
                         <span onClick={() => { context.handleAcceptCollab(pending); }}> <i className="glyphicon  glyphicon-ok-sign"></i>
 
                       
