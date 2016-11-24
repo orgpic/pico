@@ -1,6 +1,6 @@
 const React = require('react');
 const axios = require('axios');
-const Tabs = require('react-simpletabs');
+const Tabs = require('react-simpletabs-alt');
 class Collaborators extends React.Component {
   constructor(props) {
     super(props);
