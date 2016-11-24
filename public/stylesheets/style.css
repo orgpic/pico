@@ -67,34 +67,12 @@ html {
     font-weight: bold;
     padding-bottom: 30px; }
   .card-container .information {
-    padding: 20px;
+    padding-top: 50px;
+    padding-bottom: 20px;
     color: #FEFEFE;
-<<<<<<< e0366dcdedf9b4e325053e6288af191d322a69dc
-    padding-bottom: 10px; }
-  .card-container .information .editing {
-    color: black;
-    text-align: center; }
-  .card-container .information .collaborators {
-    float: none;
-    box-shadow: 3px 3px black;
-    padding: 5px; }
-    .card-container .information .collaborators select {
-      color: white;
-      background-color: rgba(91, 105, 225, 0.5);
-      font-size: 15px; }
-    .card-container .information .collaborators i {
-      cursor: pointer;
-      margin-left: 10px;
-      margin-right: 10px;
-      border: 1px;
-      border-radius: 10px;
-      margin-top: 4px;
-      margin-bottom: 4px;
-      width: 80px;
-=======
     border: 1px solid black;
     width: 90%;
-    box-shadow: 4px 4px black; }
+    box-shadow: 2px 2px black; }
     .card-container .information .title {
       color: #FEFEFE;
       font-size: 24px; }
@@ -102,14 +80,20 @@ html {
       font-size: 15px;
       color: #FEFEFE;
       padding-bottom: 10px; }
+    .card-container .information .editing {
+      color: black;
+      text-align: center; }
     .card-container .information .collaborators {
       float: none;
       box-shadow: 3px 3px black;
-      padding: 5px; }
+      padding: 5px;
+      width: 110%; }
       .card-container .information .collaborators select {
         color: white;
         background-color: rgba(91, 105, 225, 0.5);
-        font-size: 15px;
+        font-size: 15px; }
+      .card-container .information .collaborators i {
+        cursor: pointer;
         margin-left: 10px;
         margin-right: 10px;
         border: 1px;
@@ -132,7 +116,6 @@ html {
       color: #FEFEFE;
       width: 90%;
       padding: 5px;
->>>>>>> style
       text-align: center; }
       .card-container .information .collaborators-input:focus {
         outline: none; }

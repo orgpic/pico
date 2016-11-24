@@ -131,16 +131,17 @@ html {
     padding-bottom: 30px;
   }
   .information {
-    padding: 20px;
+    padding-top: 50px;
+    padding-bottom: 20px;
     color: $themewhite;
     border: 1px solid black;
     width: 90%;
-    box-shadow: 4px 4px black;
+    box-shadow: 2px 2px black;
     .title {
       color: $themewhite;
       font-size: 24px;
     }
-
+ 
     .info {
       font-size: 15px;
       color: $themewhite;
@@ -156,6 +157,7 @@ html {
       float: none;
       box-shadow: 3px 3px black;
       padding: 5px;
+      width: 110%;
 
       select {
         color: white;
