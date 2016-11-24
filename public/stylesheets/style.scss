@@ -116,6 +116,10 @@ html {
 }
 
 .card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   .header {
     padding: 10px 0 0 10px;
     border-bottom: 1px solid $offblack;
@@ -129,18 +133,18 @@ html {
   .information {
     padding: 20px;
     color: $themewhite;
-    
+    border: 1px solid black;
+    width: 90%;
+    box-shadow: 4px 4px black;
     .title {
       color: $themewhite;
       font-size: 24px;
-      padding-top: 7px;
     }
 
     .info {
       font-size: 15px;
       color: $themewhite;
       padding-bottom: 10px;
-
     }
 
     .editing {
