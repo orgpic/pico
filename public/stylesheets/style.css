@@ -4,6 +4,7 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat");
 @import url("https://fonts.googleapis.com/css?family=Work+Sans");
 @import url("https://fonts.googleapis.com/css?family=Libre+Franklin");
+@import url("https://use.fontawesome.com/30117f7f9d.js");
 body {
   font: 14px "Dosis", Helvetica, Arial, sans-serif;
   margin: 0;
@@ -70,7 +71,6 @@ html {
     color: black;
     text-align: center; }
   .card-container .information .collaborators {
-    font-size: 25px;
     float: none; }
     .card-container .information .collaborators select {
       color: #f5f5f5;
@@ -96,6 +96,13 @@ html {
     text-align: center; }
     .card-container .information .collaborators-input:focus {
       outline: none; }
+  .card-container .information .collaborators {
+    border: 1px solid white;
+    color: #FEFEFE;
+    font-size: 15; }
+  .card-container .information .collabAccess {
+    background-color: rgba(91, 105, 225, 0.5);
+    color: rgba(91, 105, 225, 0.5); }
   .card-container .information .collab-card-top {
     padding: 15px 15px 30px 15px;
     flex: 1;

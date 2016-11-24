@@ -31,7 +31,7 @@ $translucentred: rgba(225,91,105,0.95);
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 @import url('https://fonts.googleapis.com/css?family=Work+Sans');
 @import url('https://fonts.googleapis.com/css?family=Libre+Franklin');
-
+@import url("https://use.fontawesome.com/30117f7f9d.js");
 $work: 'Work Sans', sans-serif;
 $franklin: 'Libre Franklin', sans-serif;
 $dosis: "Dosis", Helvetica, Arial, sans-serif;
@@ -141,7 +141,6 @@ html {
     }
 
     .collaborators {
-      font-size: 25px;
       float: none;
       select {
         color: #f5f5f5;
@@ -178,10 +177,17 @@ html {
       }
     }
 
-    // .collaborators {
-    //   font-size: 25px;
-    //   color: $themewhite;
-    // }
+    .collaborators {
+      border: 1px solid white;
+      color: $themewhite;
+      font-size: 15;
+
+    }
+
+    .collabAccess {
+      background-color: $translucentdarkpurple;
+      color: $translucentdarkpurple;
+    }
 
     .collab-card-top {
       padding: 15px 15px 30px 15px;

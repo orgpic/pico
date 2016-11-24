@@ -1,7 +1,6 @@
 const React = require('react');
 const axios = require('axios');
 const Tabs = require('react-simpletabs');
-
 class Collaborators extends React.Component {
   constructor(props) {
     super(props);
@@ -234,8 +233,8 @@ class Collaborators extends React.Component {
                     return (
                       <div className="collaborators" key={i}>
                         {collaboration.recieverUsername}
-                        <select onChange={(e) => { context.handleSelectRoleChange(e, collaboration.recieverUsername); }}>
-                          <option> {context.state.allRoles[collaboration.role]} </option>
+                        <select className='collabAccess' onChange={(e) => { context.handleSelectRoleChange(e, collaboration.recieverUsername); }}>
+                          <option > {context.state.allRoles[collaboration.role]} </option>
                           { Object.keys(context.state.allRoles).map(function(key, i) {
                             if (key !== collaboration.role + '') {
                               return <option key={key} > {context.state.allRoles[key]} </option>;
@@ -291,9 +290,12 @@ class Collaborators extends React.Component {
                     {
                       this.state.pendingInvites.length ? this.state.pendingInvites.map(function(pending) {
                       return (
-                        <div className="collaborator">{pending} 
-                        <span onClick={() => { context.handleAcceptCollab(pending); }}> Accept </span>
-                        <span onClick={() => { context.handleRejectCollab(pending); }}> Reject </span>           
+                        <div className="">{pending} 
+                        <span onClick={() => { context.handleAcceptCollab(pending); }}> <i className="glyphicon  glyphicon-ok-sign"></i>
+
+                      
+                        </span>
+                        <span onClick={() => { context.handleRejectCollab(pending); }}> <i className="glyphicon  glyphicon-remove-sign"></i> </span>           
                         </div>
                         );
                       }) : 
