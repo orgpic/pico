@@ -180,6 +180,21 @@ class Terminal extends React.Component {
                     console.log('PROMPT', context.terminal.get_prompt());
                     context.socket.emit('/TERM/CD/', {dir: res.data.pwd, username: context.state.username, containerName: context.state.containerName});
                     context.socket.emit('/TERM/RES/', {cmd: command, res: res.data.res, username: context.state.username, containerName: context.state.containerName});
+                  } else if (res.data.download) {
+                    var download = function(filename, text) {
+                      var element = document.createElement('a');
+                      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+                      element.setAttribute('download', filename);
+
+                      element.style.display = 'none';
+                      document.body.appendChild(element);
+
+                      element.click();
+
+                      document.body.removeChild(element);
+                    };
+                    console.log('downloading', res.data.fileContents, 'as', res.data.fileName);
+                    download(res.data.fileName, res.data.fileContents);
                   } else {
                     term.echo(String(JSON.stringify(res.data)));
                     context.socket.emit('/TERM/RES/', {cmd: command, res: JSON.stringify(res.data), username: context.state.username, containerName: context.state.containerName});

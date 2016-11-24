@@ -231,6 +231,31 @@ router.post('/cmd', function (req, res) {
         });
       });
     }
+  } else if (cmd.split(" ")[0] === 'download') {
+    console.log('IN DOWNLOAD');
+    var fileName = cmd.split(" ")[1];
+    if(fileName.startsWith('/')) {
+      const command = 'cat ' + fileName;
+      docker.runCommand(containerName, command, function(err2, res2) {
+        if(err2) {
+          res.status(200).send(err2);
+        } else {
+          res.status(200).send({download: true, fileContents: res2, fileName: fileName});
+        }
+      });
+    } else {
+      docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
+        if(res1[res1.length - 1] === '\n') res1 = res1.slice(0, res1.length - 1);
+        const command = 'cat ' + res1 + '/' + fileName;
+        docker.runCommand(containerName, command, function(err2, res2) {
+          if(err2) {
+            res.status(200).send(err2);
+          } else {
+            res.status(200).send({download: true, fileContents: res2, fileName: fileName});
+          }
+        });
+      });
+    }
   } else {
     docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
       console.log('response from cat /picoShell/.pico :', res1);
