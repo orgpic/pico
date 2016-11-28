@@ -117,7 +117,6 @@ html {
 
 .card-container {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
   .header {
@@ -136,6 +135,7 @@ html {
     color: $themewhite;
     border: 1px solid black;
     width: 90%;
+    justify-content: space-between;
     box-shadow: 2px 2px black;
     .title {
       color: $themewhite;
@@ -152,32 +152,6 @@ html {
       color: black;
       text-align: center;
     }
-
-    .collaborators {
-      float: none;
-      box-shadow: 3px 3px black;
-      padding: 5px;
-      width: 110%;
-
-      select {
-        color: white;
-        background-color: $translucentdarkpurple;
-        font-size: 15px;
-      }
-      i {
-        cursor: pointer;
-        margin-left: 10px;
-        margin-right: 10px;
-        border:    1px;
-        border-radius: 10px;
-        margin-top: 4px;
-        margin-bottom: 4px;
-        width: 80px;
-        text-align: center;
-      }
-      
-    }
-
     
     .none {
       font-size: 25px;
@@ -201,17 +175,10 @@ html {
         outline: none;
       }
     }
-
-    .collaborators {
-      border: 1px solid black;
-      color: $themewhite;
-      font-size: 15px;    
-      margin-top: 20px   
-    }
     .collab-card-top {
+      width: 150%;
       padding: 15px 15px 30px 15px;
       flex: 1;
-      align-items: stretch;
       .left {
         padding: 20px;
         flex: 1;
@@ -222,8 +189,18 @@ html {
         .info {
           color: $themewhite;
         }
-      }
 
+        .collaborators {
+          float: none;
+          padding: 5px;
+          border: 2px solid black;
+          .columnContent{
+            display: flex;
+            flex-direction:row;
+            justify-content:space-between;
+          }
+        }
+      }
       .right {
         padding: 20px;
         flex: 1;
@@ -233,6 +210,36 @@ html {
         }
         .info {
           color: $themewhite;
+        }
+        
+        .collaborators {
+          float: none;
+          border: 2px solid black;
+          padding: 5px;
+          .columnContent{
+            display: flex;
+            flex-direction:row;
+            justify-content:space-between;
+          }
+          select {
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            width: 60px;
+            color: white;
+            background-color: $translucentdarkpurple;
+            font-size: 15px;
+          }
+          i {
+            cursor: pointer;
+            margin-left: 10px;
+            margin-right: 10px;
+            border:    1px;
+            border-radius: 10px;
+            margin-top: 4px;
+            margin-bottom: 4px;
+            text-align: center;
+          }     
         }
       }
     }
