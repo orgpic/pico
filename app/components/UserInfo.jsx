@@ -35,7 +35,7 @@ class UserInfo extends React.Component {
       const toUpdate = {
         email: data.email
       }
-      axios.post('/updateUser', { username: this.state.username, toUpdate: toUpdate})
+      axios.post('/users/updateUser', { username: this.state.username, toUpdate: toUpdate})
         .then(function(res) {
           console.log(res);
         })

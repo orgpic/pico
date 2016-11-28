@@ -201,7 +201,7 @@ class Terminal extends React.Component {
                       document.body.removeChild(element);
                     };
                     console.log('downloading', res.data.fileContents, 'as', res.data.fileName);
-                    download(res.data.fileName, res.data.fileContents);
+                    download(res.data.fileName, Convert.FromBase64String(res.data.fileContents));
                   } else {
                     term.echo(String(JSON.stringify(res.data)));
                     context.socket.emit('/TERM/RES/', {cmd: command, res: JSON.stringify(res.data), username: context.state.username, containerName: context.state.containerName});
