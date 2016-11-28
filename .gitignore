@@ -11,7 +11,3 @@ db/config/config.json
 coverage/
 .nyc_output/
 .env
-<<<<<<< e0366dcdedf9b4e325053e6288af191d322a69dc
-.styles.css.map
-=======
->>>>>>> style
