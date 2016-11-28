@@ -134,7 +134,7 @@ class App extends React.Component {
                 </div>
                 <Modal
                   isOpen={this.state.modalIsOpen}
-                  style={customStyles.content}
+                  style={customStyles}
                   contentLabel="Example Modal"
                   >  
                   <div className='modalDiv'>

@@ -4,6 +4,7 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat");
 @import url("https://fonts.googleapis.com/css?family=Work+Sans");
 @import url("https://fonts.googleapis.com/css?family=Libre+Franklin");
+@import url("https://use.fontawesome.com/30117f7f9d.js");
 body {
   font: 14px "Dosis", Helvetica, Arial, sans-serif;
   margin: 0;
@@ -11,6 +12,11 @@ body {
   height: 100%;
   width: 100%;
   overflow: hidden; }
+
+select {
+  background-color: rgba(91, 105, 225, 0.5);
+  color: rgba(91, 105, 225, 0.5);
+  background: rgba(91, 105, 225, 0.5); }
 
 #app {
   height: 100%;
@@ -46,116 +52,138 @@ html {
   padding: 10px;
   font-size: 1.3em; }
 
-.card-container .header {
-  padding: 10px 0 0 10px;
-  border-bottom: 1px solid #242327;
-  background-color: rgba(38, 38, 38, 0.6);
-  text-align: center;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 1.3em;
-  font-weight: bold;
-  padding-bottom: 30px; }
-.card-container .information {
-  padding: 20px;
-  color: #FEFEFE; }
-  .card-container .information .title {
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; }
+  .card-container .header {
+    padding: 10px 0 0 10px;
+    border-bottom: 1px solid #242327;
+    background-color: rgba(38, 38, 38, 0.6);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 1.3em;
+    font-weight: bold;
+    padding-bottom: 30px; }
+  .card-container .information {
+    padding-top: 50px;
+    padding-bottom: 20px;
     color: #FEFEFE;
-    font-size: 16px;
-    padding-top: 7px; }
-  .card-container .information .info {
-    font-size: 15px;
-    color: #FEFEFE;
-    padding-bottom: 10px; }
-  .card-container .information .editing {
-    color: black;
-    text-align: center; }
-  .card-container .information .collaborators {
-    font-size: 25px;
-    float: none; }
-    .card-container .information .collaborators select {
-      color: #f5f5f5;
-      background-color: rgba(36, 35, 39, 0.8);
+    border: 1px solid black;
+    width: 90%;
+    box-shadow: 2px 2px black; }
+    .card-container .information .title {
+      color: #FEFEFE;
+      font-size: 24px; }
+    .card-container .information .info {
       font-size: 15px;
-      cursor: pointer; }
-    .card-container .information .collaborators i {
-      cursor: pointer; }
-  .card-container .information .none {
-    font-size: 25px;
-    color: #F4F6F7; }
-  .card-container .information form {
-    width: 100%;
-    padding: 0;
-    margin: 0; }
-  .card-container .information .collaborators-input {
-    margin: 5px;
-    background: rgba(36, 35, 39, 0.6);
-    border: 0;
-    color: #FEFEFE;
-    width: 90%;
-    padding: 5px;
-    text-align: center; }
-    .card-container .information .collaborators-input:focus {
-      outline: none; }
-  .card-container .information .collab-card-top {
-    padding: 15px 15px 30px 15px;
-    flex: 1;
-    align-items: stretch; }
-    .card-container .information .collab-card-top .left {
-      padding: 20px;
-      flex: 1;
-      align-items: stretch; }
-      .card-container .information .collab-card-top .left .title {
-        color: #FEFEFE; }
-      .card-container .information .collab-card-top .left .info {
-        color: #FEFEFE; }
-    .card-container .information .collab-card-top .right {
-      padding: 20px;
-      flex: 1;
-      align-items: stretch; }
-      .card-container .information .collab-card-top .right .title {
-        color: #FEFEFE; }
-      .card-container .information .collab-card-top .right .info {
-        color: #FEFEFE; }
-  .card-container .information .collab-card-bottom {
-    padding: 0px 15px 30px 15px;
-    flex: 1;
-    align-items: stretch; }
-    .card-container .information .collab-card-bottom .left {
-      padding: 20px;
-      flex: 1;
-      align-items: stretch; }
-      .card-container .information .collab-card-bottom .left .title {
-        color: #FEFEFE; }
-      .card-container .information .collab-card-bottom .left .info {
-        color: #FEFEFE; }
-    .card-container .information .collab-card-bottom .right {
-      padding: 20px;
-      flex: 1;
-      height: 200%;
+      color: #FEFEFE;
+      padding-bottom: 10px; }
+    .card-container .information .editing {
+      color: black;
+      text-align: center; }
+    .card-container .information .collaborators {
+      float: none;
+      box-shadow: 3px 3px black;
+      padding: 5px;
+      width: 110%; }
+      .card-container .information .collaborators select {
+        color: white;
+        background-color: rgba(91, 105, 225, 0.5);
+        font-size: 15px; }
+      .card-container .information .collaborators i {
+        cursor: pointer;
+        margin-left: 10px;
+        margin-right: 10px;
+        border: 1px;
+        border-radius: 10px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        width: 80px;
+        text-align: center; }
+    .card-container .information .none {
+      font-size: 25px;
+      color: #F4F6F7; }
+    .card-container .information form {
       width: 100%;
+      padding: 0;
+      margin: 0; }
+    .card-container .information .collaborators-input {
+      margin: 5px;
+      background: rgba(36, 35, 39, 0.6);
+      border: 0;
+      color: #FEFEFE;
+      width: 90%;
+      padding: 5px;
+      text-align: center; }
+      .card-container .information .collaborators-input:focus {
+        outline: none; }
+    .card-container .information .collaborators {
+      border: 1px solid black;
+      color: #FEFEFE;
+      font-size: 15px;
+      margin-top: 20px; }
+    .card-container .information .collab-card-top {
+      padding: 15px 15px 30px 15px;
+      flex: 1;
       align-items: stretch; }
-      .card-container .information .collab-card-bottom .right .title {
-        color: #FEFEFE; }
-      .card-container .information .collab-card-bottom .right .info {
-        color: #FEFEFE; }
-  .card-container .information .inline-edit {
-    width: 100px;
-    word-wrap: break-word;
-    font-weight: none;
-    flex: 1;
-    align-items: stretch; }
-  .card-container .information .center {
-    text-align: center; }
-  .card-container .information .btn-success {
-    background-color: #03CEA1;
-    border-color: #03CEA1;
-    border-radius: 0;
-    width: 90%;
-    padding: 2px 6px 2px 2px;
-    margin: 2px; }
-    .card-container .information .btn-success:hover {
-      background-color: #b2baef;
-      border-color: #b2baef; }
+      .card-container .information .collab-card-top .left {
+        padding: 20px;
+        flex: 1;
+        align-items: stretch; }
+        .card-container .information .collab-card-top .left .title {
+          color: #FEFEFE; }
+        .card-container .information .collab-card-top .left .info {
+          color: #FEFEFE; }
+      .card-container .information .collab-card-top .right {
+        padding: 20px;
+        flex: 1;
+        align-items: stretch; }
+        .card-container .information .collab-card-top .right .title {
+          color: #FEFEFE; }
+        .card-container .information .collab-card-top .right .info {
+          color: #FEFEFE; }
+    .card-container .information .collab-card-bottom {
+      padding: 0px 15px 30px 15px;
+      flex: 1;
+      align-items: stretch; }
+      .card-container .information .collab-card-bottom .left {
+        padding: 20px;
+        flex: 1;
+        align-items: stretch; }
+        .card-container .information .collab-card-bottom .left .title {
+          color: #FEFEFE; }
+        .card-container .information .collab-card-bottom .left .info {
+          color: #FEFEFE; }
+      .card-container .information .collab-card-bottom .right {
+        padding: 20px;
+        flex: 1;
+        height: 200%;
+        width: 100%;
+        align-items: stretch; }
+        .card-container .information .collab-card-bottom .right .title {
+          color: #FEFEFE; }
+        .card-container .information .collab-card-bottom .right .info {
+          color: #FEFEFE; }
+    .card-container .information .inline-edit {
+      width: 100px;
+      word-wrap: break-word;
+      font-weight: none;
+      flex: 1;
+      align-items: stretch; }
+    .card-container .information .center {
+      text-align: center; }
+    .card-container .information .btn-success {
+      background-color: #03CEA1;
+      border-color: #03CEA1;
+      border-radius: 0;
+      width: 90%;
+      padding: 2px 6px 2px 2px;
+      margin: 2px; }
+      .card-container .information .btn-success:hover {
+        background-color: #b2baef;
+        border-color: #b2baef; }
 
 .dashboard-container {
   height: 100%;
@@ -191,6 +219,7 @@ html {
 
 .invitation {
   border: 2px solid white;
+  width: 150px;
   color: black; }
 
 .iSubmit {
@@ -199,6 +228,9 @@ html {
   color: white;
   height: 6;
   border: none; }
+
+.pending {
+  margin-top: 25px; }
 
 .tabs {
   margin-top: -50px; }
@@ -238,6 +270,10 @@ html {
   border-top: 2px solid #3498db;
   border-bottom: 0;
   color: #ffffff; }
+
+.option {
+  text-align: center;
+  margin-left: 25px; }
 
 .navbar {
   height: 32px;

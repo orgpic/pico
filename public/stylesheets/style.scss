@@ -31,7 +31,7 @@ $translucentred: rgba(225,91,105,0.95);
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 @import url('https://fonts.googleapis.com/css?family=Work+Sans');
 @import url('https://fonts.googleapis.com/css?family=Libre+Franklin');
-
+@import url("https://use.fontawesome.com/30117f7f9d.js");
 $work: 'Work Sans', sans-serif;
 $franklin: 'Libre Franklin', sans-serif;
 $dosis: "Dosis", Helvetica, Arial, sans-serif;
@@ -43,6 +43,12 @@ body {
   height: 100%;
   width: 100%;
   overflow: hidden;
+}
+select {
+
+      background-color: $translucentdarkpurple;
+      color: $translucentdarkpurple;
+      background: $translucentdarkpurple; 
 }
 
 #app {
@@ -110,6 +116,10 @@ html {
 }
 
 .card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   .header {
     padding: 10px 0 0 10px;
     border-bottom: 1px solid $offblack;
@@ -121,14 +131,17 @@ html {
     padding-bottom: 30px;
   }
   .information {
-    padding: 20px;
+    padding-top: 50px;
+    padding-bottom: 20px;
     color: $themewhite;
+    border: 1px solid black;
+    width: 90%;
+    box-shadow: 2px 2px black;
     .title {
       color: $themewhite;
-      font-size: 16px;
-      padding-top: 7px;
+      font-size: 24px;
     }
-
+  
     .info {
       font-size: 15px;
       color: $themewhite;
@@ -141,19 +154,31 @@ html {
     }
 
     .collaborators {
-      font-size: 25px;
       float: none;
+      box-shadow: 3px 3px black;
+      padding: 5px;
+      width: 110%;
+
       select {
-        color: #f5f5f5;
-        background-color: rgba(36, 35, 39, 0.8);
+        color: white;
+        background-color: $translucentdarkpurple;
         font-size: 15px;
-        cursor: pointer;
       }
       i {
         cursor: pointer;
+        margin-left: 10px;
+        margin-right: 10px;
+        border:    1px;
+        border-radius: 10px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        width: 80px;
+        text-align: center;
       }
+      
     }
 
+    
     .none {
       font-size: 25px;
       color: $offwhite;
@@ -172,17 +197,17 @@ html {
       width: 90%;
       padding: 5px;
       text-align: center;
-
       &:focus {
         outline: none;
       }
     }
 
-    // .collaborators {
-    //   font-size: 25px;
-    //   color: $themewhite;
-    // }
-
+    .collaborators {
+      border: 1px solid black;
+      color: $themewhite;
+      font-size: 15px;    
+      margin-top: 20px   
+    }
     .collab-card-top {
       padding: 15px 15px 30px 15px;
       flex: 1;
@@ -313,6 +338,7 @@ html {
 
 .invitation {
   border: 2px solid white;
+  width: 150px;
   color: black;
 }
 
@@ -322,6 +348,10 @@ html {
   color: white;
   height:6;
   border: none;
+}
+
+.pending {
+  margin-top: 25px;
 }
 
 .tabs {
@@ -382,7 +412,10 @@ html {
 
 
 
-
+.option {
+      text-align: center;
+      margin-left: 25px;
+    }
 
 
 
