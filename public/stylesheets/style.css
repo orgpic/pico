@@ -53,13 +53,13 @@ html {
   font-size: 1.3em; }
 
 .card-container {
+  overflow: none;
   display: flex;
   align-items: center;
   flex-direction: column; }
   .card-container .header {
     padding: 10px 0 0 10px;
     border-bottom: 1px solid #242327;
-    background-color: rgba(38, 38, 38, 0.6);
     text-align: center;
     color: rgba(255, 255, 255, 0.4);
     font-size: 1.3em;
@@ -71,128 +71,133 @@ html {
     color: #FEFEFE;
     border: 1px solid black;
     width: 90%;
-    justify-content: space-between;
-    box-shadow: 2px 2px black; }
-    .card-container .information .title {
-      color: #FEFEFE;
-      font-size: 24px; }
-    .card-container .information .info {
-      font-size: 15px;
-      color: #FEFEFE;
-      padding-bottom: 10px; }
-    .card-container .information .editing {
-      color: black;
-      text-align: center; }
-    .card-container .information .none {
-      font-size: 25px;
-      color: #F4F6F7; }
-    .card-container .information form {
-      width: 100%;
-      padding: 0;
-      margin: 0; }
-    .card-container .information .collaborators-input {
-      margin: 5px;
-      background: rgba(36, 35, 39, 0.6);
-      border: 0;
-      color: #FEFEFE;
-      width: 90%;
-      padding: 5px;
-      text-align: center; }
-      .card-container .information .collaborators-input:focus {
-        outline: none; }
-    .card-container .information .collab-card-top {
-      width: 150%;
-      padding: 15px 15px 30px 15px;
-      flex: 1; }
-      .card-container .information .collab-card-top .left {
-        padding: 20px;
-        flex: 1;
-        align-items: stretch; }
-        .card-container .information .collab-card-top .left .title {
-          color: #FEFEFE; }
-        .card-container .information .collab-card-top .left .info {
-          color: #FEFEFE; }
-        .card-container .information .collab-card-top .left .collaborators {
-          float: none;
-          padding: 5px;
-          border: 2px solid black; }
-          .card-container .information .collab-card-top .left .collaborators .columnContent {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between; }
-      .card-container .information .collab-card-top .right {
-        padding: 20px;
-        flex: 1;
-        align-items: stretch; }
-        .card-container .information .collab-card-top .right .title {
-          color: #FEFEFE; }
-        .card-container .information .collab-card-top .right .info {
-          color: #FEFEFE; }
-        .card-container .information .collab-card-top .right .collaborators {
-          float: none;
-          border: 2px solid black;
-          padding: 5px; }
-          .card-container .information .collab-card-top .right .collaborators .columnContent {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between; }
-          .card-container .information .collab-card-top .right .collaborators select {
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            width: 60px;
-            color: white;
-            background-color: rgba(91, 105, 225, 0.5);
-            font-size: 15px; }
-          .card-container .information .collab-card-top .right .collaborators i {
-            cursor: pointer;
-            margin-left: 10px;
-            margin-right: 10px;
-            border: 1px;
-            border-radius: 10px;
-            margin-top: 4px;
-            margin-bottom: 4px;
-            text-align: center; }
-    .card-container .information .collab-card-bottom {
-      padding: 0px 15px 30px 15px;
-      flex: 1;
-      align-items: stretch; }
-      .card-container .information .collab-card-bottom .left {
-        padding: 20px;
-        flex: 1;
-        align-items: stretch; }
-        .card-container .information .collab-card-bottom .left .title {
-          color: #FEFEFE; }
-        .card-container .information .collab-card-bottom .left .info {
-          color: #FEFEFE; }
-      .card-container .information .collab-card-bottom .right {
-        padding: 20px;
-        flex: 1;
-        height: 200%;
+    overflow-y: auto;
+    box-shadow: 2px 2px black;
+    height: 180%; }
+    .card-container .information .collaboratorRow {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 90%; }
+      .card-container .information .collaboratorRow .title {
+        color: #FEFEFE;
+        font-size: 24px; }
+      .card-container .information .collaboratorRow .info {
+        font-size: 15px;
+        color: #FEFEFE;
+        padding-bottom: 10px; }
+      .card-container .information .collaboratorRow .editing {
+        color: black;
+        text-align: center; }
+      .card-container .information .collaboratorRow .none {
+        font-size: 25px;
+        color: #F4F6F7; }
+      .card-container .information .collaboratorRow form {
         width: 100%;
+        padding: 0;
+        margin: 0; }
+      .card-container .information .collaboratorRow .collaborators-input {
+        margin: 5px;
+        background: rgba(36, 35, 39, 0.6);
+        border: 0;
+        color: #FEFEFE;
+        width: 90%;
+        padding: 5px;
+        text-align: center; }
+        .card-container .information .collaboratorRow .collaborators-input:focus {
+          outline: none; }
+      .card-container .information .collaboratorRow .collab-card-top {
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        width: 190%;
+        flex: 1; }
+        .card-container .information .collaboratorRow .collab-card-top .left {
+          margin-left: -55px;
+          width: 160%;
+          padding: 20px;
+          flex: 1;
+          align-items: stretch; }
+          .card-container .information .collaboratorRow .collab-card-top .left .title {
+            color: #FEFEFE; }
+          .card-container .information .collaboratorRow .collab-card-top .left .info {
+            color: #FEFEFE; }
+          .card-container .information .collaboratorRow .collab-card-top .left .collaborators {
+            width: 100%;
+            padding: 5px;
+            border: 2px solid black; }
+        .card-container .information .collaboratorRow .collab-card-top .right {
+          width: 160%;
+          padding: 20px;
+          flex: 1; }
+          .card-container .information .collaboratorRow .collab-card-top .right .title {
+            color: #FEFEFE; }
+          .card-container .information .collaboratorRow .collab-card-top .right .info {
+            color: #FEFEFE; }
+          .card-container .information .collaboratorRow .collab-card-top .right .collaborators {
+            border: 2px solid black;
+            padding: 5px; }
+            .card-container .information .collaboratorRow .collab-card-top .right .collaborators .columnContent {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-around; }
+              .card-container .information .collaboratorRow .collab-card-top .right .collaborators .columnContent select {
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                width: 60px;
+                color: white;
+                background-color: rgba(91, 105, 225, 0.5);
+                font-size: 15px; }
+              .card-container .information .collaboratorRow .collab-card-top .right .collaborators .columnContent i {
+                cursor: pointer;
+                margin-left: 10px;
+                margin-right: 10px;
+                border: 1px;
+                border-radius: 10px;
+                margin-top: 4px;
+                margin-bottom: 4px;
+                text-align: center; }
+      .card-container .information .collaboratorRow .collab-card-bottom {
+        padding: 0px 15px 30px 15px;
+        flex: 1;
         align-items: stretch; }
-        .card-container .information .collab-card-bottom .right .title {
-          color: #FEFEFE; }
-        .card-container .information .collab-card-bottom .right .info {
-          color: #FEFEFE; }
-    .card-container .information .inline-edit {
-      width: 100px;
-      word-wrap: break-word;
-      font-weight: none;
-      flex: 1;
-      align-items: stretch; }
-    .card-container .information .center {
-      text-align: center; }
-    .card-container .information .btn-success {
-      background-color: #03CEA1;
-      border-color: #03CEA1;
-      border-radius: 0;
-      width: 90%;
-      padding: 2px 6px 2px 2px;
-      margin: 2px; }
-      .card-container .information .btn-success:hover {
-        background-color: #b2baef;
-        border-color: #b2baef; }
+        .card-container .information .collaboratorRow .collab-card-bottom .left {
+          padding: 20px;
+          flex: 1;
+          align-items: stretch; }
+          .card-container .information .collaboratorRow .collab-card-bottom .left .title {
+            color: #FEFEFE; }
+          .card-container .information .collaboratorRow .collab-card-bottom .left .info {
+            color: #FEFEFE; }
+        .card-container .information .collaboratorRow .collab-card-bottom .right {
+          padding: 20px;
+          flex: 1;
+          height: 200%;
+          width: 100%;
+          align-items: stretch; }
+          .card-container .information .collaboratorRow .collab-card-bottom .right .title {
+            color: #FEFEFE; }
+          .card-container .information .collaboratorRow .collab-card-bottom .right .info {
+            color: #FEFEFE; }
+      .card-container .information .collaboratorRow .inline-edit {
+        width: 100px;
+        word-wrap: break-word;
+        font-weight: none;
+        flex: 1;
+        align-items: stretch; }
+      .card-container .information .collaboratorRow .center {
+        text-align: center; }
+      .card-container .information .collaboratorRow .btn-success {
+        background-color: #03CEA1;
+        border-color: #03CEA1;
+        border-radius: 0;
+        width: 90%;
+        padding: 2px 6px 2px 2px;
+        margin: 2px; }
+        .card-container .information .collaboratorRow .btn-success:hover {
+          background-color: #b2baef;
+          border-color: #b2baef; }
 
 .dashboard-container {
   height: 100%;
@@ -222,7 +227,6 @@ html {
         margin: 10px, 20px, 5px, 5px;
         box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.5);
         background-size: cover;
-        overflow-x: auto;
         height: 100%;
         width: 100%; }
 
@@ -737,6 +741,253 @@ select {
     width: 100%;
     form-inputs-height: 100%;
     form-inputs-width: 100%; }
+
+.video-home-page {
+  overflow: auto; }
+  .video-home-page .video-homepage-container {
+    width: 100%;
+    height: 481px;
+    background-color: #FFFFFF;
+    overflow: auto; }
+    .video-home-page .video-homepage-container .homepage-landing {
+      background-image: url("/images/homepage.svg");
+      width: 100%;
+      height: 481px;
+      overflow: hidden; }
+      .video-home-page .video-homepage-container .homepage-landing .overlay {
+        opacity: 0.85;
+        background: rgba(99, 135, 152, 0.5);
+        height: 481px;
+        text-align: center; }
+        .video-home-page .video-homepage-container .homepage-landing .overlay .logo-container {
+          padding-top: 40px; }
+          .video-home-page .video-homepage-container .homepage-landing .overlay .logo-container .title {
+            font-family: 'Dosis-Regular';
+            font-size: 8em;
+            color: #FFFFFF;
+            padding-top: 20px; }
+        .video-home-page .video-homepage-container .homepage-landing .overlay .description-container {
+          padding: 30px; }
+          .video-home-page .video-homepage-container .homepage-landing .overlay .description-container span {
+            font-family: 'AdventPro-Regular';
+            font-size: 24px;
+            color: #FFFFFF; }
+        .video-home-page .video-homepage-container .homepage-landing .overlay .homepage-form {
+          padding: 20px; }
+          .video-home-page .video-homepage-container .homepage-landing .overlay .homepage-form input {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 5px; }
+            .video-home-page .video-homepage-container .homepage-landing .overlay .homepage-form input .form-control {
+              border: 0px; }
+              .video-home-page .video-homepage-container .homepage-landing .overlay .homepage-form input .form-control:focus {
+                border: 0px; }
+  .video-home-page .video-table-container {
+    width: 100%;
+    padding: 10px;
+    background: #242327;
+    overflow: auto; }
+    .video-home-page .video-table-container .video-table {
+      padding: 30px; }
+
+.video-entry-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 5px; }
+  .video-entry-image img {
+    width: 100%;
+    vertical-align: top; }
+  .video-entry-image:after, .video-entry-image:before {
+    position: absolute;
+    opacity: 0;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s; }
+  .video-entry-image:after {
+    content: '\A';
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6); }
+  .video-entry-image:before {
+    width: 100%;
+    color: #fff;
+    z-index: 1;
+    bottom: 0;
+    padding: 4px 10px;
+    text-align: center;
+    background: red;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box; }
+  .video-entry-image:hover:after, .video-entry-image:hover:before {
+    opacity: 1; }
+
+.video-page-container {
+  background-color: black;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  flex: 1;
+  overflow: hidden; }
+  .video-page-container .title {
+    font-size: 1.5em;
+    padding: 20px;
+    text-align: center;
+    font-family: Dosis-Regular;
+    font-size: 2em;
+    color: #638898;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 50px;
+    flex: 1;
+    box-sizing: border-box;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center; }
+  .video-page-container .body-container {
+    padding-left: 80px;
+    padding-right: 80px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%; }
+    .video-page-container .body-container .video-player-container {
+      height: 100%;
+      width: 50%;
+      margin: 0;
+      padding: 0;
+      flex: 1;
+      justify-content: center;
+      flex-wrap: wrap;
+      box-sizing: border-box;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      padding-top: 20px;
+      margin-bottom: 0;
+      flex-direction: row; }
+    .video-page-container .body-container .terminal-menu {
+      height: 30px;
+      width: 100%;
+      flex: 1;
+      flex-wrap: wrap; }
+      .video-page-container .body-container .terminal-menu .ion-ios-folder-outline {
+        color: #03CEA1;
+        font-weight: bold;
+        float: right;
+        padding-right: 20px;
+        font-size: 20px;
+        cursor: pointer; }
+        .video-page-container .body-container .terminal-menu .ion-ios-folder-outline:hover {
+          color: #7156FB; }
+    .video-page-container .body-container .terminal-container {
+      height: 100%;
+      max-height: 600px;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      flex: 1;
+      flex-direction: row;
+      flex-wrap: wrap;
+      overflow-y: auto; }
+      .video-page-container .body-container .terminal-container #terminal {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        padding-left: 10px; }
+    .video-page-container .body-container .split-pane {
+      height: 100%;
+      width: 50%;
+      flex: 1;
+      justify-content: center;
+      flex-wrap: wrap;
+      box-sizing: border-box;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center; }
+      .video-page-container .body-container .split-pane .code-editor-container {
+        height: 80%;
+        width: 100%;
+        padding: 20px;
+        margin: 0;
+        flex: 1;
+        flex-wrap: wrap;
+        overflow-y: auto; }
+        .video-page-container .body-container .split-pane .code-editor-container .code-editor-menu {
+          padding: 0;
+          margin: 0;
+          flex: 1;
+          flex-wrap: wrap; }
+          .video-page-container .body-container .split-pane .code-editor-container .code-editor-menu .ion-ios-play-outline {
+            color: #03CEA1;
+            font-size: 25px;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+            float: right; }
+            .video-page-container .body-container .split-pane .code-editor-container .code-editor-menu .ion-ios-play-outline:hover {
+              color: #7156FB; }
+        .video-page-container .body-container .split-pane .code-editor-container .current-file {
+          color: #03CEA1;
+          font-weight: bold;
+          flex: 1;
+          flex-wrap: wrap;
+          float: right; }
+        .video-page-container .body-container .split-pane .code-editor-container .code-saved-indicator {
+          color: #03CEA1;
+          font-weight: bold;
+          flex: 1;
+          flex-wrap: wrap;
+          float: left; }
+        .video-page-container .body-container .split-pane .code-editor-container .code-modified-indicator {
+          color: #E1905B;
+          font-weight: bold;
+          flex: 1;
+          flex-wrap: wrap;
+          float: left; }
+      .video-page-container .body-container .split-pane .file-browser-container {
+        height: 100%;
+        max-height: 600px;
+        width: 100%;
+        flex: 1;
+        flex-direction: row;
+        flex-wrap: wrap;
+        overflow-y: auto;
+        color: #F4F6F7;
+        cursor: default;
+        padding: 0px 0px 0px 2px;
+        font-size: 15px; }
+        .video-page-container .body-container .split-pane .file-browser-container .fileBrowser:hover {
+          background-color: #242327; }
+        .video-page-container .body-container .split-pane .file-browser-container .ion-ios-arrow-down {
+          color: #F4F6F7;
+          font-size: 15px; }
+        .video-page-container .body-container .split-pane .file-browser-container .ion-ios-arrow-up {
+          color: #F4F6F7;
+          font-size: 15px; }
+
+.video-description-container {
+  width: 100%;
+  background-color: #191919; }
+  .video-description-container .description-text {
+    margin-top: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #638898;
+    font-size: 1.5em;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+    text-overflow: ellipsis; }
 
 .Resizer {
   background: #000;
