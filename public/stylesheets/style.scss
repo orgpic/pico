@@ -1244,6 +1244,11 @@ select {
   color: $offwhite;
   cursor: pointer;
 
+  i {
+    font-size: 1.6em;
+    margin-left: 5px;
+  }
+
   .chatText {
     color: white;
   }
