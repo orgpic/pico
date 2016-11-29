@@ -3,19 +3,19 @@ const Messages = require('./Messages.jsx');
 const axios = require('axios');
 
 class Chatbox extends React.Component {
+
   constructor(props) {
     super(props);
     this.socket = io();
     this.state = {
       username: this.props.username,
-      curMessage: '',
       containerName: this.props.containerName,
       active: false,
       messages: []
     };
     this.changeMessageInput = this.changeMessageInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
+    this.curMessage = '';
   }
 
   componentDidUpdate() {
@@ -82,9 +82,10 @@ class Chatbox extends React.Component {
   }
 
   changeMessageInput(event) {
-    this.setState({
-      curMessage: event.target.value
-    });
+    // this.setState({
+    //   curMessage: event.target.value
+    // });
+    this.curMessage = event.target.value;
   }
 
   handleSubmit(e, message) {
@@ -153,7 +154,7 @@ class Chatbox extends React.Component {
             <Messages messages={this.state.messages} username={this.state.username}/>
             <form onSubmit={
               function(e) {
-                this.handleSubmit(e, this.state.curMessage)
+                this.handleSubmit(e, this.curMessage)
               }.bind(this)}>
                 <div className="form-inputs">
                   <input 
