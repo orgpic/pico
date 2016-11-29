@@ -947,6 +947,16 @@ select {
 
 .message {
   color: white;
+  display: block;
+  .message-user {
+    font-weight: bold;
+    color: $offblack;
+  }
+
+  &.own {
+    text-align: right;
+  }
+
 }
 
 .chat-box-container {

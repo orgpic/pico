@@ -34,7 +34,15 @@ class Chatbox extends React.Component {
         let arr = [];
 
         for (var i = res.data.length - 1; i >= 0; i--) {
-          arr.push(res.data[i].userID + ': ' + res.data[i].message);
+          var msgObj = {
+            user: res.data[i].userID,
+            text: res.data[i].message,
+            time: res.data[i].createdAt
+          };
+
+          console.log(msgObj)
+          // arr.push(res.data[i].userID + ': ' + res.data[i].message);
+          arr.push(msgObj);
         }
 
         context.setState({
@@ -46,11 +54,11 @@ class Chatbox extends React.Component {
       });
 
     this.socket.on('/CHAT/' + nextProps.containerName, function(msg) {
-      if(context.state.username !== msg.sender) {
-        const messageFromSender = msg.sender + ': ' + msg.msg;
-        const messageArray = context.state.messages.slice();
-        messageArray.push(messageFromSender);
+      console.log('received chat', msg);
 
+      if(context.state.username !== msg.msg.user) {
+        const messageArray = context.state.messages.slice();
+        messageArray.push(msg.msg);
 
         context.setState({
           messages: messageArray,
@@ -81,9 +89,18 @@ class Chatbox extends React.Component {
 
   handleSubmit(e, message) {
     e.preventDefault();
-    const messageToSend = this.state.username + ': ' + message
+    // const messageToSend = this.state.username + ': ' + message
+    // const date = Date.now();
+    // const timestamp = date.toString();
+    const messageToSend = {
+      user: this.state.username,
+      text: message,
+      time: new Date().toString()
+    };
+
+
     document.getElementById('messageText').value = '';
-    console.log(message);
+    // console.log(message);
     const messageArray = this.state.messages.slice();
     messageArray.push(messageToSend);
 
@@ -91,7 +108,17 @@ class Chatbox extends React.Component {
       messages: messageArray
     });
 
-    this.socket.emit('/CHAT/', {msg: message, sender: this.state.username, containerName: this.state.containerName});
+    axios.post('/messages', 
+      { username: messageToSend.user,
+        containerName: this.state.containerName,
+        message: messageToSend.text
+      }).then(function(res) {
+        console.log('Successfully saved message to the database');
+      }).catch(function(err){
+        console.error('Failed to save message to database', err);
+      });
+
+    this.socket.emit('/CHAT/', {msg: messageToSend, containerName: this.state.containerName});
   }
 
   updateScroll() {
@@ -105,7 +132,7 @@ class Chatbox extends React.Component {
   //   const node = document.getElementById("chatText");
   //   node.scrollTop = node.scrollHeight;
   // }
-
+//
   handleChangeActive(e) {
     e.preventDefault();
     this.setState({
@@ -118,7 +145,7 @@ class Chatbox extends React.Component {
       return (
           <div className="chat-box-container">
             <div className="minimize" ><i className="ion-minus" onClick={this.handleChangeActive.bind(this)}></i></div>
-            <Messages messages={this.state.messages} />
+            <Messages messages={this.state.messages} username={this.state.username}/>
             <form onSubmit={
               function(e) {
                 this.handleSubmit(e, this.state.curMessage)
