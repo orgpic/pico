@@ -32,17 +32,26 @@ router.post('/submitVideo', function(req, res, next) {
 				videoImage = 'http://img.youtube.com/vi/' + req.body.videoId + '/default.jpg';
 			}
 
-
-			Video.create({
-				videoId: req.body.videoId,
-				videoUrl: req.body.videoUrl,
-				videoTitle: snippet.title,
-				videoDescription: snippet.description,
-				videoImage: videoImage
+			Video.findOrCreate({
+				where: {
+					videoId: req.body.videoId
+				},
+				defaults: {
+					videoId: req.body.videoId,
+					videoUrl: req.body.videoUrl,
+					videoTitle: snippet.title,
+					videoDescription: snippet.description,
+					videoImage: videoImage
+				}
 			})
-			.then(function() {
-				console.log('successfully sent to the database');
-				res.send(201);
+			.then(function(info) {
+				const created = info[1];
+
+				if (created) {
+					res.send('Video already exists in database');
+				} else {
+					res.send('Successfully saved in the database');
+				}
 			})
 		}
 	});
