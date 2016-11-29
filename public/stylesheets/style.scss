@@ -993,6 +993,10 @@ select {
     color: $offwhite;
     overflow: auto;
 
+    a {
+      color: $offwhite;
+    }
+
   }
 
   .collaborators-input {
@@ -1000,7 +1004,8 @@ select {
     text-decoration: none;
     border: 0px;
     color: $offwhite;
-    margin-left: 5px; 
+    margin-left: 5px;
+    width: 96%;
 
     &:focus {
       text-decoration: none;

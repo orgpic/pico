@@ -1,10 +1,11 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-const Message = require('./Message.jsx')
+const Message = require('./Message.jsx');
+const TimeAgo = require('react-timeago');
 
 
 const Messages = ({messages, username}) => {
-	console.log('these are the messages: ', messages);
+	// console.log('these are the messages: ', messages);
 	return (
 		<div className="chatText" id="chatText">
 		{
