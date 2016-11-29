@@ -76,27 +76,8 @@ html {
    }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //DASHBOARD
-
-
 .profile-picture-container {
-
   .img-container {
     text-align: center;
     padding-top: 25px;
@@ -116,14 +97,13 @@ html {
 }
 
 .card-container {
+  overflow: none;
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
   .header {
     padding: 10px 0 0 10px;
     border-bottom: 1px solid $offblack;
-    background-color: rgba(38,38,38,0.6);
     text-align: center;
     color: rgba(255,255,255, 0.4);;
     font-size: 1.3em;
@@ -136,162 +116,174 @@ html {
     color: $themewhite;
     border: 1px solid black;
     width: 90%;
+    overflow-y: auto;
     box-shadow: 2px 2px black;
-    .title {
-      color: $themewhite;
-      font-size: 24px;
-    }
-  
-    .info {
-      font-size: 15px;
-      color: $themewhite;
-      padding-bottom: 10px;
-    }
-
-    .editing {
-      color: black;
-      text-align: center;
-    }
-
-    .collaborators {
-      float: none;
-      box-shadow: 3px 3px black;
-      padding: 5px;
-      width: 110%;
-
-      select {
-        color: white;
-        background-color: $translucentdarkpurple;
-        font-size: 15px;
+    height: 180%;
+    .collaboratorRow {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 90%;
+      .title {
+        color: $themewhite;
+        font-size: 24px;
       }
-      i {
-        cursor: pointer;
-        margin-left: 10px;
-        margin-right: 10px;
-        border:    1px;
-        border-radius: 10px;
-        margin-top: 4px;
-        margin-bottom: 4px;
-        width: 80px;
+    
+      .info {
+        font-size: 15px;
+        color: $themewhite;
+        padding-bottom: 10px;
+      }
+
+      .editing {
+        color: black;
         text-align: center;
       }
       
-    }
-
-    
-    .none {
-      font-size: 25px;
-      color: $offwhite;
-    }
-
-    form {
-      width: 100%;
-      padding: 0;
-      margin: 0;
-    }
-    .collaborators-input {
-      margin: 5px;
-      background: rgba(36, 35, 39, 0.6);
-      border: 0;
-      color: $themewhite;
-      width: 90%;
-      padding: 5px;
-      text-align: center;
-      &:focus {
-        outline: none;
-      }
-    }
-
-    .collaborators {
-      border: 1px solid black;
-      color: $themewhite;
-      font-size: 15px;    
-      margin-top: 20px   
-    }
-    .collab-card-top {
-      padding: 15px 15px 30px 15px;
-      flex: 1;
-      align-items: stretch;
-      .left {
-        padding: 20px;
-        flex: 1;
-        align-items: stretch;
-        .title {
-          color: $themewhite;
-        }
-        .info {
-          color: $themewhite;
-        }
+      .none {
+        font-size: 25px;
+        color: $offwhite;
       }
 
-      .right {
-        padding: 20px;
-        flex: 1;
-        align-items: stretch;
-        .title {
-          color: $themewhite;
-        }
-        .info {
-          color: $themewhite;
-        }
-      }
-    }
-
-    .collab-card-bottom {
-      padding: 0px 15px 30px 15px;
-      flex: 1;
-      align-items: stretch;
-
-      .left {
-        padding: 20px;
-        flex: 1;
-        align-items: stretch;
-        .title {
-          color: $themewhite;
-        }
-        .info {
-          color: $themewhite;
-        }
-      }
-
-      .right {
-        padding: 20px;
-        flex: 1;
-        height: 200%;
+      form {
         width: 100%;
-        align-items: stretch;
-        .title {
-          color: $themewhite;
-        }
-        .info {
-          color: $themewhite;
+        padding: 0;
+        margin: 0;
+      }
+      .collaborators-input {
+        margin: 5px;
+        background: rgba(36, 35, 39, 0.6);
+        border: 0;
+        color: $themewhite;
+        width: 90%;
+        padding: 5px;
+        text-align: center;
+        &:focus {
+          outline: none;
         }
       }
-    }
+      .collab-card-top {
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        width: 190%;
+        flex: 1;
+        .left {
+          margin-left: -55px;
+          width: 160%;
+          padding: 20px;
+          flex: 1;
+          align-items: stretch;
+          .title {
+            color: $themewhite;
+          }
+          .info {
+            color: $themewhite;
+          }
+          .collaborators {
+            width: 100%;
+            padding: 5px;
+            border: 2px solid black;
+          }
+        }
+        .right {
+          width: 160%;
+          padding: 20px;
+          flex: 1;
+          .title {
+            color: $themewhite;
+          }
+          .info {
+            color: $themewhite;
+          }
+          
+          .collaborators {
+            border: 2px solid black;
+            padding: 5px;
+            .columnContent{
+              display: flex;
+              flex-direction:row;
+              justify-content:space-around;
+              select {
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                width: 60px;
+                color: white;
+                background-color: $translucentdarkpurple;
+                font-size: 15px;
+              }
+              i {
+                cursor: pointer;
+                margin-left: 10px;
+                margin-right: 10px;
+                border:    1px;
+                border-radius: 10px;
+                margin-top: 4px;
+                margin-bottom: 4px;
+                text-align: center;
+              } 
+            }     
+          }
+        }
+      }
 
-    .inline-edit {
-      width: 100px;
-      word-wrap: break-word;
-      font-weight: none;
-      flex: 1;
-      align-items: stretch;
-    }
+      .collab-card-bottom {
+        padding: 0px 15px 30px 15px;
+        flex: 1;
+        align-items: stretch;
 
-    .center {
-      text-align: center;
-    }
+        .left {
+          padding: 20px;
+          flex: 1;
+          align-items: stretch;
+          .title {
+            color: $themewhite;
+          }
+          .info {
+            color: $themewhite;
+          }
+        }
 
-    .btn-success {
-      background-color: $brightgreen;
-      border-color: $brightgreen;
-      border-radius: 0;
-      width: 90%;
-      padding: 2px 6px 2px 2px;
-      margin: 2px;
+        .right {
+          padding: 20px;
+          flex: 1;
+          height: 200%;
+          width: 100%;
+          align-items: stretch;
+          .title {
+            color: $themewhite;
+          }
+          .info {
+            color: $themewhite;
+          }
+        }
+      }
 
-      &:hover {
-       background-color: $purpleblue;
-       border-color: $purpleblue; 
+      .inline-edit {
+        width: 100px;
+        word-wrap: break-word;
+        font-weight: none;
+        flex: 1;
+        align-items: stretch;
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      .btn-success {
+        background-color: $brightgreen;
+        border-color: $brightgreen;
+        border-radius: 0;
+        width: 90%;
+        padding: 2px 6px 2px 2px;
+        margin: 2px;
+
+        &:hover {
+         background-color: $purpleblue;
+         border-color: $purpleblue; 
+        }
       }
     }
   }
@@ -328,7 +320,6 @@ html {
         margin: 10px, 20px, 5px, 5px;
         box-shadow: 3px 3px 1px rgba(0, 0, 0,0.5);
         background-size: cover;
-        overflow-x: auto;
         height: 100%;
         width: 100%;
       }
