@@ -1,5 +1,7 @@
 const React = require('react');
 const axios = require('axios');
+const FileSaver = require('file-saver');
+const FileHelpers = require('../../utils/FileHelpers.js');
 
 class FileBrowser extends React.Component {
   constructor(props) {
@@ -72,18 +74,18 @@ class FileBrowser extends React.Component {
     console.log(file);
     axios.post('/docker/cmd', {cmd: 'download ' + file, containerName: this.state.containerName})
     .then(function(res) {
+      var str2bytes = function(str) {
+        var bytes = new Uint8Array(str.length);
+        for (var i=0; i<str.length; i++) {
+          bytes[i] = str.charCodeAt(i);
+        }
+        return bytes;
+      }
       var download = function(filename, text) {
-        var element = document.createElement('a');
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-        element.setAttribute('download', filename);
-
-        element.style.display = 'none';
-        document.body.appendChild(element);
-
-        element.click();
-
-        document.body.removeChild(element);
-      };
+        text = text.replace(/\n/g, '');
+        var blob = new Blob(text.split(' ').map(function(txt) { return str2bytes(FileHelpers.hex2a(txt)); }), {type: "application/zip"});
+        FileSaver.saveAs(blob, filename);
+      }
       console.log('downloading', res.data.fileContents, 'as', res.data.fileName);
       download(entry, res.data.fileContents);
     });
@@ -137,7 +139,12 @@ class FileBrowser extends React.Component {
               } else if (entry.type === "folder" && entry.name !== ".") {
                 return (
                   <div id={entry.name} className="fileBrowser" onDoubleClick={(e) => {context.doubleClick(e, entry.name)}}>
-                    { entry.name === ".." ? <i className="ion-ios-arrow-up">{entry.name}</i> : <i className="ion-ios-arrow-down">{" " + entry.name}</i> }
+                    { entry.name === ".." ? <i className="ion-ios-arrow-up">{entry.name}</i> : 
+                    <div>
+                    <i className="ion-ios-arrow-down">{" " + entry.name}</i> 
+                    <i onClick={(e) => {context.downloadClick(e, entry.name)}} style={{float: 'right', 'padding-right': '15px'}} className="ion-android-arrow-down">Download Zip</i>
+                    </div>
+                    }
                   </div>
                 )
               }

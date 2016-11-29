@@ -237,28 +237,41 @@ router.post('/cmd', function (req, res) {
   } else if (cmd.split(" ")[0] === 'download') {
     console.log('IN DOWNLOAD');
     var fileName = cmd.split(" ")[1];
-    if(fileName.startsWith('/')) {
-      const command = 'cat ' + fileName;
-      docker.runCommand(containerName, command, function(err2, res2) {
-        if(err2) {
-          res.status(200).send(err2);
+    
+    docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
+      if(res1[res1.length - 1] === '\n') res1 = res1.slice(0, res1.length - 1);
+      //const command = 'cat ' + res1 + '/' + fileName;
+      if(fileName.indexOf('/') !== -1) fileName = fileName.slice(fileName.lastIndexOf('/'));
+      const command = 'od -An -vtx1 ' + res1 + '/' + fileName;
+      docker.directoryExists(req.body.containerName, res1 + '/' + fileName, function(dirExists) {
+        //download file
+        if(dirExists.indexOf('Directory exists') === -1) {
+          docker.runCommand(containerName, command, function(err2, res2) {
+            if(err2) {
+              res.status(200).send(err2);
+            } else {
+              res.status(200).send({download: true, fileContents: res2, fileName: fileName});
+            }
+          });
         } else {
-          res.status(200).send({download: true, fileContents: res2, fileName: fileName});
+          //download folder
+          docker.runCommand(containerName, 'zip -FSr ' + fileName + '.zip ' + res1 + '/' + fileName, function(err3, res3) {
+            if(err3) {
+              res.status(200).send(err3);
+            } else {
+              var command = 'od -An -vtx1 ' + res1 + '/' + fileName + '.zip';
+              docker.runCommand(containerName, command, function(err4, res4) {
+                if(err4) {
+                  res.status(200).send(err4);
+                } else {
+                  res.status(200).send({download: true, fileContents: res4, fileName: fileName});
+                }
+              });
+            }
+          });
         }
       });
-    } else {
-      docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
-        if(res1[res1.length - 1] === '\n') res1 = res1.slice(0, res1.length - 1);
-        const command = 'cat ' + res1 + '/' + fileName;
-        docker.runCommand(containerName, command, function(err2, res2) {
-          if(err2) {
-            res.status(200).send(err2);
-          } else {
-            res.status(200).send({download: true, fileContents: res2, fileName: fileName});
-          }
-        });
-      });
-    }
+    });
   } else {
     docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
       console.log('response from cat /picoShell/.pico :', res1);
