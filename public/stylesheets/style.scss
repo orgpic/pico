@@ -648,6 +648,56 @@ select {
     background-color: $offwhite;
     font-family: $lato;
     font-weight: 300;
+    justify-content: center;
+    flex: 1;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 25px 0 25px 0;
+    min-height: 0;
+    min-width: 0;
+    margin: 0 auto;
+
+    .dark {
+      background-image: url('/images/gradient4.png');
+      background-size: cover;
+      padding: 10px 0 10px 0;
+      margin: 0;
+      color: $offwhite;
+      font-size: 2em;
+      min-height: 0;
+      min-width: 0;
+      text-align: center;
+      justify-content: center;
+      flex: 1;
+      flex-wrap: wrap;
+      margin: 0 auto;
+      .slider-container {
+        text-align: center;
+        min-height: 0;
+        min-width: 0;
+        margin: 0 auto;
+        padding: 5px;
+        width: 90%;
+      }
+      .video-entry-home-page {
+        text-align: center;
+        justify-content: center;
+        flex: 1;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+        flex-direction: row;
+        display: inline-block;
+        min-height: 0;
+        min-width: 0;
+        img {
+          width: 250px;
+          margin: 20px 10px 20px 10px;
+        }
+      }
+    }
+
+
 
     .sub-header {
       font-size: 1.3em;

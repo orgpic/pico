@@ -48,6 +48,24 @@ router.post('/submitVideo', function(req, res, next) {
 	});
 });
 
+router.post('/incrementVideoClickCounter', function(req, res) {
+	console.log('incrementing video counter', req.body);
+	Video.findOne({
+		where: {
+			videoId: req.body.videoId
+		}
+	})
+	.then(function(video) {
+		var newCount = video.dataValues.videoClicks + 1;
+		video.update({
+			videoClicks: newCount
+		})
+		.then(function(response) {
+			res.status(201).send(response);
+		})
+	});
+})
+
 router.get('/getVideos', function(req, res, next) {
 	Video.findAll({
 	})
@@ -72,5 +90,20 @@ router.get('/checkVideoIdInDB', function(req, res, next) {
 		res.send(404);
 	});
 });
+
+router.get('/mostPopularVideos', function(req, res) {
+  Video.findAll({
+    limit: 8,
+    order: 'videoClicks DESC'
+  })
+  .then(function(results) {
+  	console.log('in here', results)
+    res.status(200).send(results);
+  })
+  .catch(function(err) {
+    res.status(500).send(err);
+  });
+});
+
 
 module.exports = router;

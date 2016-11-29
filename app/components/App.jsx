@@ -10,6 +10,7 @@ const axios = require('axios');
 const Modal = require('react-modal');
 const VideoHome = require('./VideoHome.jsx');
 const VideoPage = require('./VideoPage.jsx');
+const Slider = require('react-slick');
 const customStyles = {
   content : {
     top                   : '50%',
@@ -22,7 +23,8 @@ const customStyles = {
     width: 600,
     backgroundColor:'rgba(72,72,72,0.55)',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    mostPopularVideos: null
   },
 };
  
@@ -70,6 +72,8 @@ class App extends React.Component {
       console.log('no user');
       console.log(err);
     });
+
+    this.getMostPopularVideos();
   }
 
   GoToLogin() {
@@ -113,9 +117,32 @@ class App extends React.Component {
   changeEmailInput(e) {
     this.setState({email: e.target.value});
   }
-  render() {
-    if (!this.state.authenticated) {
 
+  getMostPopularVideos() {
+    var context = this;
+    axios.get('/videos/mostPopularVideos')
+      .then(function(res) {
+       context.setState({
+        mostPopularVideos: res.data
+       });
+      })
+      .catch(function(err) {
+        console.error(err);
+      })
+  }
+
+  onVideoClick() {
+    console.log('please sign up or log in!!!');
+  }
+
+  render() {
+    const sliderSettings = {
+      lazyLoad: 'ondemand',
+      slidesToShow: 4,
+      slidesToScroll: 1
+    }
+    if (!this.state.authenticated && this.state.mostPopularVideos) {
+      console.log(this.state.mostPopularVideos);
       this.state.authenticate === 'login' ? authenticate = <Login OpenModal={this.OpenModal} GoToSignUp={this.GoToSignUp}/> : authenticate = <SignUp OpenModal={this.OpenModal} GoToLogin={this.GoToLogin}/>;
       return (
         <div> 
@@ -161,6 +188,22 @@ class App extends React.Component {
                     <div className="login">
                       {authenticate}
                     </div>
+                  </div>
+                </div>
+              </div>
+              <div className="info">
+                <div className="dark">
+                Current Most Popular Videos <br/>
+                  <div className="slider-container">
+                    <Slider {...sliderSettings} >
+                    {this.state.mostPopularVideos.map((video, i) => {
+                      return (
+                        <div className="video-entry-home-page">
+                          <img src={video.videoImage}/>
+                        </div>
+                      )
+                    })}
+                    </Slider>
                   </div>
                 </div>
               </div>
@@ -220,7 +263,7 @@ class App extends React.Component {
           </div>
         </div>
       );
-    } else {
+    } else if (this.state.authenticated) {
       return (
         <div className="homepage-container">
           <div className="header">
@@ -245,6 +288,10 @@ class App extends React.Component {
           </div>
         </div>
       );
+    } else {
+      return (
+        <div> Loading... </div>
+      )
     }
   }
 }

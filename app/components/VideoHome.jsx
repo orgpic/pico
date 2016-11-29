@@ -7,6 +7,7 @@ const utils = require('../../utils/videoHelpers.js');
 const bootstrap = require('bootstrap');
 const API_KEY = require('../../utils/keys');
 const NavBar = require('./NavBar.jsx');
+const axios = require('axios');
 
 class VideoHome extends React.Component {
   constructor(props) {
@@ -64,7 +65,7 @@ class VideoHome extends React.Component {
         </div>
         <div className="video-table-container">
           <div className="container">
-            <VideoTable videos={this.state.videoList}/>
+            <VideoTable onVideoClick={this.onVideoClick.bind(this)}videos={this.state.videoList}/>
           </div>
         </div>
       </div>
@@ -87,6 +88,16 @@ class VideoHome extends React.Component {
         console.log('Please enter a valid url');
       }
     }
+  }
+
+  onVideoClick(video) {
+    axios.post('/videos/incrementVideoClickCounter', {videoId: video.videoId})
+      .then(function(res) {
+        console.log('Successfully incremented the counter');
+      })
+      .catch(function(err) {
+        console.error(err);
+      })
   }
 }
 
