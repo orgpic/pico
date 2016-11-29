@@ -87,7 +87,6 @@ router.post('/handleFileBrowserChange', function(req, res) {
     } else {
       docker.runCommand(req.body.containerName, 'cat ' + dir, function(err, response) {
         if(err) {
-          console.log('HFBC ERROR', err);
           res.status(500).send(err);
         } else {
           res.status(200).send({type: 'file', fileContents: response});
@@ -114,13 +113,10 @@ router.post('/handleCodeSave', function (req, res) {
   newCode = newCode.replace(/\"/g, '\\\"');
   newCode = newCode.replace(/'/g, "\\\"");
   var command = 'bash -c "echo -e \'' + newCode + '\' > ' + req.body.filePath + '/' + req.body.fileName + '"'
-  console.log('SAVE_CMD', command);
   docker.runCommand(containerName, command, function(err, response) {
     if (err) {
-      console.log('ERR', err);
       res.status(500).send(err);
     } else {
-      console.log('RESP', response);
       res.status(200).send(response);
     }
   });
@@ -138,22 +134,14 @@ router.post('/cmd', function (req, res) {
     if(newdir === '..') {
       readyToExecute = false;
       var picoRes = req.body.curDir;
-      if(picoRes[picoRes.length - 1] === '\n') picoRes = picoRes.slice(0, picoRes.length - 1);
+      if(picoRes.endsWith('\n')) picoRes = picoRes.slice(0, picoRes.length - 1);
       newdir = picoRes;
       if(newdir.indexOf('/') !== newdir.lastIndexOf('/')) {
         newdir = newdir.slice(0, newdir.lastIndexOf('/'));
       } else {
         newdir = '/';
       }
-
-      const command = 'bash -c "echo ' + newdir + ' > /picoShell/.pico' + '"'; 
-      docker.runCommand(containerName, command, function(err, res1) {
-        if (err) { res.status(200).send(err); } 
-        else { 
-          res.status(200).send({res: res1, pwd: newdir}); 
-        }
-      });
-      
+      res.status(200).send({res: res1, pwd: newdir}); 
     } else if (newdir[0] !== '/') {
       //append newdir to current dir
       readyToExecute = false;
@@ -163,15 +151,7 @@ router.post('/cmd', function (req, res) {
       const dir = picoRes + '/' + newdir;
       docker.directoryExists(containerName, dir, function(dirRes) {
         if(dirRes.indexOf('Directory exists') !== -1) {
-          const command = 'bash -c "echo ' + dir + ' > /picoShell/.pico' + '"'; 
-          //const command = 'bash -c "cd ' + newdir + '"';
-          console.log(command);
-          docker.runCommand(containerName, command, function(err, res1) {
-            if (err) { res.status(200).send(err); } 
-            else { 
-              res.status(200).send({res: res1, pwd: dir}); 
-            }
-          });
+          res.status(200).send({res: res1, pwd: dir}); 
         } else {
           res.status(200).send('Error: Directory not found\n');
         }
@@ -179,19 +159,9 @@ router.post('/cmd', function (req, res) {
       
     }
     if(readyToExecute) {
-      const command = 'bash -c "echo ' + newdir + ' > /picoShell/.pico' + '"';
-      console.log('readyToExecute');
-      console.log(command);
       docker.directoryExists(containerName, newdir, function(dirRes) {
         if(dirRes.indexOf('Directory exists') !== -1) {
-          docker.runCommand(containerName, command, function(err, res1) {
-            if (err) { res.status(200).send(err); } 
-            else { 
-              docker.runCommand(containerName, 'cat /picoShell/.pico', function(err2, res2) {
-                res.status(200).send({res: res1, pwd: res2}); 
-              });
-            }
-          });
+          res.status(200).send({res: '', pwd: newdir});
         } else {
           res.status(200).send('Error: Directory not found\n');
         }
@@ -199,17 +169,18 @@ router.post('/cmd', function (req, res) {
     }
   } else if(cmd.split(" ")[0] === 'open') {
     console.log('this is the command', cmd);
-    docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
-      if(res1[res1.length - 1] === '\n') res1 = res1.slice(0, res1.length - 1);
-      const command = 'cat ' + res1 + '/' + cmd.split(" ")[1];
-      docker.runCommand(containerName, command, function(err2, res2) {
-        if(err2) {
-          res.status(200).send(err2);
-        } else {
-          res.status(200).send({termResponse: res2, fileOpen: true, fileName: cmd.split(" ")[1], filePath: res1});
-        }
-      });
+    var res1 = req.body.curDir;
+    
+    if(res1[res1.length - 1] === '\n') res1 = res1.slice(0, res1.length - 1);
+    const command = 'cat ' + res1 + '/' + cmd.split(" ")[1];
+    docker.runCommand(containerName, command, function(err2, res2) {
+      if(err2) {
+        res.status(200).send(err2);
+      } else {
+        res.status(200).send({termResponse: res2, fileOpen: true, fileName: cmd.split(" ")[1], filePath: res1});
+      }
     });
+
   } else if (cmd.split(" ")[0] === 'pico') {
     var fileName = cmd.split(" ")[1];
     if(fileName.startsWith('/')) {
@@ -223,17 +194,17 @@ router.post('/cmd', function (req, res) {
         }
       });
     } else {
-      docker.runCommand(containerName, 'cat /picoShell/.pico', function(err1, res1) {
-        if(res1[res1.length - 1] === '\n') res1 = res1.slice(0, res1.length - 1);
-        if(res1[res1.length - 1] === '/') res1 = res1.slice(0, res1.length - 1);
-        const command = 'touch ' + res1 + '/' + fileName;
-        docker.runCommand(containerName, command, function(err2, res2) {
-          if(err2) {
-            res.status(500).send(err2);
-          } else {
-            res.status(200).send({termResponse: res2, fileName: fileName, filePath: res1, fileOpen: true});
-          }
-        });
+      var res1 = req.body.curDir;
+      
+      if(res1[res1.length - 1] === '\n') res1 = res1.slice(0, res1.length - 1);
+      if(res1[res1.length - 1] === '/') res1 = res1.slice(0, res1.length - 1);
+      const command = 'touch ' + res1 + '/' + fileName;
+      docker.runCommand(containerName, command, function(err2, res2) {
+        if(err2) {
+          res.status(500).send(err2);
+        } else {
+          res.status(200).send({termResponse: res2, fileName: fileName, filePath: res1, fileOpen: true});
+        }
       });
     }
   } else if (cmd.split(" ")[0] === 'download') {
@@ -274,7 +245,6 @@ router.post('/cmd', function (req, res) {
       }
     });
   } else {
-    console.log('ELSE');
     var res1 = req.body.curDir;
 
     console.log('req.body.curDir :', res1);
@@ -289,7 +259,6 @@ router.post('/cmd', function (req, res) {
     docker.runCommand(containerName, command, function(err2, res2) {
       if (err2) { 
         res.status(200).send(err2); 
-        console.log('ERROR', err2);
       } 
       else { res.status(200).send(res2); }
     });
