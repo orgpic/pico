@@ -21,10 +21,10 @@ class FileBrowser extends React.Component {
 
   updateFileBrowser(path, containerName) {
     const context = this;
-    axios.post('/docker/cmd', { cmd: 'ls ' + path + ' -al', containerName: containerName })
+    axios.post('/docker/cmd', { cmd: 'ls ' + path + ' -al', containerName: containerName, curDir: context.state.curDir })
     .then(function(res) {
       const contents = res.data.split('\n');
-
+      context.socket.emit('/TERM/CD/', {dir: path, username: context.state.containerName, containerName: context.state.containerName});
       let contentsArr = [];
 
       for (var i = 0; i < contents.length; i++) {
@@ -63,16 +63,17 @@ class FileBrowser extends React.Component {
     console.log('FB GOT PROPS', nextProps);
     this.setState({
       containerName: nextProps.containerName,
-      hidden: nextProps.hidden
+      hidden: nextProps.hidden,
+      curDir: nextProps.curDir
     });
-    this.updateFileBrowser('/picoShell', nextProps.containerName);
+    this.updateFileBrowser(nextProps.curDir, nextProps.containerName);
   }
 
   downloadClick(e, entry) {
     console.log(this.state.curDir, entry);
     const file = this.state.curDir.endsWith('/') ? this.state.curDir + entry : this.state.curDir + '/' + entry;
     console.log(file);
-    axios.post('/docker/cmd', {cmd: 'download ' + file, containerName: this.state.containerName})
+    axios.post('/docker/cmd', {cmd: 'download ' + file, containerName: this.state.containerName, curDir: this.state.curDir})
     .then(function(res) {
       var str2bytes = function(str) {
         var bytes = new Uint8Array(str.length);
@@ -142,7 +143,7 @@ class FileBrowser extends React.Component {
                     { entry.name === ".." ? <i className="ion-ios-arrow-up">{entry.name}</i> : 
                     <div>
                     <i className="ion-ios-arrow-down">{" " + entry.name}</i> 
-                    <i onClick={(e) => {context.downloadClick(e, entry.name)}} style={{float: 'right', 'padding-right': '15px'}} className="ion-android-arrow-down">Download Zip</i>
+                    {context.state.curDir !== '/' ? <i onClick={(e) => {context.downloadClick(e, entry.name)}} style={{float: 'right', 'padding-right': '15px'}} className="ion-android-arrow-down">Download Zip</i> : null}
                     </div>
                     }
                   </div>

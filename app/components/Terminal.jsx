@@ -12,7 +12,7 @@ class Terminal extends React.Component {
       prompt: '/picoShell >> ',
       containerName: this.props.containerName, // change this to refer to user name when login is done
       curCommand: null,
-      curDir: '/',
+      curDir: '/picoShell',
       username: this.props.username,
       response: '',
       hidden: false,
@@ -35,7 +35,8 @@ class Terminal extends React.Component {
     this.setState({
       containerName: nextProps.containerName,
       hidden: nextProps.hidden,
-      permissions: nextProps.permissions
+      permissions: nextProps.permissions,
+      curDir: nextProps.curDir
     })
 
     if(nextProps.containerName !== this.props.containerName) {
@@ -99,9 +100,8 @@ class Terminal extends React.Component {
 
     if (localStorage[window.location]) {
        let obj = JSON.parse(localStorage[window.location]);
-       console.log("found")
        const command = 'open ' + obj.fileName;
-       axios.post('/docker/cmd', {cmd: command, containerName: context.state.containerName})
+       axios.post('/docker/cmd', {cmd: command, containerName: context.state.containerName, curDir: context.state.curDir})
         .then(function(res) {
           console.log(res);
           console.log(res.termResponse);
@@ -185,7 +185,7 @@ class Terminal extends React.Component {
           //   curCommand: command
           // })
           // context.socket.emit('/ANALYZE/', {command: command, containerName: context.state.containerName});
-            axios.post('/docker/cmd', { cmd: command, containerName: context.state.containerName })
+            axios.post('/docker/cmd', { cmd: command, containerName: context.state.containerName, curDir: context.state.curDir })
               .then(function(res) {
                 if(typeof res.data === 'object') {
                   if(res.data.fileOpen) {
@@ -222,6 +222,7 @@ class Terminal extends React.Component {
                     console.log(res.data);
                     download(res.data.fileName, res.data.fileContents);
                   } else {
+                    console.log('DATA', res.data);
                     term.echo(String(JSON.stringify(res.data)));
                     context.socket.emit('/TERM/RES/', {cmd: command, res: JSON.stringify(res.data), username: context.state.username, containerName: context.state.containerName});
                   }
@@ -239,7 +240,7 @@ class Terminal extends React.Component {
                 }
               })
               .catch(function(err) {
-                console.error(err);
+                console.error('RUN ERR', err);
                 term.echo(String(err));
                 context.socket.emit('/TERM/RES/', {cmd: command, res: err, username: context.state.username, containerName: context.state.containerName});
               });
@@ -252,7 +253,7 @@ class Terminal extends React.Component {
           prompt: prompt,
           tabcompletion: true,
           completion: function(terminal, command, callback) {
-            axios.post('/docker/cmd', { cmd: 'ls', containerName: context.state.containerName })
+            axios.post('/docker/cmd', { cmd: 'ls', containerName: context.state.containerName, curDir: context.state.curDir })
               .then(function(res) {
                 const possibilities = (res.data.split('\n'));
                 callback(possibilities);
@@ -260,9 +261,10 @@ class Terminal extends React.Component {
           },
           onInit: function(term) {
             context.terminal = term;
-            var command = 'cd /picoShell';
+            var command = 'cd ' + context.state.curDir;
+            term.set_prompt(context.state.curDir + ' >> ');
             // context.socket.emit('/ANALYZE/', {command: command, containerName: context.state.containerName});
-            axios.post('/docker/cmd', { cmd: command, containerName: containerName })
+            axios.post('/docker/cmd', { cmd: command, containerName: containerName, curDir: context.state.curDir })
               .then(function(res) {
                 term.echo(String(res.data.res));
               })
