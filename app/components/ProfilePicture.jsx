@@ -72,13 +72,13 @@ class ProfilePicture extends React.Component {
     				</div>
   				</div>
 				</div>
-			)	
+			)
 		} else {
 			return (
 				<div className="profile-picture-container">
   				{this.state.profilePictureUrl === '' ? null :
   					<div className="img-container">
-	  				  <Dropzone multiple={false} accept="image/*" onDrop={this.onImageDrop} style="color:white">
+	  				  <Dropzone multiple={false} accept="image/*" onDrop={this.onImageDrop} style={{display:"block"}}>
 	  				  	<img onDrop={this.onImageDrop} src={this.state.profilePictureUrl} />
 	  				  </Dropzone>
   					</div>}

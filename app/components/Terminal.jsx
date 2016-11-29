@@ -38,7 +38,7 @@ class Terminal extends React.Component {
 
     if(nextProps.containerName !== this.props.containerName) {
       this.terminal.clear();
-      this.terminal.echo('Welcome to ' + nextProps.containerName + '\'s computer. You have ' + nextProps.permissions + ' permissions.');
+      this.terminal.echo('Welcome to ' + (nextProps.containerName===context.state.username ? 'your computer.' : nextProps.containerName + '\'s computer.'));
     }
     this.socket.on('/TERM/' + nextProps.containerName, function(code) {
       context.recievedTermInput(code);
@@ -244,7 +244,7 @@ class Terminal extends React.Component {
               // var result = window.eval(command);
           }
       }, {
-          greetings: 'Welcome to ' + context.state.containerName + '\'s computer. You have ' + context.state.permissions + ' permissions.',
+          greetings: 'Welcome to ' + (context.state.containerName===context.state.username ? 'your computer.' : context.state.containerName + '\'s computer.'),
           name: '',
           prompt: prompt,
           tabcompletion: true,

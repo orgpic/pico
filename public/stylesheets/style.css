@@ -680,7 +680,13 @@ select {
     color: white; }
 
 .message {
-  color: white; }
+  color: white;
+  display: block; }
+  .message .message-user {
+    font-weight: bold;
+    color: #242327; }
+  .message.own {
+    text-align: right; }
 
 .chat-box-container {
   position: absolute;
@@ -712,12 +718,15 @@ select {
     border: 0px;
     color: #F4F6F7;
     overflow: auto; }
+    .chat-box-container .chatText a {
+      color: #F4F6F7; }
   .chat-box-container .collaborators-input {
     background-color: rgba(225, 91, 105, 0.95);
     text-decoration: none;
     border: 0px;
     color: #F4F6F7;
-    margin-left: 5px; }
+    margin-left: 5px;
+    width: 96%; }
     .chat-box-container .collaborators-input:focus {
       text-decoration: none;
       outline: none; }
