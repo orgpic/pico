@@ -89,9 +89,14 @@ class Chatbox extends React.Component {
 
   handleSubmit(e, message) {
     e.preventDefault();
-    // const messageToSend = this.state.username + ': ' + message
-    // const date = Date.now();
-    // const timestamp = date.toString();
+
+    if(!message || !message.trim()){
+      // empty message
+      return;
+    }
+
+    this.setState({ curMessage: '' });
+
     const messageToSend = {
       user: this.state.username,
       text: message,
