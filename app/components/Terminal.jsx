@@ -1,6 +1,8 @@
 const React = require('react');
 const jQueryTerminal = require('jquery.terminal');
 const axios = require('axios');
+const FileSaver = require('file-saver');
+const FileHelpers = require('../../utils/FileHelpers.js');
 
 class Terminal extends React.Component {
   constructor(props) {
@@ -204,19 +206,20 @@ class Terminal extends React.Component {
                     context.socket.emit('/TERM/CD/', {dir: res.data.pwd, username: context.state.username, containerName: context.state.containerName});
                     context.socket.emit('/TERM/RES/', {cmd: command, res: res.data.res, username: context.state.username, containerName: context.state.containerName});
                   } else if (res.data.download) {
+                    var str2bytes = function(str) {
+                      var bytes = new Uint8Array(str.length);
+                      for (var i=0; i<str.length; i++) {
+                        bytes[i] = str.charCodeAt(i);
+                      }
+                      return bytes;
+                    }
                     var download = function(filename, text) {
-                      var element = document.createElement('a');
-                      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-                      element.setAttribute('download', filename);
-
-                      element.style.display = 'none';
-                      document.body.appendChild(element);
-
-                      element.click();
-
-                      document.body.removeChild(element);
-                    };
+                      text = text.replace(/\n/g, '');
+                      var blob = new Blob(text.split(' ').map(function(txt) { return str2bytes(FileHelpers.hex2a(txt)); }), {type: "application/zip"});
+                      FileSaver.saveAs(blob, filename);
+                    }
                     console.log('downloading', res.data.fileContents, 'as', res.data.fileName);
+                    console.log(res.data);
                     download(res.data.fileName, res.data.fileContents);
                   } else {
                     term.echo(String(JSON.stringify(res.data)));

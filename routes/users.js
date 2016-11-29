@@ -74,7 +74,6 @@ router.post('/acceptInvite', function(req, res) {
 router.post('/rejectInvite', function(req, res) {
   const rejected = req.body.invited;
   const rejecter = req.body.rejecter;
-  console.log('INREJECT');
   Collaborator.destroy({
     where: {
       requesterUsername: rejected,
