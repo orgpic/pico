@@ -225,6 +225,19 @@ html {
 
 .pending {
   margin-top: 25px;
+  font-size: 1.4em;
+  .ion-ios-checkmark-outline {
+    cursor: pointer;
+    &:hover {
+      color: #4aff6c;
+    }
+  }
+  .ion-ios-close-outline {
+    cursor: pointer;
+    &:hover {
+      color: #ff4545;
+    }
+  }
 }
 
 
@@ -275,6 +288,15 @@ html {
           }
         }
       }
+
+      .invite-response-text {
+        font-size: inherit;
+        line-height: 1.72222;
+        margin: auto;
+        text-align: center;
+        color: $svglightpurple;
+      }
+
     }
     .collaborators {
       .columnContent{
@@ -1233,7 +1255,7 @@ select {
 }
 
 .chat-box-mini {
-  width: 100px;
+  width: 105px;
   background-color: $translucentred;
   position: absolute;
   bottom: 0;
