@@ -7,6 +7,7 @@ const NavBar = require('./NavBar.jsx');
 const Chatbox = require('./Chatbox.jsx');
 const FileBrowser = require('./FileBrowser.jsx');
 const SplitPane = require('react-split-pane');
+const Dropzone = require('./Dropzone.jsx');
 
 class LinuxComputer extends React.Component {
   constructor(props) {
@@ -124,11 +125,13 @@ class LinuxComputer extends React.Component {
       toggle: !this.state.toggle
     });
   }
+
     render() {
       const context = this;
       if (this.state.containerName.length) {
            return (
             <div className="linux-computer-container">
+              <Dropzone multiple="false" acceptedFiles="application/zip, text/plain"/>
               <NavBar username={this.state.username} />
               <div className="collaborator-bar">
 
@@ -167,8 +170,8 @@ class LinuxComputer extends React.Component {
                     </div>
                 </SplitPane>
               </div>
-                <Chatbox username={this.state.username} containerName={this.state.containerName}/>
-              <footer></footer>
+                <Chatbox username={this.state.username} containerName={this.state.containerName}/>  
+            <footer></footer>
             </div>
           );
    } else {
