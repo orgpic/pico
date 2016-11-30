@@ -106,12 +106,36 @@ const directoryExists = function(containerName, directory, callback) {
   });
 }
 
+const copyFile = function(containerName, localPath, containerPath, callback) {
+  const command = 'docker cp ' + localPath + ' ' + containerName + ':' + containerPath;
+  exec(command, function(err, stdout, stderr) {
+    if(stderr) {
+      callback(stderr);
+    } else {
+      callback(stdout);
+    }
+  })
+}
+
+const deleteLocalFile = function(localPath, callback) {
+  const command = 'rm ' + localPath;
+  exec(command, function(err, stdout, stderr) {
+    if(stderr) {
+      callback(stderr);
+    } else {
+      callback(stdout);
+    }
+  });
+}
+
 module.exports = {
   runCommand: runCommand,
   startContainer: startContainer,
   install: install,
   writeToFile: writeToFile,
-  directoryExists: directoryExists
+  directoryExists: directoryExists,
+  copyFile: copyFile,
+  deleteLocalFile: deleteLocalFile
 };
 
 

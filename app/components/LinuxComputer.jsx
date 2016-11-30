@@ -131,7 +131,7 @@ class LinuxComputer extends React.Component {
       if (this.state.containerName.length) {
            return (
             <div className="linux-computer-container">
-              <Dropzone multiple="false" acceptedFiles="application/zip, text/plain"/>
+              <Dropzone containerName={this.state.containerName} curDir={this.state.curDir}/>
               <NavBar username={this.state.username} />
               <div className="collaborator-bar">
 
