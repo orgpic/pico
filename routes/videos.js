@@ -23,7 +23,6 @@ router.post('/submitVideo', function(req, res, next) {
 		} else {
 			const parsedBody = JSON.parse(body);
 			const snippet = parsedBody.items[0].snippet;
-			console.log(snippet);
 			let videoImage = '';
 
 			if (snippet.thumbnails.medium) {
@@ -106,7 +105,6 @@ router.get('/mostPopularVideos', function(req, res) {
     order: 'videoClicks DESC'
   })
   .then(function(results) {
-  	console.log('in here', results)
     res.status(200).send(results);
   })
   .catch(function(err) {

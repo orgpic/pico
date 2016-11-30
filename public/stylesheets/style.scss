@@ -381,7 +381,7 @@ html {
 
 //NAVBAR
 .navbar {
-  height: 32px;
+  height: 34px;
   background-color: $themedarkpurple;
   border-radius: 0;
   padding: 2px;
@@ -642,6 +642,33 @@ select {
         padding: 0 4px 0 0;
       }
     }
+  }
+
+  .most-popular-videos {
+    margin: 0 auto;
+    text-align: center;
+    justify-content: center;
+    flex: 1;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    .video-entry-home-page {
+      text-align: center;
+      justify-content: center;
+      flex: 1;
+      flex-wrap: wrap;
+      box-sizing: border-box;
+      flex-direction: row;
+      display: inline-block;
+      min-height: 0;
+      min-width: 0;
+      img {
+        width: 250px;
+        margin: 20px 10px 20px 10px;
+      }
+    }
+
   }
 
   .info { 
