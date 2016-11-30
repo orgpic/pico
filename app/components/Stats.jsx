@@ -25,7 +25,7 @@ class Stats extends React.Component {
   getStats() {
     const context = this;
     console.log(this.state);
-    axios.post('/docker/cmd', { cmd: 'df -h', containerName: this.state.containerName })
+    axios.post('/docker/cmd', { cmd: 'df -h', containerName: this.state.containerName, curDir: '/picoShell'})
       .then(function(res) {
         const data = "`" + res.data + "`";
         const usage = parseInt(data.split("\n")[1].split('G')[3].split('%')[0].trim());

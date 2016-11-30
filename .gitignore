@@ -13,3 +13,4 @@ coverage/
 public/stylesheets/style.css
 utils/keys.js
 .env
+public/files

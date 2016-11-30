@@ -13,7 +13,8 @@ var domain = 'picoshell.com';
 var api_key = process.env.MAILGUN_SECRET;
 var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 const generator = require('generate-password');
-
+const multer = require('multer');
+var upload = multer({dest: './public/files'});
 /* GET home page. */
 router.get('/', function(req, res) {
   res.render('index', { title: 'picoShell' });
@@ -124,5 +125,23 @@ router.get('/github/callback', passport.authenticate('github', {
     console.log('helloasdfkjadsklfdas');
     res.redirect('/');
   });
+
+router.post('/uploadHandler', upload.single('file'), function(req, res) {
+  const containerName = JSON.parse(req.body.opts).containerName;
+  const curDir = JSON.parse(req.body.opts).curDir;
+  const fileName = JSON.parse(req.body.opts).fileName;
+  const filePath = req.file.path;
+
+  docker.copyFile(containerName, filePath, curDir + '/' + fileName, function(res1) {
+    if(res1 !== '') {
+      res.status(500).send({fail: 'Failed to copy file to container'});
+    } else {
+      docker.deleteLocalFile(filePath, function(res2) {
+        console.log(res2);
+        res.status(200).send({msg: res2});
+      })
+    }
+  });
+});
 
 module.exports = router;
