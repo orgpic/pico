@@ -22,8 +22,7 @@ class Terminal extends React.Component {
     this.recievedTermInput = this.recievedTermInput.bind(this);
     this.recievedTermResponse = this.recievedTermResponse.bind(this);
     this.recievedTermCD = this.recievedTermCD.bind(this);
-
-    console.log('TERM CONSTRUCTOR');
+    this.updateScroll();
 	}
 
   componentWillReceiveProps(nextProps) {
@@ -169,10 +168,20 @@ class Terminal extends React.Component {
     });
   }
 
+  updateScroll() {
+    const ele = document.getElementById("terminal-container");
+   console.log('in update scroll');
+   if (ele) {
+     console.log(ele.scrollHeight);
+     ele.scrollTop = ele.scrollHeight;
+   }
+  }
+
   renderTerminal() {
     var context = this;
     var prompt = this.state.prompt;
     var containerName = this.state.containerName;
+    this.updateScroll();
 
     $(function($, undefined) {
       $('#terminal').terminal(function(command, term) {
@@ -246,6 +255,7 @@ class Terminal extends React.Component {
               });
 
               // var result = window.eval(command);
+              context.updateScroll();
           }
       }, {
           greetings: 'Welcome to ' + (context.state.containerName===context.state.username ? 'your computer.' : context.state.containerName + '\'s computer.'),
@@ -261,6 +271,7 @@ class Terminal extends React.Component {
           },
           onInit: function(term) {
             context.terminal = term;
+            context.updateScroll();
             var command = 'cd ' + context.state.curDir;
             term.set_prompt(context.state.curDir + ' >> ');
             // context.socket.emit('/ANALYZE/', {command: command, containerName: context.state.containerName});
@@ -274,6 +285,7 @@ class Terminal extends React.Component {
               });
           },
           onCommandChange: function(command, term) {
+            context.updateScroll();
             if(command !== context.state.curCommand) {
               context.socket.emit('/TERM/', {cmd: command, username: context.state.username, containerName: context.state.containerName});
               context.setState({
@@ -282,6 +294,7 @@ class Terminal extends React.Component {
             }
           },
           keydown: function(event, term) {
+            context.updateScroll();
             if(event.key === 'Backspace') {
               //the keydown event fires as soon as the key is pressed, but before a character is removed
               //A timeout of 10ms allows term.get_command() to reflecct the actual new command after backspace
@@ -299,7 +312,9 @@ class Terminal extends React.Component {
       return (
         <div>
           <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/0.11.13/css/jquery.terminal.min.css" rel="stylesheet"></link>
-          <div id="terminal"></div><br/>
+          <div className="terminal-container" id="terminal-container">
+            <div id="terminal"></div><br/>
+          </div>
         </div>
       );
     } else {

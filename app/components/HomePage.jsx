@@ -2,6 +2,33 @@ const React = require('react');
 const NavBar = require('./NavBar.jsx');
 
 const HomePage = ({username, mostPopularVideos}) => {
+	const showInfo = (event) => {	
+		event.preventDefault();
+		console.log('in here', event.target.className);
+		const target0 = 'overlay' + event.target.className;
+		const target1 = 'front-layer' + event.target.className;
+		document.getElementById(target0).style.visibility='visible';
+		document.getElementById(target1).style.visibility='visible';
+	};
+
+	const hideInfo = (event) => {
+		event.preventDefault();
+		console.log('THIS IS THE EVENT TARGET', event.target.id);
+		const id = event.target.id.split("front-layer")[1];
+		console.log('this is id', event.target.id.split("front-layer"));
+		const target0='overlay' + id;
+		console.log('this is target0', target0);
+		const target1=event.target.id;
+		document.getElementById(target0).style.visibility='hidden';
+		document.getElementById(target1).style.visibility='hidden';
+
+	// 	const target0 = 'overlay' + event.target.id;
+	// 	const target1 = event.target;
+	// 	document.getElementById(target0).style.visibility='hidden';
+	// 	document.getElementById(target1).style.visibility='hidden';
+	// }
+}
+
 	return (
 		<div className="homepage-container">
 		  <div className="header">
@@ -19,50 +46,24 @@ const HomePage = ({username, mostPopularVideos}) => {
 		      {mostPopularVideos.map((video, i) => {
 		        return (
 		          <div className="video-entry-home-page" key = {i}>
-		              <a href={'/video/' + video.videoId}><img src={video.videoImage}/></a>
+		            <img className={i} onMouseEnter={showInfo} src={video.videoImage}/>
+    	          	<div className="overlay" id={'overlay' + i} data-key={i}>
+    	          		<a href={'/video/' + video.videoId}><div className="front-layer" id={'front-layer' + i} onMouseOut={hideInfo}>{video.videoTitle}</div></a>
+              		</div>
 		          </div>
 		        )
 		      })}
 		    </div>
 		  </div>
 		  <div className="info">
-		    <div className="info-header">Why picoShell?</div>
-		    <div className="sub-header">
-		      picoShell is for educators, students, developers, and interviewers who want to collaborate through code remotely
-		    </div>
-		    <div className="info-container">
-		      <img src="/images/header.gif"></img>
-		      <div className="description-left">
-		        <span className="title">Powerful</span><br/>
-		        Gain full access to your own linux terminal emulator and code editor with ruby, node, python, gcc, git, and more installed
-		      </div>
-		    </div>
-		    <div className="info-container">
-		      <div className="description-right">
-		      <span className="title" id="educational">Educational</span><br/>
-		      Add videos from YouTube to picoShell and instantly code alongside of it. 
-		      picoShell remembers the file you create with each video, so you can always pick up
-		      where you left off
-		      </div>
-		      <img src="/images/codeable.gif"></img>
-		    </div>
-		    <div className="info-container">
-		      <img src="/images/header.gif"></img>
-		      <div className="description-left">
-		        <span className="title">Collaborative</span><br/>
-		          Easily give read or write access to your computer to work on projects, assignments,
-		          or to conduct interviews
-		      </div>
-		    </div>
-		    <div className="info-container">
-		      <div className="description-right">
-		      <span className="title">Convenient</span><br/>
-		        You could just push your code up to git...or you could use picoShell's download button
-		        to export all your files to your local filesystem
-		      </div>
-		      <img src="/images/codeable.gif"></img>
-		    </div>
-		  </div>
+		    <div className="info-header">Javascript Videos</div>
+    	</div>
+		  <div className="info">
+		    <div className="info-header">Python Videos</div>
+    	</div>
+		  <div className="info">
+		    <div className="info-header">Ruby Videos</div>
+    	</div>
 		  <div className="footer">
 		    <div className="footer-column">
 		        <p className="footer-header">picoShell</p>
