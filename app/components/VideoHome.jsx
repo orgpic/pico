@@ -21,7 +21,21 @@ class VideoHome extends React.Component {
       searchResults: []
     };
 
+    this.defaultSearchOptions = {
+      part: 'snippet',
+      maxResults: 3,
+      type: 'video',
+      relevanceLanguage: 'en',
+      key: API_KEY
+    };
+
     this.searchQuery = '';
+    this.previousSearchQuery = '';
+    this.searchPageToken = {
+      prev: '',
+      next: ''
+    }
+
   }
 
   componentWillMount() {
@@ -69,7 +83,7 @@ class VideoHome extends React.Component {
             <div className="overlay">
               <div className="row">
                 <div className="col-md-4 col-md-offset-4 homepage-form">
-                  <VideoSearch handleVideoSearch={this.handleVideoSearch.bind(this)} 
+                  <VideoSearch handleVideoSearch={this.handleVideoSearchSubmit.bind(this)} 
                     handleVideoSearchInputChange={this.handleVideoSearchInputChange.bind(this)} />
                 </div>
               </div>
@@ -79,41 +93,59 @@ class VideoHome extends React.Component {
         <div className="video-search-results-container">
           <div className="row">
             <VideoSearchResults videos={this.state.searchResults} 
-            handleSearchedVideoClick={this.handleSearchedVideoClick.bind(this)} />
+            handleSearchedVideoClick={this.handleSearchedVideoClick.bind(this)} 
+            handleSearchNext={this.handleSearchNext.bind(this)} 
+            handleSearchPrev={this.handleSearchPrev.bind(this)} />
           </div>
         </div>
         <div className="video-table-container">
           <span className="video-section-title">My Videos</span>
           <div className="container">
-            <VideoTable onVideoClick={this.handleVideoClick.bind(this)}videos={this.state.myVideos}/>
+            <VideoTable onVideoClick={this.handleVideoClick.bind(this)} videos={this.state.myVideos}/>
           </div>
         </div>
         <div className="video-table-container">
           <span className="video-section-title">Trending</span>
           <div className="container">
-            <VideoTable onVideoClick={this.handleVideoClick.bind(this)}videos={this.state.videoList}/>
+            <VideoTable onVideoClick={this.handleVideoClick.bind(this)} videos={this.state.videoList}/>
           </div>
         </div>
       </div>
     );
   }
 
-  handleVideoSearch(e) {
+  handleSearchNext(e) {
     e.preventDefault();
-    const context = this;
-    // console.log('handleVideoSearch', e, e.target.value);
-    // console.log('api key', API_KEY);
-    if(!context.searchQuery.trim()) {
+    console.log('search next');
+    const options = Object.assign(this.defaultSearchOptions, 
+      { q: this.previousSearchQuery, 
+        pageToken: this.searchPageToken.next });
+
+    this.doVideoSearch(options);
+  }
+
+  handleSearchPrev(e) {
+    e.preventDefault();
+    console.log('search prev');
+    const options = Object.assign(this.defaultSearchOptions, 
+      { q: this.previousSearchQuery, 
+        pageToken: this.searchPageToken.prev });
+
+    this.doVideoSearch(options);
+  }
+
+  handleVideoSearchSubmit(e) {
+    e.preventDefault();
+    if(!this.searchQuery.trim()) {
       return;
     }
+    const options = Object.assign(this.defaultSearchOptions, { q: this.searchQuery });
 
-    const options = {
-      part: 'snippet',
-      maxResults: 3,
-      q: context.searchQuery,
-      type: 'video',
-      key: API_KEY
-    }
+    this.doVideoSearch(options);
+  }
+
+  doVideoSearch(options) {
+    const context = this;
 
     // const options = {
     //   part: 'statistics',
@@ -126,18 +158,21 @@ class VideoHome extends React.Component {
     axios.get('https://www.googleapis.com/youtube/v3/search?', 
       {params: options })
       .then(function(res) {
-        console.log(res.data.items);
+        console.log(res.data);
+        // console.log(res.data.nextPageToken);
+        context.searchPageToken.prev = res.data.prevPageToken || '';
+        context.searchPageToken.next = res.data.nextPageToken || '';
+        context.previousSearchQuery = options.q;
         return res.data.items;
       })
       .then(function(videos) {
-        console.log(videos);
+        // console.log(videos);
         context.setState({ searchResults: videos });
         context.searchQuery = '';
 
       })
-      .catch(function(err, msg) {
+      .catch(function(err) {
         console.error(err);
-        console.error(msg);
       });
 
   }

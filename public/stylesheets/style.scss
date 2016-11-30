@@ -1465,6 +1465,14 @@ select {
           width: 340px;
           color: white;
         }
+        .slick-next {
+          right: 121px;
+          top: 222px;
+        }
+        .slick-prev {
+          left: 121px;
+          top: 222px;        
+        }
       }
     }
 
@@ -1475,6 +1483,8 @@ select {
     padding: 10px;
     background: $offblack;
     overflow: auto;
+    text-align: center;
+
     .video-section-title {
       font-size: 20px;
       color: white;
