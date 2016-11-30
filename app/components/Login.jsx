@@ -44,7 +44,11 @@ class Login extends React.Component {
       if (response.data.username) {
         console.log('1srt storage', localStorage['user']);
         localStorage['user'] = JSON.stringify(response.data);
-        window.location = 'dashboard';
+        axios.post('/docker/restart', {containerName: context.state.username})
+        .then(function(resp) {
+          console.log(resp);
+          window.location = 'dashboard';
+        })
       } else {  
         alert('Failed Login');
       }

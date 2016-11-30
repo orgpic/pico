@@ -97,6 +97,11 @@ class LinuxComputer extends React.Component {
         });    
     }
 
+    axios.post('/docker/restart', {containerName: event.target.value})
+    .then(function(resp) {
+      console.log(resp);
+    });
+
     this.setState({
       containerName: event.target.value,
       curDir: '/picoShell'

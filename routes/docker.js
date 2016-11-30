@@ -5,6 +5,19 @@ const docker = require('../utils/dockerAPI');
 var db = require('../db/config');
 var User = require('../models/User');
 
+router.post('/restart', function(req, res) {
+  var containerName = req.body.containerName;
+  docker.isContainerRunning(containerName, function(resp) {
+    if(!resp) {
+      //must restart container
+      docker.restartContainer(containerName, function(resp1) {
+        res.status(200).send(resp1);
+      });
+    } else {
+      res.status(200).send('RUNNING');
+    }
+  });
+});
 
 router.post('/executeFile', function(req,res) {
   var fileName = req.body.fileName;
