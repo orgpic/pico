@@ -124,9 +124,9 @@ class App extends React.Component {
       return (
         <LandingPage 
         authenticate={authenticate}
-        email={this.state.email.bind(this)}
-        modalIsOpen={this.state.modalIsOpen.bind(this)}
-        mostPopularVideos={this.state.mostPopularVideos.bind(this)}
+        email={this.state.email}
+        modalIsOpen={this.state.modalIsOpen}
+        mostPopularVideos={this.state.mostPopularVideos}
         handleChangeEmailInput={this.changeEmailInput.bind(this)}
         handleGoToSignUp={this.GoToSignUp.bind(this)}
         handleGoToLogin={this.handleGoToLogin.bind(this)}
