@@ -128,6 +128,30 @@ const deleteLocalFile = function(localPath, callback) {
   });
 }
 
+const isContainerRunning = function(containerName, callback) {
+  const command = 'docker ps --filter "name=' + containerName + '"';
+  exec(command, function(err, stdout, stderr) {
+    if(stdout.indexOf('evenstevens/picoshell') !== -1) {
+      console.log('CONTAINER', containerName, 'IS RUNNING');
+      callback(true);
+    } else {
+      console.log('CONTAINER', containerName, 'IS NOT RUNNING');
+      callback(false);
+    }
+  });
+}
+
+const restartContainer = function(containerName, callback) {
+  const command = 'docker restart ' + containerName;
+  exec(command, function(err, stdout, stderr) {
+    if(stderr) {
+      callback(stderr);
+    } else {
+      callback(stdout);
+    }
+  });
+}
+
 module.exports = {
   runCommand: runCommand,
   startContainer: startContainer,
@@ -135,7 +159,9 @@ module.exports = {
   writeToFile: writeToFile,
   directoryExists: directoryExists,
   copyFile: copyFile,
-  deleteLocalFile: deleteLocalFile
+  deleteLocalFile: deleteLocalFile,
+  isContainerRunning: isContainerRunning,
+  restartContainer: restartContainer
 };
 
 
