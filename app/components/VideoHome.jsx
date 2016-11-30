@@ -7,6 +7,8 @@ const utils = require('../../utils/videoHelpers.js');
 const bootstrap = require('bootstrap');
 const API_KEY = process.env.API_KEY;
 const NavBar = require('./NavBar.jsx');
+const VideoSearch = require('./VideoSearch.jsx');
+const VideoSearchResults = require('./VideoSearchResults.jsx');
 const axios = require('axios');
 
 class VideoHome extends React.Component {
@@ -14,8 +16,11 @@ class VideoHome extends React.Component {
     super(props);
 
     this.state = {
-      videoList: []
+      videoList: [],
+      searchResults: []
     };
+
+    this.searchQuery = '';
   }
 
   componentWillMount() {
@@ -57,10 +62,22 @@ class VideoHome extends React.Component {
               </div>
               <div className="row">
                 <div className="col-md-4 col-md-offset-4 homepage-form">
-                  <NewVideoForm handleNewVideoSubmit ={this.handleNewVideoSubmit.bind(this)}/>
+                  <NewVideoForm handleNewVideoSubmit={this.handleNewVideoSubmit.bind(this)}/>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-4 col-md-offset-4 homepage-form">
+                  <VideoSearch handleVideoSearch={this.handleVideoSearch.bind(this)} 
+                    handleVideoSearchInputChange={this.handleVideoSearchInputChange.bind(this)} />
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div className="video-search-results-container">
+          <div className="row">
+            <VideoSearchResults videos={this.state.searchResults} 
+            handleSearchedVideoClick={this.handleSearchedVideoClick.bind(this)} />
           </div>
         </div>
         <div className="video-table-container">
@@ -70,6 +87,59 @@ class VideoHome extends React.Component {
         </div>
       </div>
     );
+  }
+
+  handleVideoSearch(e) {
+    e.preventDefault();
+    const context = this;
+    // console.log('handleVideoSearch', e, e.target.value);
+    // console.log('api key', API_KEY);
+    if(!context.searchQuery.trim()) {
+      return;
+    }
+
+    const options = {
+      part: 'snippet',
+      maxResults: 3,
+      q: context.searchQuery,
+      type: 'video',
+      key: API_KEY
+    }
+
+    // const options = {
+    //   part: 'statistics',
+    //   metrics: 'views,comments,likes,dislikes,shares',
+    //   max: 3,
+    //   key: API_KEY
+    // }
+
+    console.log(options)
+    axios.get('https://www.googleapis.com/youtube/v3/search?', 
+      {params: options })
+      .then(function(res) {
+        console.log(res.data.items);
+        return res.data.items;
+      })
+      .then(function(videos) {
+        console.log(videos);
+        context.setState({ searchResults: videos });
+        context.searchQuery = '';
+
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
+
+  }
+
+  handleVideoSearchInputChange(e) {
+    e.preventDefault();
+    this.searchQuery = e.target.value;
+  }
+
+  handleSearchedVideoClick(video) {
+    // e.preventDefault();
+    console.log('handleSearchedVideoClick', video);
   }
 
   //handlers
