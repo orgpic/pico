@@ -6,54 +6,30 @@ const request = require('request');
 const key = process.env.API_KEY
 
 router.post('/submitVideo', function(req, res, next) {
-	const options = {
-		method: 'GET',
-		uri: 'https://www.googleapis.com/youtube/v3/videos',
-		qs: {
-			id: req.body.videoId,
-			key: key,
-			part: 'snippet',
-			type: 'video'
-		}
-	}
+	const video = req.body.video;
 
-	request(options, function(err, response, body) {
-		if (err) {
-			console.error(error)
+	Video.findOrCreate({
+		where: {
+			videoId: video.id.videoId
+		},
+		defaults: {
+			videoId: video.id.videoId,
+			videoUrl: utils.getVideoUrlById(video.id.videoId),
+			videoTitle: video.snippet.title,
+			videoDescription: video.snippet.description,
+			videoImage: video.snippet.thumbnails.medium.url
+		}
+	})
+	.then(function(info) {
+		const created = info[1];
+
+		if (created) {
+			res.send(info[0].dataValues);
 		} else {
-			const parsedBody = JSON.parse(body);
-			const snippet = parsedBody.items[0].snippet;
-			let videoImage = '';
-
-			if (snippet.thumbnails.medium) {
-				videoImage = 'http://img.youtube.com/vi/' + req.body.videoId +'/mqdefault.jpg';
-			} else if (snippet.thumbnails.default) {
-				videoImage = 'http://img.youtube.com/vi/' + req.body.videoId + '/default.jpg';
-			}
-
-			Video.findOrCreate({
-				where: {
-					videoId: req.body.videoId
-				},
-				defaults: {
-					videoId: req.body.videoId,
-					videoUrl: req.body.videoUrl,
-					videoTitle: snippet.title,
-					videoDescription: snippet.description,
-					videoImage: videoImage
-				}
-			})
-			.then(function(info) {
-				const created = info[1];
-
-				if (created) {
-					res.send('Video already exists in database');
-				} else {
-					res.send('Successfully saved in the database');
-				}
-			})
+			res.status(400).send('Video already exists in database');
 		}
-	});
+	})
+
 });
 
 router.post('/incrementVideoClickCounter', function(req, res) {

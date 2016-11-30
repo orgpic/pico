@@ -10,6 +10,10 @@ exports.getVideoId = function(url) {
   return querystring.parse(url)['https://www.youtube.com/watch?v'];
 }
 
+exports.getVideoUrlById = function(videoId) {
+  return 'https://www.youtube.com/watch?v=' + videoId;
+}
+
 exports.createIFrameSrc = function(videoId)  {
   return 'https://www.youtube.com/embed/'+ videoId;
 }

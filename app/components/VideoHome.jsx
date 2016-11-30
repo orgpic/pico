@@ -33,13 +33,17 @@ class VideoHome extends React.Component {
   }
 
   componentDidMount() {
-    this.getAllVideos = $.get('/videos/getVideos', function(data) {
-      console.log('these are the videos', data);
-      const videos = utils.getAllVideoObjects(data);
-      this.setState({
-        videoList: videos,
+    const context = this;
+
+    axios.get('/videos/getVideos')
+      .then(function(res) {
+        console.log('these are the videos', res);
+        const videos = utils.getAllVideoObjects(res.data);
+        context.setState({ videoList: videos });
+      })
+      .catch(function(err) {
+        console.error('Failed to fetch videos from database', err);
       });
-    }.bind(this));
   }
 
   render() {
@@ -58,11 +62,6 @@ class VideoHome extends React.Component {
                 <div className="col-md-4 col-md-offset-4 description-container">
                   <span>Ready to conquer the programming world?</span><br/>
                   <span>Join Codeable, your one place to learn how to program</span>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-4 col-md-offset-4 homepage-form">
-                  <NewVideoForm handleNewVideoSubmit={this.handleNewVideoSubmit.bind(this)}/>
                 </div>
               </div>
               <div className="row">
@@ -126,8 +125,9 @@ class VideoHome extends React.Component {
         context.searchQuery = '';
 
       })
-      .catch(function(err) {
+      .catch(function(err, msg) {
         console.error(err);
+        console.error(msg);
       });
 
   }
@@ -138,26 +138,26 @@ class VideoHome extends React.Component {
   }
 
   handleSearchedVideoClick(video) {
-    // e.preventDefault();
     console.log('handleSearchedVideoClick', video);
+    this.addVideoToCollection(video);
   }
 
-  //handlers
-  handleNewVideoSubmit(e) {
-    if (e.key === 'Enter') {
-      const input = e.target.value;
+  addVideoToCollection(video) {
+    const context = this;
 
-      const iFrameSrc = utils.createIFrameSrc(utils.getVideoId(input));
-      const videoId = utils.getVideoId(input);
+    axios.post('/videos/submitVideo', {video: video})
+      .then(function(res) {
+        console.log(res);
+        console.log('Successfully submitted video to personal collection');
+        const videos = context.state.videoList.slice();
+        videos.push(res.data);
+        console.log('new videos array ', videos);
+        context.setState({ videoList: videos });
 
-      if (utils.isValidUrl(input)) {
-        $.post('/videos/submitVideo', {videoId: videoId, videoUrl: input}, function() {
-          location.reload();
-        });
-      } else {
-        console.log('Please enter a valid url');
-      }
-    }
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
   }
 
   onVideoClick(video) {
