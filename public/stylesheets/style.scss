@@ -1392,19 +1392,19 @@ select {
 
   .video-homepage-container {
     width: 100%;
-    height: 481px;
+    height: 83px;
     background-color: #FFFFFF;
     overflow: auto;
     .homepage-landing{
         background-image: url('/images/homepage.svg');
         width: 100%;
-        height: 481px;
+        // height: 481px;
         overflow: hidden;
 
         .overlay {
           opacity: 0.85;
           background: rgba(99,135,152,0.50);
-          height: 481px;
+          // height: 481px;
           text-align: center;
 
           .logo-container {
@@ -1470,8 +1470,13 @@ select {
     padding: 10px;
     background: $offblack;
     overflow: auto;
+    .video-section-title {
+      font-size: 20px;
+      color: white;
+    }
+
     .video-table {
-        padding: 30px;
+      padding: 30px;
     }
   }
 }

@@ -17,6 +17,7 @@ class VideoHome extends React.Component {
 
     this.state = {
       videoList: [],
+      myVideos: [],
       searchResults: []
     };
 
@@ -44,6 +45,19 @@ class VideoHome extends React.Component {
       .catch(function(err) {
         console.error('Failed to fetch videos from database', err);
       });
+
+    axios.get('/videos/getMyVideos', 
+      { params: {
+          userId: context.state.username }
+      })
+      .then(function(res) {
+        console.log('my videos', res);
+        const videos = utils.getAllVideoObjects(res.data);
+        context.setState({ myVideos: videos });
+      })
+      .catch(function(err) {
+        console.error('Failed to fetch my videos from database', err);
+      });
   }
 
   render() {
@@ -53,17 +67,6 @@ class VideoHome extends React.Component {
         <div className="video-homepage-container">
           <div className="homepage-landing">
             <div className="overlay">
-              <div className="row">
-                <div className="col-md-12 logo-container">
-                  <a href="/" className="title"> CODEABLE </a>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-4 col-md-offset-4 description-container">
-                  <span>Ready to conquer the programming world?</span><br/>
-                  <span>Join Codeable, your one place to learn how to program</span>
-                </div>
-              </div>
               <div className="row">
                 <div className="col-md-4 col-md-offset-4 homepage-form">
                   <VideoSearch handleVideoSearch={this.handleVideoSearch.bind(this)} 
@@ -80,8 +83,15 @@ class VideoHome extends React.Component {
           </div>
         </div>
         <div className="video-table-container">
+          <span className="video-section-title">My Videos</span>
           <div className="container">
-            <VideoTable onVideoClick={this.onVideoClick.bind(this)}videos={this.state.videoList}/>
+            <VideoTable onVideoClick={this.handleMyVideoClick.bind(this)}videos={this.state.myVideos}/>
+          </div>
+        </div>
+        <div className="video-table-container">
+          <span className="video-section-title">Trending</span>
+          <div className="container">
+            <VideoTable onVideoClick={this.handleGlobalVideoClick.bind(this)}videos={this.state.videoList}/>
           </div>
         </div>
       </div>
@@ -145,22 +155,50 @@ class VideoHome extends React.Component {
   addVideoToCollection(video) {
     const context = this;
 
-    axios.post('/videos/submitVideo', {video: video})
+    axios.post('/videos/addVideoToGlobalList', {video: video})
       .then(function(res) {
         console.log(res);
-        console.log('Successfully submitted video to personal collection');
-        const videos = context.state.videoList.slice();
-        videos.push(res.data);
-        console.log('new videos array ', videos);
-        context.setState({ videoList: videos });
+        console.log('Successfully submitted video to global collection');
+        // newVideo = res.data;
+        return res.data;
+      })
+      .then(function(newVideo) {
+        console.log('check if in personal', newVideo);
+        context.addVideoToPersonalList(newVideo);
+
+
+        
+        // const videos = context.state.videoList.slice();
+        // videos.push(newVideo);
+        // context.setState({ videoList: videos });
+        // console.log('new videos array ', videos);
 
       })
       .catch(function(err) {
-        console.error(err);
+        // console.error(err);
+        console.log('Unable to add to global list');
       });
   }
 
-  onVideoClick(video) {
+  addVideoToPersonalList(video) {
+    const context = this;
+
+    axios.post('/videos/addVideoToPersonalList', 
+      { userId: context.state.username,
+        videoId: video.videoId })
+      .then(function(res) {
+        console.log(res);
+      })
+      .catch(function(err) {
+        console.error(err);
+      })
+  }
+
+  handleMyVideoClick(video) {
+
+  }
+
+  handleGlobalVideoClick(video) {
     axios.post('/videos/incrementVideoClickCounter', {videoId: video.videoId})
       .then(function(res) {
         console.log('Successfully incremented the counter');
