@@ -1453,12 +1453,17 @@ select {
     background: $offblack;
     overflow: auto;
     .row {
-      padding: 10px;
+      justify-content: center;
       .video-search-image-container{
-        padding: 10px;
         img {
           padding: 10px;
           cursor: pointer;
+        }
+        p {
+          padding: 10px;
+          font-size: 16px;
+          width: 340px;
+          color: white;
         }
       }
     }
