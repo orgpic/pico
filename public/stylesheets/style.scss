@@ -816,13 +816,35 @@ select {
     font-size: 3em;
   }
 
+  .start-button {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    flex: 1;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    button {
+      text-align: center;
+      background-color: #4ac39c;
+      border-color: #4ac39c;
+      font-family: $lato;
+      font-size: 1.3em;
+
+      &:hover {
+        background-color: #673AB7;
+        border-color: #673AB7;
+      }
+    }
+  }
+
+
   .subsubtitle {
     color: $themegrey;
     text-align: center;
     padding-top: 0;
     font-family: $franklin;
     font-size: 1em;
-    padding-bottom: 30px;
+    padding-bottom: 10px;
   }
 
   .logo {

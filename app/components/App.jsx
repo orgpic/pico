@@ -1,4 +1,4 @@
-import { Router, Route, Link, browserHistory } from 'react-router';
+import { Router, Route, browserHistory } from 'react-router';
 const React = require('react');
 const ReactDOM = require('react-dom');
 const LinuxComputer = require('./LinuxComputer.jsx');
@@ -11,6 +11,8 @@ const Modal = require('react-modal');
 const VideoHome = require('./VideoHome.jsx');
 const VideoPage = require('./VideoPage.jsx');
 const Slider = require('react-slick');
+
+
 const customStyles = {
   content : {
     top                   : '50%',
@@ -27,7 +29,9 @@ const customStyles = {
     mostPopularVideos: null
   },
 };
- 
+
+const login = document.getElementById('login');
+
 let authenticate;
 
 class App extends React.Component {
@@ -75,6 +79,7 @@ class App extends React.Component {
 
     this.getMostPopularVideos();
   }
+
 
   GoToLogin() {
     this.setState({
@@ -131,8 +136,12 @@ class App extends React.Component {
       })
   }
 
-  onVideoClick() {
-    console.log('please sign up or log in!!!');
+  handleGoToLogin(event) {
+    var scrollId = "login";
+    var scrollElement = document.getElementById(scrollId);
+    window.location = "#login";
+    smoothScroll(scrollElement);
+    event.preventDefault();
   }
 
   render() {
@@ -157,6 +166,10 @@ class App extends React.Component {
                 <div className="subsubtitle">
                   Sign Up Today to Simplify the Programming Process
                 </div>
+                <div className="start-button">
+
+                  <div className="btn btn-success" onClick={this.handleGoToLogin.bind(this)}>Start Now</div>
+                </div>
                 <div className="logo-container">
                   <img src="/images/header.gif"></img>
                 </div>
@@ -177,7 +190,7 @@ class App extends React.Component {
                   </div>
                 </Modal> 
               </div>
-              <div className="login-container">
+              <div className="login-container" id="login">
                 <div className="login-container-container">
                   <div className="login-header">
                     <div className="login">
@@ -198,8 +211,8 @@ class App extends React.Component {
                     <Slider {...sliderSettings} >
                     {this.state.mostPopularVideos.map((video, i) => {
                       return (
-                        <div className="video-entry-home-page">
-                          <img src={video.videoImage}/>
+                        <div className="video-entry-home-page" key = {i}>
+                            <a href="#login"><img src={video.videoImage}/></a>
                         </div>
                       )
                     })}
@@ -221,7 +234,7 @@ class App extends React.Component {
                 </div>
                 <div className="info-container">
                   <div className="description-right">
-                  <span className="title">Educational</span><br/>
+                  <span className="title" id="educational">Educational</span><br/>
                   Add videos from YouTube to picoShell and instantly code alongside of it. 
                   picoShell remembers the file you create with each video, so you can always pick up
                   where you left off
