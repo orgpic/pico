@@ -85,13 +85,13 @@ class VideoHome extends React.Component {
         <div className="video-table-container">
           <span className="video-section-title">My Videos</span>
           <div className="container">
-            <VideoTable onVideoClick={this.handleMyVideoClick.bind(this)}videos={this.state.myVideos}/>
+            <VideoTable onVideoClick={this.handleVideoClick.bind(this)}videos={this.state.myVideos}/>
           </div>
         </div>
         <div className="video-table-container">
           <span className="video-section-title">Trending</span>
           <div className="container">
-            <VideoTable onVideoClick={this.handleGlobalVideoClick.bind(this)}videos={this.state.videoList}/>
+            <VideoTable onVideoClick={this.handleVideoClick.bind(this)}videos={this.state.videoList}/>
           </div>
         </div>
       </div>
@@ -157,48 +157,50 @@ class VideoHome extends React.Component {
 
     axios.post('/videos/addVideoToGlobalList', {video: video})
       .then(function(res) {
-        console.log(res);
-        console.log('Successfully submitted video to global collection');
-        // newVideo = res.data;
-        return res.data;
+        const videoFromDB = res.data[0];
+        const created = res.data[1];
+
+        if(created) {
+          const videos = context.state.videoList.slice();
+          videos.push(videoFromDB);
+          context.setState({ videoList: videos });
+        }
+
+        return videoFromDB;
       })
       .then(function(newVideo) {
-        console.log('check if in personal', newVideo);
         context.addVideoToPersonalList(newVideo);
-
-
-        
-        // const videos = context.state.videoList.slice();
-        // videos.push(newVideo);
-        // context.setState({ videoList: videos });
-        // console.log('new videos array ', videos);
-
       })
       .catch(function(err) {
-        // console.error(err);
-        console.log('Unable to add to global list');
+        console.log('Unable to add to global list', err);
       });
   }
 
   addVideoToPersonalList(video) {
     const context = this;
+    // console.log(video);
 
     axios.post('/videos/addVideoToPersonalList', 
       { userId: context.state.username,
         videoId: video.videoId })
       .then(function(res) {
-        console.log(res);
+        const videoFromDB = res.data[0];
+        const created = res.data[1];
+
+        if(created) {
+          // console.log('Successfully added video to PERSONAL collection');
+          const videos = context.state.myVideos.slice();
+          videos.push(video);
+          context.setState({ myVideos: videos });
+        }
+
       })
       .catch(function(err) {
         console.error(err);
       })
   }
 
-  handleMyVideoClick(video) {
-
-  }
-
-  handleGlobalVideoClick(video) {
+  handleVideoClick(video) {
     axios.post('/videos/incrementVideoClickCounter', {videoId: video.videoId})
       .then(function(res) {
         console.log('Successfully incremented the counter');

@@ -21,14 +21,8 @@ router.post('/addVideoToGlobalList', function(req, res, next) {
 			videoImage: video.snippet.thumbnails.medium.url
 		}
 	})
-	.then(function(info) {
-		// const created = info[1];
-
-		res.send(info[0].dataValues);
-		// if (created) {
-		// } else {
-		// 	res.status(400).send('Video already exists in database');
-		// }
+	.then(function(data) {
+		res.send(data);
 	})
 
 });
@@ -43,15 +37,8 @@ router.post('/addVideoToPersonalList', function(req, res, next) {
 			videoId: videoId
 		}
 	})
-	.then(function(info) {
-		console.log(info);
-		const created = info[1];
-
-		if (created) {
-			res.send(info[0].dataValues);
-		} else {
-			res.status(400).send('Video already exists in database');
-		}
+	.then(function(data) {
+		res.send(data);
 	})
 
 });
@@ -94,7 +81,6 @@ router.get('/getMyVideos', function(req, res, next) {
 		const videoIdList = data.map(function(row) {
 			return row.dataValues.videoId;
 		})
-		// console.log(videoIdList);
 
 		Video.findAll({
 			where: {
@@ -104,16 +90,11 @@ router.get('/getMyVideos', function(req, res, next) {
 			}
 		})
 		.then(function(data) {
-			// console.log('All my vids', data);
 			res.send(data);
 		})
 		.catch(function(err) {
-			// console.error('Failed to get all my videos', err);
 			res.send(400);
 		})
-
-
-		// res.send(videoIdList);
 	})
 	.catch(function(err) {
 		res.send(400);
