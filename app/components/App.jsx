@@ -17,12 +17,6 @@ let authenticate;
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.GoToLogin = this.GoToLogin.bind(this);
-    this.GoToSignUp = this.GoToSignUp.bind(this);
-    this.OpenModal = this.OpenModal.bind(this);
-    this.SendEmail = this.SendEmail.bind(this);
-    this.CloseModal = this.CloseModal.bind(this);
-    this.changeEmailInput = this.changeEmailInput.bind(this);
     this.state = {
       authenticate: 'login',
       authenticated: false,
@@ -126,19 +120,19 @@ class App extends React.Component {
 
   render() {
     if (!this.state.authenticated && this.state.mostPopularVideos) {
-      this.state.authenticate === 'login' ? authenticate = <Login OpenModal={this.OpenModal} GoToSignUp={this.GoToSignUp}/> : authenticate = <SignUp OpenModal={this.OpenModal} GoToLogin={this.GoToLogin}/>; 
+      this.state.authenticate === 'login' ? authenticate = <Login OpenModal={this.OpenModal.bind(this)} GoToSignUp={this.GoToSignUp.bind(this)}/> : authenticate = <SignUp OpenModal={this.OpenModal.bind(this)} GoToLogin={this.GoToLogin.bind(this)}/>; 
       return (
         <LandingPage 
         authenticate={authenticate}
-        email={this.state.email}
-        modalIsOpen={this.state.modalIsOpen}
-        mostPopularVideos={this.state.mostPopularVideos}
-        handleChangeEmailInput={this.changeEmailInput}
-        handleGoToSignUp={this.GoToSignUp}
-        handleGoToLogin={this.handleGoToLogin}
-        handleSendEmail={this.SendEmail}
-        handleCloseModal={this.CloseModal}
-        handleOpenModal={this.OpenModal}
+        email={this.state.email.bind(this)}
+        modalIsOpen={this.state.modalIsOpen.bind(this)}
+        mostPopularVideos={this.state.mostPopularVideos.bind(this)}
+        handleChangeEmailInput={this.changeEmailInput.bind(this)}
+        handleGoToSignUp={this.GoToSignUp.bind(this)}
+        handleGoToLogin={this.handleGoToLogin.bind(this)}
+        handleSendEmail={this.SendEmail.bind(this)}
+        handleCloseModal={this.CloseModal.bind(this)}
+        handleOpenModal={this.OpenModal.bind(this)}
         />
       )
     } else if (this.state.authenticated && this.state.mostPopularVideos) {
