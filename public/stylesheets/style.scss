@@ -1466,12 +1466,14 @@ select {
           color: white;
         }
         .slick-next {
-          right: 121px;
-          top: 222px;
+          right: -10px;
+          top: 100px;
+          position: relative;
         }
         .slick-prev {
-          left: 121px;
-          top: 222px;        
+          left: -10px;
+          top: 100px;
+          position: relative; 
         }
       }
     }
