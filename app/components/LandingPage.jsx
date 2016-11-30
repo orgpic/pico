@@ -70,7 +70,7 @@ const LandingPage = ({authenticate, email, modalIsOpen, mostPopularVideos, handl
 	          </div>
 	        </div>
 	        <div className="info">
-	          <div className="info-header">Why picoShell?</div>
+	          <div className="info-header">Who Uses picoShell?</div>
 	          <div className="sub-header">
 	            picoShell is for educators, students, developers, and interviewers who want to collaborate through code remotely
 	          </div>
@@ -147,7 +147,7 @@ const customStyles = {
 const sliderSettings = {
   lazyLoad: 'ondemand',
   slidesToShow: 4,
-  slidesToScroll: 1
+  slidesToScroll: 4
 }
 
 

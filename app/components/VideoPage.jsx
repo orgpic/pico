@@ -53,8 +53,10 @@ class VideoPage extends React.Component {
           </div>
           <div className="body-container">
             <div className="video-player-container">
-              <VideoPlayer video={this.state.currentVideo} />  
+              <VideoPlayer video={this.state.currentVideo} />
+              <div className="terminal-container"> 
               <Terminal username={this.state.username} containerName={this.state.containerName}/>
+              </div>
             </div>
             <div className="split-pane">
                <CodeEditor username={this.state.username} containerName={this.state.containerName}/>

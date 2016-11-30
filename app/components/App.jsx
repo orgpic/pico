@@ -10,6 +10,8 @@ const VideoHome = require('./VideoHome.jsx');
 const VideoPage = require('./VideoPage.jsx');
 const HomePage = require('./HomePage.jsx');
 const LandingPage = require('./LandingPage.jsx');
+const FAQ = require('./FAQ.jsx');
+const About = require('./About.jsx');
 
 
 let authenticate;
@@ -155,5 +157,7 @@ ReactDOM.render((
     <Route path="/dashboard" component={Dashboard} ></Route>
     <Route path="/video" component={VideoHome}></Route>
     <Route path="/video/:videoId" component={VideoPage}></Route>
+    <Route path="/about" component={About}></Route>
+    <Route path="/faq" component={FAQ}></Route>
   </Router>
 ), document.getElementById('app'))

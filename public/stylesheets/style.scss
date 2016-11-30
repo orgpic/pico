@@ -609,6 +609,9 @@ select {
   flex-wrap: wrap;
   box-sizing: border-box;
 
+
+
+
   .footer {
     color: $offwhite;
     font-family: $work;
@@ -663,10 +666,40 @@ select {
       display: inline-block;
       min-height: 0;
       min-width: 0;
+      position: relative;
       img {
         width: 250px;
         margin: 20px 10px 20px 10px;
       }
+
+      .overlay {
+        margin: auto;
+        margin-top: 0px;
+        background-color: $offwhite;
+        height: 100%;
+        width: 100%;
+        z-index: 0;
+        visibility: hidden;
+      } 
+
+      .front-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 140.63px;
+        display: none;
+        color: #FFF;
+        display: block;
+        font-family: $lato;
+        font-size: 1.5em;
+        font-weight: 100;
+        padding: 10px;
+        text-align:center;
+        cursor: pointer;
+        margin: 20px 10px 20px 10px;
+        background: rgba(0,0, 0, 0.90);
+      } 
     }
 
   }
@@ -1106,6 +1139,7 @@ select {
     width: 100%;
     flex: 1;
     flex-wrap: wrap;
+    overflow: hidden;
     .ion-ios-folder-outline{
       color: $brightgreen;
       font-weight: bold;
@@ -1124,7 +1158,7 @@ select {
 
   .terminal-container {
     height: 100%;
-    max-height: 600px;
+    max-height: 550px;
     width: 100%;
     padding: 0;
     margin: 0;
@@ -1467,6 +1501,10 @@ select {
       padding-top: 20px;
       margin-bottom: 0;
       flex-direction: row;
+      .terminal-container {
+        max-height: 200px;
+        overflow: auto;
+      }
     }
 
     .terminal-menu {
