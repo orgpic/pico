@@ -6,7 +6,6 @@ const express = require('express');
 const router = express.Router();
 const port = process.env.PORT || 3000;
 const host = `http://localhost:${port}`;
-const request = require('supertest');
 const util = require('../utils/auth');
 
 describe('Local Signup/Login test', function () {
@@ -33,8 +32,8 @@ describe('Local Signup/Login test', function () {
 
   it('should have sessions', function(done) {
     util.testSession(function(result) {
-      console.log(result);
-      expect(result.originalMaxAge).to.equal(86400000);
+      console.log('useruseruseruser' ,result);
+      expect(result).to.equal('user');
       done();
     });
   });

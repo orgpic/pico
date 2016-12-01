@@ -6,19 +6,13 @@ const router = express.Router();
 const port = process.env.PORT || 3000;
 const host = `http://localhost:${port}`;
 const app = require('../../app.js');
-const request = require('supertest')(app);
-var session = require('supertest-session');
-
+var oldRequest = require('request');
+const request = oldRequest.defaults({jar: true});
 
 const options = {
   username: 'user',
   password: 'pass11'
 };
-
-router.get('/return', function(req, res) {
-  if (req.session) res.send(req.session);
-  else res.send(':(');
-});
 
 module.exports = {
   clearUser: function(callback) {
@@ -41,10 +35,16 @@ module.exports = {
   },
 
   localSignup: function (callback) {
-    request
-    .post('/auth/signup')
-    .send(options)
-    .end(function(err, result) {
+    var options = {
+      uri: `${host}/auth/signup`,
+      method: 'POST',
+      json: {
+        username: 'user',
+        password: 'pass11'
+      }
+    };
+    request(options, function(err, result) {
+      console.log('akjlhjladfshjkldfhjkakhjlakjlalkadkljadfkhjlfads',err, result)
       if (err) {
         console.log('error', err);
         return;
@@ -54,10 +54,15 @@ module.exports = {
   },
 
   authenticate: function(callback) {
-    request
-    .post('/auth/authenticate')
-    .send(options)
-    .end(function(err, result) {
+    var options = {
+      uri: `${host}/auth/authenticate`,
+      method: 'POST',
+      json: {
+        username: 'user',
+        password: 'pass11'
+      }
+    };
+    request(options, function(err, result) {
       if (err) {
         console.log('error', err);
         return;
@@ -67,22 +72,31 @@ module.exports = {
   }, 
 
   testSession: function(callback) {
-    request
-    .get('/auth/oAuth')
-    .end(function(err, result) {
+    var options = {
+      uri: `${host}/auth/oAuth`,
+      method: 'GET',
+    };
+    request(options, function(err, result, body) {
       if (err) {
         console.log(err);
         return;
       } 
-      console.log('testSessoooon', result.data)
-      callback(result);
+      if (typeof body === 'string' && body.length > 0) {
+        console.log('testSessoooontestSessoooontestSessoooonteboooooooooooodddddddyyyyy', JSON.parse(body).username)
+        callback(JSON.parse(body).username);
+      } else {
+        callback(body);
+      }
+      
     });
   },
 
   signOut: function(callback) {
-    request
-    .get('/logout')
-    .end(function(err, results) {
+     var options = {
+      uri: `${host}/logout`,
+      method: 'GET',
+    };
+    request(options, function(err, results) {
       if (err) {
         console.log('error', err);
         return;

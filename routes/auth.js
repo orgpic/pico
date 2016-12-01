@@ -11,6 +11,7 @@ const passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var SALT_WORK_FACTOR = 12;
 router.post('/signup', function(req, res) {
+  console.log('bodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybody', req.body);
   console.log('signing up: ', req.body);
   const username = req.body.username;
   const password = req.body.password;
@@ -80,7 +81,8 @@ router.post('/signup', function(req, res) {
 
 
 router.get('/oAuth', function(req, res) {
-  // console.log('oAuthoAuthoAuthoAuth', req.session)
+  console.log('oAuthoAuthoAuthoAuthoAuthoAuthoAuthoAuthoAuthoAuthoAuthoAuth', req.session)
+  console.log('req.sessiontrst', req.session.test)
   res.json(req.session.user);
 });
 
@@ -102,7 +104,8 @@ router.post('/authenticate',
       profilePicture: fullUser.profilePicture
     };
     req.session.user = user;
-    console.log('req.session.userreq.session.userreq.session.userreq.session.userreq.session.userreq.session.userreq.session.userreq.session.userreq.session.user', req.session.user)
+    req.session.test = 'hello';
+    console.log(body, 'req.session.userreq.session.userreq.session.userreq.session.userreq.session.userreq.session.userreq.session.userreq.session.userreq.session.user', req.session.user)
     res.send(req.session.user);
   }
 );
