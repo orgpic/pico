@@ -91,12 +91,10 @@ class FileBrowser extends React.Component {
     axios.post('/docker/cmd', {cmd: 'download ' + file, containerName: this.state.containerName, curDir: this.state.curDir})
     .then(function(res) {
       var str2bytes = function(str) {
-        console.log(str);
         var bytes = new Uint8Array(str.length);
         for (var i=0; i<str.length; i++) {
           bytes[i] = str.charCodeAt(i);
         }
-        console.log(bytes);
         return bytes;
       }
       var download = function(filename, text) {
