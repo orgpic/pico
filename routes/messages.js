@@ -15,10 +15,10 @@ router.post('/', function(req, res) {
     message: obj.message, 
   })
   .then(function(results) {
-    res.status(200);
+    res.status(200).send('Message Stored');
   })
   .catch(function(err) {
-    res.status(500);
+    res.status(500).send('Message Store Failed');
   });
 });
 
