@@ -1,10 +1,10 @@
 const React = require('react');
 var ReactDOM = require ('react-dom');
-const utils = require('../../utils/videoHelpers.js');
+const utils = require('../../../utils/videoHelpers.js');
 const VideoPlayer = require('./VideoPlayer.jsx');
-const CodeEditor = require('./CodeEditor.jsx');
-const Terminal = require('./Terminal.jsx');
-const NavBar = require('./NavBar.jsx');
+const CodeEditor = require('../CodeEditor.jsx');
+const Terminal = require('../Terminal.jsx');
+const NavBar = require('../NavBar.jsx');
 const SplitPane = require('react-split-pane');
 class VideoPage extends React.Component {
   constructor(props) {

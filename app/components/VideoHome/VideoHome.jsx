@@ -3,14 +3,14 @@ const ReactDOM = require('react-dom');
 const NewVideoForm = require('./NewVideoForm.jsx');
 const VideoTable = require('./VideoTable.jsx');
 const VideoPage = require('./VideoPage.jsx');
-const utils = require('../../utils/videoHelpers.js');
+const utils = require('../../../utils/videoHelpers.js');
 const bootstrap = require('bootstrap');
-const API_KEY = require('../../utils/keys').YOUTUBE_API_KEY;
-const NavBar = require('./NavBar.jsx');
+const API_KEY = require('../../../utils/keys').YOUTUBE_API_KEY;
+const NavBar = require('../NavBar.jsx');
 const VideoSearch = require('./VideoSearch.jsx');
 const VideoSearchResults = require('./VideoSearchResults.jsx');
 const axios = require('axios');
-const Footer = require('./Footer.jsx');
+const Footer = require('../Footer.jsx');
 class VideoHome extends React.Component {
   constructor(props) {
     super(props);

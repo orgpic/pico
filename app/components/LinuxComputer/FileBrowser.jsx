@@ -1,7 +1,7 @@
 const React = require('react');
 const axios = require('axios');
 const FileSaver = require('file-saver');
-const FileHelpers = require('../../utils/FileHelpers.js');
+const FileHelpers = require('../../../utils/FileHelpers.js');
 const Dropzone = require('./Dropzone.jsx');
 
 let counter = 0;

@@ -1,7 +1,7 @@
 const React = require('react');
 const Slider = require('react-slick');
 const Modal = require('react-modal');
-const Footer = require('./Footer.jsx');
+const Footer = require('../Footer.jsx');
 
 const LandingPage = ({authenticate, email, modalIsOpen, mostPopularVideos, handleChangeEmailInput, handleGoToSignUp, handleGoToLogin, handleSendEmail, handleCloseModal, handleOpenModal}) => {
 	return (
