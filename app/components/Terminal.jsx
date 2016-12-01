@@ -185,12 +185,10 @@ class Terminal extends React.Component {
             term.echo('Sorry, you have no permission to run commands on this user\'s terminal.');
             return;
           }
-          // context.setState({
-          //   curCommand: command
-          // })
-          // context.socket.emit('/ANALYZE/', {command: command, containerName: context.state.containerName});
+            context.terminal.pause();
             axios.post('/docker/cmd', { cmd: command, containerName: context.state.containerName, curDir: context.state.curDir })
               .then(function(res) {
+                context.terminal.resume();
                 if(typeof res.data === 'object') {
                   if(res.data.fileOpen) {
                     console.log(res.data);
