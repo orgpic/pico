@@ -6,7 +6,6 @@ const CodeEditor = require('./CodeEditor.jsx');
 const Terminal = require('./Terminal.jsx');
 const NavBar = require('./NavBar.jsx');
 const SplitPane = require('react-split-pane');
-
 class VideoPage extends React.Component {
   constructor(props) {
     super(props);
@@ -17,14 +16,13 @@ class VideoPage extends React.Component {
       containerName: ''
     };
   }
-
   componentWillMount() {
   	var context = this;
   	const user = JSON.parse(localStorage['user']);
   	context.setState({
-     containerName: user.username,
-     username: user.username
-   });
+      containerName: user.username,
+      username: user.username
+    });
     this.checkVideoIdInDB = 
     $.ajax({
       url: '/videos/checkVideoIdInDB',
@@ -45,9 +43,9 @@ class VideoPage extends React.Component {
   		return null;
   	} else {
       return (
-       <div>
-       <NavBar username={this.state.username} />
-         <div className="video-page-container">
+        <div>
+          <NavBar username={this.state.username} />
+          <div className="video-page-container">
           <div className="title">
            {this.state.currentVideo.videoTitle}
           </div>
@@ -63,18 +61,9 @@ class VideoPage extends React.Component {
             </div>
             </div>
           </div>
-       </div>
-       )
+        </div>
+      );
     }
   }
-
 }
 module.exports = VideoPage;
-
-
-          // <div className="split-pane">
-          //    <SplitPane split="horizontal" defaultSize='50%'>
-          //    <CodeEditor username={this.state.username} containerName={this.state.containerName}/>
-          //    <Terminal username={this.state.username} containerName={this.state.containerName}/>
-          //   </SplitPane>
-          // </div>

@@ -13,7 +13,7 @@ const LandingPage = require('./LandingPage.jsx');
 const FAQ = require('./FAQ.jsx');
 const About = require('./About.jsx');
 const Modal = require('react-modal');
-
+const Footer = require('./Footer.jsx');
 let authenticate;
 
 class App extends React.Component {
@@ -103,9 +103,9 @@ class App extends React.Component {
     var context = this;
     axios.get('/videos/mostPopularVideos')
       .then(function(res) {
-       context.setState({
-        mostPopularVideos: res.data
-       });
+        context.setState({
+          mostPopularVideos: res.data
+        });
       })
       .catch(function(err) {
         console.error(err);
@@ -224,22 +224,7 @@ class App extends React.Component {
                   <img src="/images/codeable.gif"></img>
                 </div>
               </div>
-              <div className="footer">
-                <div className="footer-column">
-                    <p className="footer-header">picoShell</p>
-                    <ul>
-                      <li><img src="/images/whitelogo.svg"></img><a href="/about">About</a></li>
-                      <li><i className="ion-ios-world-outline"></i><a href='/faq'>FAQ</a></li>
-                      <li><i className="ion-ios-home-outline"></i><a href='/'>Home</a></li>
-                    </ul>
-                </div>
-                <div className="footer-column">
-                  <p className="footer-header">Contact Us</p>
-                  <ul>
-                    <li><i className="ion-ios-email-outline"></i>bianca.subion@gmail.com</li>
-                  </ul>
-              </div>
-            </div>
+              <Footer/>
           </div>
         </div>
 
@@ -247,7 +232,7 @@ class App extends React.Component {
     } else {
       return (
         <div> Loading... </div>
-      )
+      );
     }
   }
 }

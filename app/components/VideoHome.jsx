@@ -10,7 +10,7 @@ const NavBar = require('./NavBar.jsx');
 const VideoSearch = require('./VideoSearch.jsx');
 const VideoSearchResults = require('./VideoSearchResults.jsx');
 const axios = require('axios');
-
+const Footer = require('./Footer.jsx');
 class VideoHome extends React.Component {
   constructor(props) {
     super(props);
@@ -146,14 +146,6 @@ class VideoHome extends React.Component {
 
   doVideoSearch(options) {
     const context = this;
-
-    // const options = {
-    //   part: 'statistics',
-    //   metrics: 'views,comments,likes,dislikes,shares',
-    //   max: 3,
-    //   key: API_KEY
-    // }
-
     console.log(options)
     axios.get('https://www.googleapis.com/youtube/v3/search?', 
       {params: options })
