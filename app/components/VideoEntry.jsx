@@ -2,7 +2,7 @@ const React = require('react');
 import { Router, Route, Link, browserHistory } from 'react-router'
 
 const VideoEntry = ({video, onVideoClick}) => {
-	console.log(video.videoImage);
+	// console.log(video.videoImage);
 	if (video.videoImage) {
 		return (
 			<div className="col-md-4">

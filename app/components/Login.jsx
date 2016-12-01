@@ -2,7 +2,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const axios = require('axios');
 const { Button } = require('react-bootstrap');
-
+const Loader = require('react-loader');
 
 class Login extends React.Component {
   constructor(props) {
@@ -17,7 +17,8 @@ class Login extends React.Component {
         color: 'black',
         fontWeight: 'bold',
         username: '',
-        password: ''
+        password: '',
+        loaded: true
     };
   }
   changeUserNameInput(event) {
@@ -35,12 +36,15 @@ class Login extends React.Component {
   handleSubmit(e, user, pass) {
     const context = this;
     e.preventDefault();
+    context.setState({ loaded: false });
+
     axios.post('/auth/authenticate', {
       username: this.state.username,
       password: this.state.password
     })
     .then(function(response) {
       console.log('we have a response');
+      context.setState({ loaded: true });
       if (response.data.username) {
         console.log('1srt storage', localStorage['user']);
         localStorage['user'] = JSON.stringify(response.data);
@@ -55,6 +59,7 @@ class Login extends React.Component {
     })
     .catch(function(err) {
       console.log('Error during login submit', err);
+      context.setState({ loaded: true });
       ReactDOM.render(<div>Please make sure you enter a valid username and password.</div>, 
         document.getElementById('error'));
     });
@@ -64,6 +69,7 @@ class Login extends React.Component {
     return (
   		<div>
   			<form onSubmit={this.handleSubmit}>
+          <Loader loaded={this.state.loaded}/>
           <div className="form-inputs">
   					<input onChange={this.changeUserNameInput} className="login-input" type='text' placeholder='username'value={this.state.username}/><br/>
   					<input onChange={this.changePasswordInput} className="login-input" type='password' placeholder='password'/>

@@ -116,30 +116,7 @@ io.on('connection', function(socket) {
 
   socket.on('/CHAT/', function(msg) {
     io.sockets.emit('/CHAT/' + msg.containerName, msg);
-    // console.log('THIS IS MESSAGE!!', msg);
-    // var message = msg.msg;
-    // console.log('message', message, msg.containerName);
-    // axios.post('http://localhost:3000/messages', 
-    //   { username: message.user,
-    //     containerName: msg.containerName,
-    //     message: message.text
-    //   }).then(function(res) {
-    //     console.log('Successfully saved message to the database');
-    //   }).catch(function(err){
-    //     console.error('Failed to save message to database', err);
-    //   });
-
-    // Messages.create({
-    //   userID: message.user,
-    //   containerID: msg.containerName,
-    //   message: message.text, 
-    // })
-    // .then(function(results) {
-    //   console.log('Successfully saved message to the database');
-    // })
-    // .catch(function(err) {
-    //   console.log('Failed to send message to the database', err);
-    // })
+    console.log('Emitted msg', msg);
   });
 
   socket.on('/TERM/SHOW/', function(show) {

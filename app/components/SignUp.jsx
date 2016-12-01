@@ -98,11 +98,11 @@ class Signup extends React.Component {
   handleSubmit(e) {
     const context = this;
     e.preventDefault();
-    this.setState({
-      loaded: false
-    })
     console.log('submitting', github);
     if (this.state.usernameValid && this.state.firstNameValid && this.state.githubValid && this.state.lastNameValid && this.state.emailValid && this.state.passwordValid) {
+      this.setState({
+        loaded: false
+      })
       var username = this.state.username;
       var password = this.state.password;
       axios.post('/auth/signup', {
@@ -119,15 +119,15 @@ class Signup extends React.Component {
            password: password
          })
          .then(function(response) {
+            if (response.data) {
+             localStorage['user'] = JSON.stringify(response.data);
+             window.location = window.location + 'dashboard';
+            } else {
+             alert('Failed Login');
+            }
             context.setState({
               loaded: true
             })
-           if (response.data) {
-             localStorage['user'] = JSON.stringify(response.data);
-             window.location = window.location + 'dashboard';
-           } else {
-             alert('Failed Login');
-           }
          })
          .catch(function(err) {
            console.log(err);  
@@ -157,8 +157,8 @@ class Signup extends React.Component {
               placeholder='username'
               data-type='username'
               />
-              <span id="username"></span>
-              {this.state.usernameValid ? <i className="glyphicon glyphicon-ok"></i> : null}
+            <span id="username"></span>
+            {this.state.usernameValid ? <i className="glyphicon glyphicon-ok"></i> : null}
             <input 
               onChange={this.changeInput}
               className="login-input"
@@ -166,8 +166,8 @@ class Signup extends React.Component {
               placeholder='password'
               data-type='password'
               />
-              <span id="password"></span>
-              {this.state.passwordValid ? <i className="glyphicon glyphicon-ok"></i> : null}
+            <span id="password"></span>
+            {this.state.passwordValid ? <i className="glyphicon glyphicon-ok"></i> : null}
             <input 
               onChange={this.changeInput}
               className="login-input"
@@ -175,8 +175,8 @@ class Signup extends React.Component {
               placeholder='first name'
               data-type='firstName'
               />
-              <span id="firstname"></span>
-              {this.state.firstNameValid ? <i className="glyphicon glyphicon-ok"></i> : null}
+            <span id="firstname"></span>
+            {this.state.firstNameValid ? <i className="glyphicon glyphicon-ok"></i> : null}
             <input 
               onChange={this.changeInput}
               className="login-input"
@@ -184,17 +184,17 @@ class Signup extends React.Component {
               placeholder='last name'
               data-type='lastName'
               />
-              <span id="lastname"></span>
-              {this.state.lastNameValid ? <i className="glyphicon glyphicon-ok"></i> : null}
-              <input 
-                onChange={this.changeInput}
-                className="login-input"
-                type='text' 
-                placeholder='github'
-                data-type='github'
-                />
-                <span id="github"></span>
-                {this.state.githubValid ? <i className="glyphicon glyphicon-ok"></i> : null}
+            <span id="lastname"></span>
+            {this.state.lastNameValid ? <i className="glyphicon glyphicon-ok"></i> : null}
+            <input 
+              onChange={this.changeInput}
+              className="login-input"
+              type='text' 
+              placeholder='github'
+              data-type='github'
+              />
+            <span id="github"></span>
+            {this.state.githubValid ? <i className="glyphicon glyphicon-ok"></i> : null}
             <input 
               onChange={this.changeInput}
               className="login-input"
@@ -202,10 +202,10 @@ class Signup extends React.Component {
               placeholder='email'
               data-type='email'
               />
-              <span id="email"></span>
-              {this.state.emailValid ? <i className="glyphicon glyphicon-ok"></i> : null}
+            <span id="email"></span>
+            {this.state.emailValid ? <i className="glyphicon glyphicon-ok"></i> : null}
             <div className="submit">
-             <button id="submit" type="submit" className="btn btn-success">Sign Up</button>
+              <button id="submit" type="submit" className="btn btn-success">Sign Up</button>
             </div>
           </div>
         </form>

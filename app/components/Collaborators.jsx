@@ -14,9 +14,9 @@ class Collaborators extends React.Component {
       pendingInvites: [],
       collaborators: [],
       collabWith: [],
-      allRoles: {}
+      allRoles: {},
+      inviteError: ''
     };
-
 
     axios.post('/users/pendingInvites', {username: this.state.username})
     .then(function(res) {
@@ -106,7 +106,7 @@ class Collaborators extends React.Component {
   handleSubmit(e, user) {
     if(user.toUpperCase() === this.state.username.toUpperCase()) {
       e.preventDefault();
-      alert('Sorry, but you cannot collaborate with yourself! Sad but true.');
+      this.setState({ inviteError: 'Sorry, but you cannot collaborate with yourself! Sad but true.'})
       document.getElementById('inviteUsernameInput').value = '';
     }
     else {
@@ -116,14 +116,14 @@ class Collaborators extends React.Component {
       axios.post('/users/sendInvite', {usernameToInvite: user, username: context.state.username})
       .then(function(res) {
         if(res.data.fail) {
-          alert(res.data.fail);
+          context.setState({ inviteError: res.data.fail });
         } else if (res.data.success) {
           context.socket.emit('/DASH/INVITE/', {recipient: user, sender: context.state.username});
-          alert(res.data.success);
+          context.setState({ inviteError: res.data.success });
         }
       })
       .catch(function(err) {
-        alert('Username not found!');
+        context.setState({ inviteError: 'Username not found!' });
       });
     }
   }
@@ -267,7 +267,7 @@ class Collaborators extends React.Component {
                      Invite People to Collaborate
                      </div>
                      <div className="row">
-                      <form  onSubmit={
+                      <form autoComplete="off" onSubmit={
                         function(e) {
                           this.handleSubmit(e, this.state.invUsername);
                         }.bind(this)}>
@@ -284,6 +284,9 @@ class Collaborators extends React.Component {
                         </div>
                       </form>
                     </div>
+                    <div className="row">
+                      <p className="invite-response-text">{this.state.inviteError}</p>
+                    </div>
                   </div>
                 </div>
                 <div className="col-md-6 collab-card">
@@ -295,11 +298,11 @@ class Collaborators extends React.Component {
                       this.state.pendingInvites.length ? this.state.pendingInvites.map(function(pending) {
                       return (
                         <div className="pending">{pending} 
-                        <span onClick={() => { context.handleAcceptCollab(pending); }}> <i className="glyphicon  glyphicon-ok-sign"></i>
+                        <span onClick={() => { context.handleAcceptCollab(pending); }}> <i className="ion-ios-checkmark-outline"></i>
 
                       
                         </span>
-                        <span onClick={() => { context.handleRejectCollab(pending); }}> <i className="glyphicon  glyphicon-remove-sign"></i> </span>           
+                        <span onClick={() => { context.handleRejectCollab(pending); }}> <i className="ion-ios-close-outline"></i> </span>           
                         </div>
                         );
                       }) : 

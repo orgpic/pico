@@ -16,6 +16,8 @@ class Chatbox extends React.Component {
     this.changeMessageInput = this.changeMessageInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.curMessage = '';
+    this.updateMessages();
+
   }
 
   componentDidUpdate() {
@@ -29,62 +31,11 @@ class Chatbox extends React.Component {
       containerName: nextProps.containerName
     });
 
-    axios.get('/messages', {params: {containerName: nextProps.containerName}})
-      .then(function(res) {
-        let arr = [];
-
-        for (var i = res.data.length - 1; i >= 0; i--) {
-          var msgObj = {
-            user: res.data[i].userID,
-            text: res.data[i].message,
-            time: res.data[i].createdAt
-          };
-
-          console.log(msgObj)
-          // arr.push(res.data[i].userID + ': ' + res.data[i].message);
-          arr.push(msgObj);
-        }
-
-        context.setState({
-          messages: arr
-        });
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
-
-    this.socket.on('/CHAT/' + nextProps.containerName, function(msg) {
-      console.log('received chat', msg);
-
-      if(context.state.username !== msg.msg.user) {
-        const messageArray = context.state.messages.slice();
-        messageArray.push(msg.msg);
-
-        context.setState({
-          messages: messageArray,
-          active: true
-        });
-
-        // if(!msg.joined) {
-
-        //   context.setState({
-        //     messages: messages
-        //   })
-        //   // document.getElementById('chatText').value = msg.sender + ': ' + msg.msg + '\n' + document.getElementById('chatText').value;
-        // } else {
-        //   document.getElementById('chatText').value = msg.msg + document.getElementById('chatText').value;
-        // }
-      }
-    });
-
-    // document.getElementById('chatText').value = '---' + this.props.username + ' Joined /' + nextProps.containerName + '---\n' + document.getElementById('chatText').value;
-    // this.socket.emit('/CHAT/', {joined: true, sender: this.props.username, msg: '---' + this.props.username + ' Joined /' + nextProps.containerName + '---\n', containerName: nextProps.containerName});
+    console.log('get chats for ', nextProps.containerName);
+    this.updateMessages();
   }
 
   changeMessageInput(event) {
-    // this.setState({
-    //   curMessage: event.target.value
-    // });
     this.curMessage = event.target.value;
   }
 
@@ -103,10 +54,10 @@ class Chatbox extends React.Component {
       text: message,
       time: new Date().toString()
     };
+    console.log(messageToSend);
 
 
     document.getElementById('messageText').value = '';
-    // console.log(message);
     const messageArray = this.state.messages.slice();
     messageArray.push(messageToSend);
 
@@ -134,11 +85,47 @@ class Chatbox extends React.Component {
     }
   }
 
-  // componentWillUpdate() {
-  //   const node = document.getElementById("chatText");
-  //   node.scrollTop = node.scrollHeight;
-  // }
-//
+  updateMessages() {
+    const context = this;
+
+    axios.get('/messages', {params: {containerName: this.props.containerName}})
+      .then(function(res) {
+        let arr = [];
+
+        for (var i = res.data.length - 1; i >= 0; i--) {
+          var msgObj = {
+            user: res.data[i].userID,
+            text: res.data[i].message,
+            time: res.data[i].createdAt
+          };
+
+          console.log(msgObj);
+          arr.push(msgObj);
+        }
+
+        context.setState({
+          messages: arr
+        });
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+
+    this.socket.on('/CHAT/' + this.props.containerName, function(msg) {
+      console.log('received chat', msg);
+
+      if(context.state.username !== msg.msg.user) {
+        const messageArray = context.state.messages.slice();
+        messageArray.push(msg.msg);
+
+        context.setState({
+          messages: messageArray,
+          active: true
+        });
+      }
+    });
+  }
+
   handleChangeActive(e) {
     e.preventDefault();
     this.setState({
@@ -174,6 +161,8 @@ class Chatbox extends React.Component {
         <div className="chat-box-mini" onClick={this.handleChangeActive.bind(this)}>
           Group Chat
           
+          <i className="ion-ios-chatbubble-outline"></i>
+
         </div>
       )
     }
