@@ -32,7 +32,7 @@ describe('Local Signup/Login test', function () {
 
   it('should have sessions', function(done) {
     util.testSession(function(result) {
-      console.log('useruseruseruser' ,result);
+      console.log('useruseruseruser', result);
       expect(result).to.equal('user');
       done();
     });
