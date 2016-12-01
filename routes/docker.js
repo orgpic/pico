@@ -5,6 +5,20 @@ const docker = require('../utils/dockerAPI');
 var db = require('../db/config');
 var User = require('../models/User');
 
+router.post('/deleteFile', function(req, res) {
+  const containerName = req.body.containerName;
+  const entry = req.body.curDir + '/' + req.body.entry;
+  const folderFlag = req.body.isFolder ? ' -rf ' : ' ';
+  const command = 'rm' + folderFlag + entry;
+  docker.runCommand(containerName, command, function(err, res1) {
+    if(err) {
+      res.status(200).send(err);
+    } else {
+      res.status(200).send(res1);
+    }
+  });
+});
+
 router.post('/restart', function(req, res) {
   var containerName = req.body.containerName;
   docker.isContainerRunning(containerName, function(resp) {
