@@ -98,12 +98,14 @@ class FileBrowser extends React.Component {
         return bytes;
       }
       var download = function(filename, text) {
-        console.log(filename, text);
+        console.log(filename, res);
+
         text = text.replace(/\n/g, '');
         var blob = new Blob(text.split(' ').map(function(txt) { return str2bytes(FileHelpers.hex2a(txt)); }), {type: ""});
         FileSaver.saveAs(blob, filename);
       }
-      download(entry, res.data.fileContents);
+      const fileName = res.data.fileName.replace(/\//, '');
+      download(fileName, res.data.fileContents);
     });
   }
 
