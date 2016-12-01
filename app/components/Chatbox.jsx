@@ -32,7 +32,7 @@ class Chatbox extends React.Component {
     });
 
     console.log('get chats for ', nextProps.containerName);
-    this.updateMessages();
+    this.updateMessages(nextProps.containerName);
   }
 
   changeMessageInput(event) {
@@ -85,10 +85,10 @@ class Chatbox extends React.Component {
     }
   }
 
-  updateMessages() {
+  updateMessages(container) {
     const context = this;
 
-    axios.get('/messages', {params: {containerName: this.props.containerName}})
+    axios.get('/messages', {params: {containerName: container}})
       .then(function(res) {
         let arr = [];
 
@@ -111,7 +111,7 @@ class Chatbox extends React.Component {
         console.log(err);
       });
 
-    this.socket.on('/CHAT/' + this.props.containerName, function(msg) {
+    this.socket.on('/CHAT/' + container, function(msg) {
       console.log('received chat', msg);
 
       if(context.state.username !== msg.msg.user) {
