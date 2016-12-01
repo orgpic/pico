@@ -6,7 +6,6 @@ const express = require('express');
 const router = express.Router();
 const port = process.env.PORT || 3000;
 const host = `http://localhost:${port}`;
-const request = require('supertest');
 const util = require('../utils/auth');
 
 describe('Local Signup/Login test', function () {
@@ -33,16 +32,18 @@ describe('Local Signup/Login test', function () {
 
   it('should have sessions', function(done) {
     util.testSession(function(result) {
-      console.log(result);
-      expect(result.originalMaxAge).to.equal(86400000);
+      console.log('useruseruseruser', result);
+      expect(result).to.equal('user');
       done();
     });
   });
 
-  xit('should kill the session upon signout', function(done) {
+  it('should kill the session upon signout', function(done) {
     util.signOut(function(results) {
-      expect(results.user.username).to.equal(undefined);
-      done();
+      util.testSession(function(results) {
+        expect(results.originalMaxAge).to.equal(undefined)
+        done();
+      });
     });
   });
 
