@@ -1396,7 +1396,8 @@ select {
     background-color: #FFFFFF;
     overflow: auto;
     .homepage-landing{
-        background-image: url('/images/homepage.svg');
+        background-image: url('/images/gradient4.png');
+        background-size: cover;
         width: 100%;
         // height: 481px;
         overflow: hidden;
@@ -1427,18 +1428,22 @@ select {
             }
           }
 
-
-
           .homepage-form {
-            padding: 20px;
+            padding: 16px;
+
             input {
               background-color: rgba(255,255,255,0.3);
-              border-radius: 5px;
-              .form-control {
-                border: 0px;
-                &:focus {
-                  border: 0px;
-                }
+              border-radius: 100px;
+              font-size: 34px;
+              height: 80%;
+              width: 100%;
+              text-align: center;
+
+              &.form-control {
+                padding: 3px 12px;
+              }
+              &:focus {
+                border-color: white;
               }
             }
           }
@@ -1488,8 +1493,8 @@ select {
     text-align: center;
 
     .video-section-title {
-      font-size: 20px;
-      color: white;
+      font-size: 30px;
+      color: $offwhite;
     }
 
     .video-table {
