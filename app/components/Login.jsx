@@ -78,7 +78,7 @@ class Login extends React.Component {
             </div>
           </div>
   			</form>
-        <a href="/github"> 
+        <a target="_top" href="/github"> 
           <button className="btn btn-success">Login With Github</button>
         </a>
         <div id='error'></div>

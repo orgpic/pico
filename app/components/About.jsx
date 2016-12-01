@@ -46,7 +46,7 @@ class About extends React.Component {
                 <div className='teamRow'>
                   <img className='pic' src="/images/JC.jpg"></img>
                   <div className='tText'>
-                    SOMETHING CREATIVE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi aliquam magna in massa dapibus, eget malesuada dui accumsan. Nullam sodales congue condimentum. Aenean gravida, dolor ut iaculis iaculis, massa tortor aliquet metus, id tincidunt orci orci nec ex. Nunc molestie, ante mollis consectetur porttitor, mi turpis tempus nisl, vel commodo velit tellus quis massa. In semper justo a quam efficitur facilisis. Proin quis risus in sapien pellentesque placerat quis eu risus. Nullam eu pellentesque mauris. Nam varius mollis augue, at commodo mauris dictum sed. Aenean iaculis feugiat molestie. Sed in libero commodo, fermentum leo ut, malesuada eros. Nulla sit amet lectus non lorem tristique volutpat a in nunc.
+                  Jeff Christian II: Jeff is a tall white male.
                   </div>
                 </div>
                 <div className='teamRow'>
