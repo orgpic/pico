@@ -35,7 +35,6 @@ class App extends React.Component {
     axios.get('/auth/oAuth', {
     })
     .then(function(response) {
-      console.log('ooooooooooooooo', response.data);
       if (response.data) {
         var myUser = response.data;
         localStorage['user'] = JSON.stringify(myUser);
