@@ -7,6 +7,7 @@ class FileBrowser extends React.Component {
   constructor(props) {
     super(props);
     console.log('this is props of file browser', props);
+    const context = this;
     this.socket = io();
     this.state = {
       containerName: this.props.containerName,
@@ -17,6 +18,7 @@ class FileBrowser extends React.Component {
     this.doubleClick = this.doubleClick.bind(this);
     this.downloadClick = this.downloadClick.bind(this);
     this.updateFileBrowser = this.updateFileBrowser.bind(this);
+    this.deleteClick = this.deleteClick.bind(this);
   }
 
   updateFileBrowser(path, containerName) {
@@ -61,10 +63,15 @@ class FileBrowser extends React.Component {
   componentWillReceiveProps(nextProps) {
     const context = this;
     console.log('FB GOT PROPS', nextProps);
+    this.socket.off('/FB/REFRESH/' + this.state.containerName);
     this.setState({
       containerName: nextProps.containerName,
       hidden: nextProps.hidden,
       curDir: nextProps.curDir
+    });
+    this.socket.on('/FB/REFRESH/' + this.props.containerName, function(ref) {
+      console.log('FBREFRESH', ref);
+      context.updateFileBrowser(ref.path, context.props.containerName);
     });
     this.updateFileBrowser(nextProps.curDir, nextProps.containerName);
   }
@@ -122,6 +129,20 @@ class FileBrowser extends React.Component {
     });
   }
 
+  deleteClick(e, entry, isFolder) {
+    const context = this;
+    var confirmed;
+    if(!isFolder) confirmed = confirm('You are about to delete "' + entry + '". Continue?');
+    else confirmed = confirm('You are about to delete the folder "' + entry + '". Continue?');
+
+    axios.post('/docker/deleteFile', {isFolder: isFolder, containerName: this.state.containerName, curDir: this.state.curDir, entry: entry})
+    .then(function(resp) {
+      console.log(resp);
+      context.updateFileBrowser(context.state.curDir, context.state.containerName);
+    });
+
+  }
+
 
 
   render() {
@@ -133,8 +154,9 @@ class FileBrowser extends React.Component {
               if (entry.type === "file") {
                 return (
                   <div className="fileBrowser" onDoubleClick={(e) => {context.doubleClick(e, entry.name)}}>
+                    <i onClick={(e) => {context.deleteClick(e, entry.name, false)}} style={{paddingRight: '10px'}} className="ion-ios-close-outline">  </i>
                     <i className="ion-ios-paper-outline">{" " + entry.name}</i>
-                    <i onClick={(e) => {context.downloadClick(e, entry.name)}}style={{float: 'right', 'padding-right': '10px'}}className="ion-android-arrow-down">Download</i>
+                    <i onClick={(e) => {context.downloadClick(e, entry.name)}} style={{float: 'right', 'paddingRight': '10px'}}className="ion-ios-download-outline">Download</i>
                   </div>
                 )
               } else if (entry.type === "folder" && entry.name !== ".") {
@@ -142,8 +164,9 @@ class FileBrowser extends React.Component {
                   <div id={entry.name} className="fileBrowser" onDoubleClick={(e) => {context.doubleClick(e, entry.name)}}>
                     { entry.name === ".." ? <i className="ion-ios-arrow-up">{entry.name}</i> : 
                     <div>
+                    {context.state.curDir !== '/' ? <i onClick={(e) => {context.deleteClick(e, entry.name, true)}} style={{paddingRight: '10px'}} className="ion-ios-close-outline">  </i> : null }
                     <i className="ion-ios-arrow-down">{" " + entry.name}</i> 
-                    {context.state.curDir !== '/' ? <i onClick={(e) => {context.downloadClick(e, entry.name)}} style={{float: 'right', 'padding-right': '15px'}} className="ion-android-arrow-down">Download Zip</i> : null}
+                    {context.state.curDir !== '/' ? <i onClick={(e) => {context.downloadClick(e, entry.name)}} style={{float: 'right', 'paddingRight': '15px'}} className="ion-ios-download-outline">Download Zip</i> : null}
                     </div>
                     }
                   </div>

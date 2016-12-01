@@ -5,6 +5,20 @@ const docker = require('../utils/dockerAPI');
 var db = require('../db/config');
 var User = require('../models/User');
 
+router.post('/deleteFile', function(req, res) {
+  const containerName = req.body.containerName;
+  const entry = req.body.curDir + '/' + req.body.entry;
+  const folderFlag = req.body.isFolder ? ' -rf ' : ' ';
+  const command = 'rm' + folderFlag + entry;
+  docker.runCommand(containerName, command, function(err, res1) {
+    if(err) {
+      res.status(200).send(err);
+    } else {
+      res.status(200).send(res1);
+    }
+  });
+});
+
 router.post('/restart', function(req, res) {
   var containerName = req.body.containerName;
   docker.isContainerRunning(containerName, function(resp) {
@@ -141,6 +155,10 @@ router.post('/cmd', function (req, res) {
   var containerName = req.body.containerName;
 
   if(cmd.split(" ")[0] === 'cd') {
+    if(!cmd.split(" ")[1]) {
+      res.status(200).send('Error: Must specify a directory.\n');
+      return;
+    }
     let newdir = cmd.split(" ")[1];
     console.log('change dir to: ', newdir);
     let readyToExecute = true;
@@ -181,7 +199,10 @@ router.post('/cmd', function (req, res) {
       });
     }
   } else if(cmd.split(" ")[0] === 'open') {
-    console.log('this is the command', cmd);
+    if(!cmd.split(" ")[1]) {
+      res.status(200).send('Error: Must specify a file');
+      return;
+    }
     var res1 = req.body.curDir;
     
     if(res1[res1.length - 1] === '\n') res1 = res1.slice(0, res1.length - 1);
@@ -195,6 +216,10 @@ router.post('/cmd', function (req, res) {
     });
 
   } else if (cmd.split(" ")[0] === 'pico') {
+    if(!cmd.split(" ")[1]) {
+      res.status(200).send('Error: Must specify a file\n');
+      return;
+    }
     var fileName = cmd.split(" ")[1];
     if(fileName.startsWith('/')) {
       docker.runCommand(containerName, 'touch ' + fileName, function(err1, res1) {
@@ -222,6 +247,10 @@ router.post('/cmd', function (req, res) {
     }
   } else if (cmd.split(" ")[0] === 'download') {
     console.log('IN DOWNLOAD');
+    if(!cmd.split(" ")[1]) {
+      res.status(200).send('Error: Must specify a file or directory.\n');
+      return;
+    }
     var fileName = cmd.split(" ")[1];
     
     res1 = req.body.curDir;
