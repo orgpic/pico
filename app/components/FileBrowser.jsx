@@ -131,11 +131,13 @@ class FileBrowser extends React.Component {
     if(!isFolder) confirmed = confirm('You are about to delete "' + entry + '". Continue?');
     else confirmed = confirm('You are about to delete the folder "' + entry + '". Continue?');
 
-    axios.post('/docker/deleteFile', {isFolder: isFolder, containerName: this.state.containerName, curDir: this.state.curDir, entry: entry})
-    .then(function(resp) {
-      console.log(resp);
-      context.updateFileBrowser(context.state.curDir, context.state.containerName);
-    });
+    if(confirmed) {
+      axios.post('/docker/deleteFile', {isFolder: isFolder, containerName: this.state.containerName, curDir: this.state.curDir, entry: entry})
+      .then(function(resp) {
+        console.log(resp);
+        context.updateFileBrowser(context.state.curDir, context.state.containerName);
+      });
+    }
 
   }
 
