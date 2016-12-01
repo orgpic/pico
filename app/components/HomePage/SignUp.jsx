@@ -1,9 +1,9 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const axios = require('axios');
-const utils = require('../../utils/validationHelpers');
+const utils = require('../../../utils/validationHelpers');
 const Loader = require('react-loader');
-
+ 
 class Signup extends React.Component {
   constructor (props) {
     super (props);
