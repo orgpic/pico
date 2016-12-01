@@ -58,7 +58,7 @@ class Dashboard extends React.Component {
     }
   }
     render() {
-      if (this.state.lastName.length) {
+      if (localStorage['user']) {
         this.setState = ({
           loaded: true
         });

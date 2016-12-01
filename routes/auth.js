@@ -80,6 +80,7 @@ router.post('/signup', function(req, res) {
 
 
 router.get('/oAuth', function(req, res) {
+  // console.log('oAuthoAuthoAuthoAuth', req.session)
   res.json(req.session.user);
 });
 
@@ -101,6 +102,7 @@ router.post('/authenticate',
       profilePicture: fullUser.profilePicture
     };
     req.session.user = user;
+    console.log('req.session.userreq.session.userreq.session.userreq.session.userreq.session.userreq.session.userreq.session.userreq.session.userreq.session.user', req.session.user)
     res.send(req.session.user);
   }
 );

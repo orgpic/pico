@@ -68,15 +68,14 @@ module.exports = {
 
   testSession: function(callback) {
     request
-    .get('/test/return')
-    .send(options)
+    .get('/auth/oAuth')
     .end(function(err, result) {
       if (err) {
         console.log(err);
         return;
-      }
-      console.log('testSession', result.body);
-      callback(result.body.cookie);
+      } 
+      console.log('testSessoooon', result.data)
+      callback(result);
     });
   },
 

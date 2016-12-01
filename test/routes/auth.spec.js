@@ -39,10 +39,12 @@ describe('Local Signup/Login test', function () {
     });
   });
 
-  xit('should kill the session upon signout', function(done) {
+  it('should kill the session upon signout', function(done) {
     util.signOut(function(results) {
-      expect(results.user.username).to.equal(undefined);
-      done();
+      util.testSession(function(results) {
+        expect(results.originalMaxAge).to.equal(undefined)
+        done();
+      });
     });
   });
 
