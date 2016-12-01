@@ -1,6 +1,5 @@
 const React = require('react');
-const NavBar = require('./NavBar.jsx');
-
+const NavBar = require('../NavBar.jsx'); 
 const HomePage = ({username, mostPopularVideos}) => {
 	const showInfo = (event) => {	
 		event.preventDefault();

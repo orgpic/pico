@@ -1,6 +1,6 @@
 const React = require('react');
 const axios = require('axios');
-const utils = require('../../utils/validationHelpers');
+const utils = require('../../../utils/validationHelpers');
 import InlineEdit from 'react-edit-inline';
 
 class UserInfo extends React.Component {
