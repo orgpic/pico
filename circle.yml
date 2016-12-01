@@ -23,12 +23,11 @@ test:
   override:
     - sequelize db:migrate:undo:all
     - sequelize db:migrate
-    - npm test
 
-deployment:
-  staging:
-    branch: master
-    commands:
-      - GIT_PUSH_TO_STAGING
+# deployment:
+#   staging:
+#     branch: master
+#     commands:
+#       - GIT_PUSH_TO_STAGING
       # - git push -f ssh://root@162.243.142.111/root/repo/site.git master
       
