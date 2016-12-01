@@ -30,6 +30,8 @@ class Terminal extends React.Component {
     this.socket.off('/TERM/' + this.state.containerName);
     this.socket.off('/TERM/RES/' + this.state.containerName);
     this.socket.off('/TERM/CD/' + this.state.containerName);
+    this.socket.off('/TERM/PAUSE/' + this.state.containerName);
+    this.socket.off('/TERM/RESUME/' + this.state.containerName);
     this.setState({
       containerName: nextProps.containerName,
       hidden: nextProps.hidden,
@@ -52,6 +54,17 @@ class Terminal extends React.Component {
     this.socket.on('/TERM/CD/' + nextProps.containerName, function(path) {
       context.recievedTermCD(path);
     });
+
+    this.socket.on('/TERM/PAUSE/' + nextProps.containerName, function(pause) {
+      console.log('PAUSE');
+      context.terminal.pause();
+    });
+
+    this.socket.on('/TERM/RESUME/' + nextProps.containerName, function(resume) {
+      console.log('RESUME');
+      context.terminal.resume();
+    });
+
     this.renderTerminal();
     this.terminal.focus();
   }
@@ -185,12 +198,12 @@ class Terminal extends React.Component {
             term.echo('Sorry, you have no permission to run commands on this user\'s terminal.');
             return;
           }
-          // context.setState({
-          //   curCommand: command
-          // })
-          // context.socket.emit('/ANALYZE/', {command: command, containerName: context.state.containerName});
+            context.terminal.pause();
+            context.socket.emit('/TERM/PAUSE/', {containerName: context.state.containerName});
             axios.post('/docker/cmd', { cmd: command, containerName: context.state.containerName, curDir: context.state.curDir })
               .then(function(res) {
+                context.terminal.resume();
+                context.socket.emit('/TERM/RESUME/', {containerName: context.state.containerName});
                 if(typeof res.data === 'object') {
                   if(res.data.fileOpen) {
                     console.log(res.data);

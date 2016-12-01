@@ -154,7 +154,35 @@ router.post('/cmd', function (req, res) {
   var cmd = req.body.cmd;
   var containerName = req.body.containerName;
 
-  if(cmd.split(" ")[0] === 'cd') {
+  if(cmd === 'node') {
+    res.status(200).send('Node REPL is not yet implemented on picoShell. Check back soon!\n');
+    return;
+  }
+  if(cmd === 'python') {
+    res.status(200).send('Python REPL is not yet implemented on picoShell. Check back soon!\n');
+    return;
+  }
+  if(cmd === 'ruby') {
+    res.status(200).send('Ruby REPL is not yet implemented on picoShell. Check back soon!\n');
+    return;
+  }
+
+  if(cmd.startsWith('apt-get install') && (!cmd.startsWith('apt-get install -y')) && (!cmd.endsWith('-y'))) {
+    if(cmd.split(' ').length > 3) {
+      res.status(200).send('Error: Command apt-get takes exactly three arguments\n'); 
+      return;
+    } else {
+      const packageName = cmd.split(' ')[cmd.split(' ').length - 1];
+      console.log('packageName', packageName);
+      docker.install(packageName, req.body.containerName, function(err, res1) {
+        if(err) {
+          res.status(200).send(err);
+        } else {
+          res.status(200).send(res1);
+        }
+      });
+    }
+  } else if(cmd.split(" ")[0] === 'cd') {
     if(!cmd.split(" ")[1]) {
       res.status(200).send('Error: Must specify a directory.\n');
       return;

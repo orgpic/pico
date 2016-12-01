@@ -102,7 +102,7 @@ class FileBrowser extends React.Component {
       var download = function(filename, text) {
         console.log(filename, text);
         text = text.replace(/\n/g, '');
-        var blob = new Blob(text.split(' ').map(function(txt) { return str2bytes(FileHelpers.hex2a(txt)); }), {type: "application/zip"});
+        var blob = new Blob(text.split(' ').map(function(txt) { return str2bytes(FileHelpers.hex2a(txt)); }), {type: ""});
         FileSaver.saveAs(blob, filename);
       }
       download(entry, res.data.fileContents);
@@ -145,11 +145,13 @@ class FileBrowser extends React.Component {
     if(!isFolder) confirmed = confirm('You are about to delete "' + entry + '". Continue?');
     else confirmed = confirm('You are about to delete the folder "' + entry + '". Continue?');
 
-    axios.post('/docker/deleteFile', {isFolder: isFolder, containerName: this.state.containerName, curDir: this.state.curDir, entry: entry})
-    .then(function(resp) {
-      console.log(resp);
-      context.updateFileBrowser(context.state.curDir, context.state.containerName);
-    });
+    if(confirmed) {
+      axios.post('/docker/deleteFile', {isFolder: isFolder, containerName: this.state.containerName, curDir: this.state.curDir, entry: entry})
+      .then(function(resp) {
+        console.log(resp);
+        context.updateFileBrowser(context.state.curDir, context.state.containerName);
+      });
+    }
 
   }
 

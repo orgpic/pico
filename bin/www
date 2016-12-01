@@ -135,6 +135,14 @@ io.on('connection', function(socket) {
     io.sockets.emit('/FB/REFRESH/' + ref.containerName, ref);
   });
 
+  socket.on('/TERM/PAUSE/', function(pause) {
+    io.sockets.emit('/TERM/PAUSE/' + pause.containerName, pause);
+  });
+
+  socket.on('/TERM/RESUME/', function(resume) {
+    io.sockets.emit('/TERM/RESUME/' + resume.containerName, resume);
+  });
+
 });
 
 /**

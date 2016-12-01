@@ -8,17 +8,17 @@ const Messages = require('../models/Messages');
 
 router.post('/', function(req, res) {
   const obj = req.body;
-
+  console.log('CREATING MESSAGE');
   Messages.create({
     userID: obj.username,
     containerID: obj.containerName,
     message: obj.message, 
   })
   .then(function(results) {
-    res.status(200);
+    res.status(200).send('Message Stored');
   })
   .catch(function(err) {
-    res.status(500);
+    res.status(500).send('Message Store Failed');
   });
 });
 
