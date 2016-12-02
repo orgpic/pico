@@ -47,7 +47,9 @@ class About extends React.Component {
                 <div className='teamRow'>
                   <img className='pic' src="/images/JC.jpg"></img>
                   <div className='tText'>
-                  Jeff Christian II: Jeff is a tall white male.
+                  Jeff Christian II: When Jeff is not leaping across tall buildings at a single bound, he concentrates almost all his time on Full-Stack Development.
+                  With PicoShell, Jeff was highly involved with both the UI and the back-end. From implementing React Components to drafting schema designs, Jeff finished the job.
+                  If unoccupied from everything else, Jeff enjoys discussing deep philosophy, human biology, and the state of the world.
                   </div>
                 </div>
                 <div className='teamRow'>
