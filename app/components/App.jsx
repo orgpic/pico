@@ -1,6 +1,7 @@
 import { Router, Route, browserHistory } from 'react-router';
 const React = require('react');
 const ReactDOM = require('react-dom');
+const axios = require('axios');
 const LinuxComputer = require('./LinuxComputer/LinuxComputer.jsx');
 const Dashboard = require('./Dashboard/Dashboard.jsx');
 const axios = require('axios');
@@ -14,6 +15,7 @@ const FAQ = require('./FAQ.jsx');
 const About = require('./About.jsx');
 const Modal = require('react-modal');
 const Footer = require('./Footer.jsx');
+
 let authenticate;
 
 class App extends React.Component {
