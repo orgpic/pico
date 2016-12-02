@@ -22,7 +22,10 @@ module.exports = function(grunt) {
         'public/codemirror/addon/edit/closebrackets.js',
         'public/codemirror/addon/edit/continuelist.js',
         'public/codemirror/addon/mode/overlay.js',
+        'public/codemirror/addon/dialog/dialog.js',
+        'public/codemirror/addon/search/searchcursor.js',
         'public/codemirror/addon/scroll/simplescrollbars.js',
+        'public/codemirror/keymap/vim.js'
         ],
         dest: 'public/dist/lib/javascriptsbuild.js'
       }

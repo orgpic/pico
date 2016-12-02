@@ -209,7 +209,11 @@ class Terminal extends React.Component {
                     console.log(res.data);
                     var newCode = res.data.termResponse;
                     if(newCode.endsWith('\n')) newCode = newCode.slice(0, newCode.length - 1);
-                    context.socket.emit('/TE/', {filePath: res.data.filePath, fileOpen: res.data.fileOpen, fileName: res.data.fileName, code: newCode, username: context.state.username, containerName: context.state.containerName});
+                    if (res.data.vim) {
+                      context.socket.emit('/TE/', {filePath: res.data.filePath, fileOpen: res.data.fileOpen, fileName: res.data.fileName, code: newCode, username: context.state.username, vim: true, containerName: context.state.containerName});
+                    } else {
+                      context.socket.emit('/TE/', {filePath: res.data.filePath, fileOpen: res.data.fileOpen, fileName: res.data.fileName, code: newCode, username: context.state.username, containerName: context.state.containerName});
+                    }
                     context.socket.emit('/TERM/RES/', {cmd: command, res: '', username: context.state.username, containerName: context.state.containerName});
                   } else if(res.data.pwd) {
                     console.log('CD', res.data.pwd);

@@ -4,7 +4,6 @@ const ReactDOM = require('react-dom');
 const axios = require('axios');
 const LinuxComputer = require('./LinuxComputer/LinuxComputer.jsx');
 const Dashboard = require('./Dashboard/Dashboard.jsx');
-const axios = require('axios');
 const SignUp = require('./HomePage/SignUp.jsx');
 const Login = require('./HomePage/Login.jsx');
 const VideoHome = require('./VideoHome/VideoHome.jsx');

@@ -25,6 +25,7 @@ class CodeEditor extends React.Component {
     this.recievedCEChange = this.recievedCEChange.bind(this);
     this.username = JSON.parse(localStorage['user']).username;
     this.handleFileRun = this.handleFileRun.bind(this);
+    this.handleCodeSave = this.handleCodeSave.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,9 +70,11 @@ class CodeEditor extends React.Component {
     const fileName = code.fileName;
     const filePath = code.filePath;
     const codeValue = code.code;
+    const vim = code.vim;
 
     const type = fileName.split(".").pop();
     let mode;
+    let keyMap;
 
     if (type === 'js') {
       mode = 'javascript';
@@ -100,11 +103,16 @@ class CodeEditor extends React.Component {
     } else if (type === 'md') {
       mode = 'gfm';
     }
+
+
     // } else if (type === 'c' || type === 'h' || type === 'cc'|| type === 'C' || type === 'cpp' || type === 'CPP' || type === 'c++' || type === 'cp' || type === 'cxx') {
     //   mode = 'cli'
     // }
 
     this.editor.setOption("mode", mode);
+
+
+    console.log(this.editor);
 
     if(code.fileOpen) {
       this.setState({
@@ -121,11 +129,23 @@ class CodeEditor extends React.Component {
         fileName: fileName,
         filePath: filePath
       });
+
+      if (vim) {
+        keyMap = 'vim';
+        const context = this;
+        CodeMirror.commands.save = function () {
+          context.handleCodeSave();
+        };
+      }
+
+
+      this.editor.setOption("keyMap", keyMap);
       //Must place the cursor back where it was after replacing contents. Otherwise weird things happen.
       this.cursorPos = this.editor.doc.getCursor();
       this.editor.getDoc().setValue(code.code);
 
       this.editor.doc.setCursor(this.cursorPos);
+
     }
   }
 
