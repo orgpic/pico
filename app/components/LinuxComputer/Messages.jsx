@@ -11,7 +11,7 @@ const Messages = ({messages, username}) => {
 		{
 			messages.map((message, i) =>  <Message message={message} username={username} counter={messages.length - 1 - i}/>)
 		}
-	</div>)
+	</div>);
 }
 
 module.exports = Messages;

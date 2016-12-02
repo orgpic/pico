@@ -248,9 +248,7 @@ class Terminal extends React.Component {
                       var blob = new Blob(bytes);
                       FileSaver.saveAs(blob, filename);
                     }
-                    console.log(res.data);
-                    console.log(res.data.fileContents.length);
-                    download(res.data.fileName, res.data.fileContents);
+                    download(res.data.fileName.replace(/\//, ''), res.data.fileContents);
                   } else {
                     console.log('DATA', res.data);
                     term.echo(String(JSON.stringify(res.data)));

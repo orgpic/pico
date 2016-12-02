@@ -1,4 +1,4 @@
-const React = require('react');
+  const React = require('react');
 const Messages = require('./Messages.jsx');
 const axios = require('axios');
 
@@ -17,7 +17,6 @@ class Chatbox extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.curMessage = '';
     this.updateMessages();
-
   }
 
   componentDidUpdate() {
