@@ -17,7 +17,6 @@ class Chatbox extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.curMessage = '';
     this.updateMessages();
-
   }
 
   componentDidUpdate() {

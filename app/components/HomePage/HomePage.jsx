@@ -1,36 +1,28 @@
 const React = require('react');
-const NavBar = require('../NavBar.jsx'); 
+const NavBar = require('../NavBar.jsx');
 const Footer = require('../Footer.jsx');
-const HomePage = ({username, mostPopularVideos}) => {
-	const showInfo = (event) => {	
-		event.preventDefault();
-		console.log('in here', event.target.className);
-		const target0 = 'overlay' + event.target.className;
-		const target1 = 'front-layer' + event.target.className;
-		document.getElementById(target0).style.visibility='visible';
-		document.getElementById(target1).style.visibility='visible';
-	};
 
-	const hideInfo = (event) => {
-		event.preventDefault();
-		console.log('THIS IS THE EVENT TARGET', event.target.id);
-		const id = event.target.id.split("front-layer")[1];
-		console.log('this is id', event.target.id.split("front-layer"));
-		const target0='overlay' + id;
-		console.log('this is target0', target0);
-		const target1=event.target.id;
-		document.getElementById(target0).style.visibility='hidden';
-		document.getElementById(target1).style.visibility='hidden';
+const HomePage = ({username,mostPopularVideos}) => {
+  const showInfo = ({target}) => {
+    const {className} = target;
+    const target0 = 'overlay' + className;
+    const target1 = 'front-layer' + className;
 
-	// 	const target0 = 'overlay' + event.target.id;
-	// 	const target1 = event.target;
-	// 	document.getElementById(target0).style.visibility='hidden';
-	// 	document.getElementById(target1).style.visibility='hidden';
-	// }
-}
+    document.getElementById(target0).style.visibility = 'visible';
+    document.getElementById(target1).style.visibility = 'visible';
+  };
+  const hideInfo = ({target}) => {
+    const {id} = target;
+    const target0 = 'overlay' + id.split("front-layer")[1];
+    const target1 =id;
 
-	return (
-		<div className="homepage-container">
+    document.getElementById(target0).style.visibility = 'hidden';
+    document.getElementById(target1).style.visibility = 'hidden';
+
+  }
+
+  return (
+    <div className="homepage-container">
 		  <div className="header">
 		    <NavBar username={username} />
 		    <div className="title">
@@ -66,7 +58,7 @@ const HomePage = ({username, mostPopularVideos}) => {
     	</div>
 		   <Footer/>
 		</div>
-	)
+  )
 }
 
 
