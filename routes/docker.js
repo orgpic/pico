@@ -268,8 +268,11 @@ router.post('/cmd', function (req, res) {
           res.status(200).send(err2);
         }
       } else {
-        console.log("in here");
+        if (potential === 'vim') {
+          res.status(200).send({termResponse: res2, vim: true, fileOpen: true, fileName: fileName, filePath: res1});
+        } else {
           res.status(200).send({termResponse: res2, fileOpen: true, fileName: fileName, filePath: res1});
+        }
       }
     });
 
