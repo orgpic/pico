@@ -276,7 +276,7 @@ router.post('/cmd', function (req, res) {
       }
     });
 
-  } else if (cmd.split(" ")[0] === 'pico' || cmd.split(" ")[0] === 'vim') {
+  } else if (cmd.split(" ")[0] === 'pico') {
     if(!cmd.split(" ")[1]) {
       res.status(200).send('Error: Must specify a file\n');
       return;
