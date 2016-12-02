@@ -223,6 +223,16 @@ class Terminal extends React.Component {
                     context.socket.emit('/TERM/CD/', {dir: res.data.pwd, username: context.state.username, containerName: context.state.containerName});
                     context.socket.emit('/TERM/RES/', {cmd: command, res: res.data.res, username: context.state.username, containerName: context.state.containerName});
                   } else if (res.data.download) {
+                    var chunkSubstr2 = function(str, size) {
+                      var numChunks = str.length / size + .5 | 0,
+                          chunks = new Array(numChunks);
+                    
+                      for(var i = 0, o = 0; i < numChunks; ++i, o += size) {
+                        chunks[i] = str.substr(o, size);
+                      }
+                    
+                      return chunks;
+                    }
                     var str2bytes = function(str) {
                       var bytes = new Uint8Array(str.length);
                       for (var i=0; i<str.length; i++) {
@@ -232,12 +242,13 @@ class Terminal extends React.Component {
                     }
                     var download = function(filename, text) {
                       text = text.replace(/\n/g, '');
-                      var blob = new Blob(text.split(' ').map(function(txt) { return str2bytes(FileHelpers.hex2a(txt)); }), {type: "application/zip"});
+                      text = text.replace(/ /g, '');
+                      var bytes = chunkSubstr2(text, 2);
+                      bytes = bytes.map(function(txt) { return str2bytes(FileHelpers.hex2a(txt)) });
+                      var blob = new Blob(bytes);
                       FileSaver.saveAs(blob, filename);
                     }
-                    console.log('downloading', res.data.fileContents, 'as', res.data.fileName);
-                    console.log(res.data);
-                    download(res.data.fileName, res.data.fileContents);
+                    download(res.data.fileName.replace(/\//, ''), res.data.fileContents);
                   } else {
                     console.log('DATA', res.data);
                     term.echo(String(JSON.stringify(res.data)));

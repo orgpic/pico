@@ -290,6 +290,7 @@ router.post('/cmd', function (req, res) {
       //download file
       if(dirExists.indexOf('Directory exists') === -1) {
         docker.runCommand(containerName, command, function(err2, res2) {
+          console.log('RES2L', res2.length);
           if(err2) {
             res.status(200).send(err2);
           } else {

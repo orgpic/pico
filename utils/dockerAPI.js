@@ -34,7 +34,7 @@ const runCommand = function(containerName, command, callback) {
   //    callback(null); 
   // });
 
-  exec(runCommandCommand, function(err, stdout, stderr) {
+  exec(runCommandCommand, {maxBuffer: 4096 * 1024}, function(err, stdout, stderr) {
     if (stderr && !stdout) {
       console.log('error', stderr);
       callback(stderr, null);

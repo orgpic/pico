@@ -100,6 +100,16 @@ class FileBrowser extends React.Component {
     console.log(file);
     axios.post('/docker/cmd', {cmd: 'download ' + file, containerName: this.state.containerName, curDir: this.state.curDir})
     .then(function(res) {
+      var chunkSubstr2 = function(str, size) {
+        var numChunks = str.length / size + .5 | 0,
+            chunks = new Array(numChunks);
+      
+        for(var i = 0, o = 0; i < numChunks; ++i, o += size) {
+          chunks[i] = str.substr(o, size);
+        }
+      
+        return chunks;
+      }
       var str2bytes = function(str) {
         var bytes = new Uint8Array(str.length);
         for (var i=0; i<str.length; i++) {
@@ -108,14 +118,14 @@ class FileBrowser extends React.Component {
         return bytes;
       }
       var download = function(filename, text) {
-        console.log(filename, res);
-
         text = text.replace(/\n/g, '');
-        var blob = new Blob(text.split(' ').map(function(txt) { return str2bytes(FileHelpers.hex2a(txt)); }), {type: ""});
+        text = text.replace(/ /g, '');
+        var bytes = chunkSubstr2(text, 2);
+        bytes = bytes.map(function(txt) { return str2bytes(FileHelpers.hex2a(txt)) });
+        var blob = new Blob(bytes);
         FileSaver.saveAs(blob, filename);
       }
-      const fileName = res.data.fileName.replace(/\//, '');
-      download(fileName, res.data.fileContents);
+      download(res.data.fileName.replace(/\//, ''), res.data.fileContents);
     });
   }
 
