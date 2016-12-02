@@ -226,7 +226,8 @@ router.post('/cmd', function (req, res) {
         }
       });
     }
-  } else if(cmd.split(" ")[0] === 'open') {
+  } else if(cmd.split(" ")[0] === 'open' || cmd.split(" ")[0] === 'vim') {
+    const potential = cmd.split(" ")[0].trim();
     if(!cmd.split(" ")[1]) {
       res.status(200).send('Error: Must specify a file');
       return;
@@ -239,7 +240,11 @@ router.post('/cmd', function (req, res) {
       if(err2) {
         res.status(200).send(err2);
       } else {
-        res.status(200).send({termResponse: res2, fileOpen: true, fileName: cmd.split(" ")[1], filePath: res1});
+        if (potential) {
+          res.status(200).send({termResponse: res2, fileOpen: true, fileName: cmd.split(" ")[1], filePath: res1, vim: true});
+        } else {
+          res.status(200).send({termResponse: res2, fileOpen: true, fileName: cmd.split(" ")[1], filePath: res1});
+        }
       }
     });
 
