@@ -47,7 +47,7 @@ handleLogOut() {
       			<li> <a href="/computer"> Computer </a> </li>
             <li> <a href="/video"> Videos </a> </li>
             <li> <a href="/faq"> FAQ </a> </li>
-            <li> <a href="/about"> About </a></li>
+            <li> <a href="/about"> About1 </a></li>
             <li className="username"><a href="/dashboard">{this.props.username.length > 1? this.props.username : JSON.parse(localStorage['user']).username}</a></li>
     			</ul>
   			</div>	
