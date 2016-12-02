@@ -244,8 +244,15 @@ class Terminal extends React.Component {
                     download(res.data.fileName, res.data.fileContents);
                   } else {
                     console.log('DATA', res.data);
-                    term.echo(String(JSON.stringify(res.data)));
-                    context.socket.emit('/TERM/RES/', {cmd: command, res: JSON.stringify(res.data), username: context.state.username, containerName: context.state.containerName});
+                    if (res.data.vim) {
+                      context.socket.emit('/TE/', {termResponse: "", filePath: res.data.filePath, fileOpen: res.data.fileOpen, fileName: res.data.fileName, code: newCode, username: context.state.username, vim: true, containerName: context.state.containerName});
+                      context.socket.emit('/TERM/RES/', {cmd: command, res: '', username: context.state.username, containerName: context.state.containerName});
+
+                    } else {
+                      term.echo(String(JSON.stringify(res.data)));
+                      context.socket.emit('/TERM/RES/', {cmd: command, res: JSON.stringify(res.data), username: context.state.username, containerName: context.state.containerName});
+                    }
+
                   }
                   context.terminal.set_command('', false);
                   context.setState({

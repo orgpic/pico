@@ -233,18 +233,43 @@ router.post('/cmd', function (req, res) {
       return;
     }
     var res1 = req.body.curDir;
+    let fileName = cmd.split(" ")[1];
     
     if(res1[res1.length - 1] === '\n') res1 = res1.slice(0, res1.length - 1);
     const command = 'cat ' + res1 + '/' + cmd.split(" ")[1];
     docker.runCommand(containerName, command, function(err2, res2) {
       if(err2) {
-        res.status(200).send(err2);
-      } else {
-        if (potential) {
-          res.status(200).send({termResponse: res2, fileOpen: true, fileName: cmd.split(" ")[1], filePath: res1, vim: true});
+        console.log('this is error 2', err2);
+        if (potential === 'vim') {
+          if(fileName.startsWith('/')) {
+            docker.runCommand(containerName, 'touch ' + fileName, function(err4, res4) {
+              if(err1) {
+                res.status(500).send(err4);
+              } else {
+                var filePath = fileName.slice(0, fileName.lastIndexOf('/'));
+                fileName = fileName.slice(fileName.lastIndexOf('/') + 1);
+                  res.status(200).send({newFile: true, res: res4, fileName: fileName, filePath: filePath, vim: true});
+              }
+            });
+          } else {
+              if(res1[res1.length - 1] === '/') res1 = res1.slice(0, res1.length - 1);
+              const command = 'touch ' + res1 + '/' + fileName;
+              docker.runCommand(containerName, command, function(err3, res3) {
+                if(err3) {
+                  res.status(500).send(err3);
+                } else {
+                    var filePath = fileName.slice(0, fileName.lastIndexOf('/'));
+                    fileName = fileName.slice(fileName.lastIndexOf('/') + 1);
+                    res.status(200).send({termResponse: res3, fileName: fileName, filePath: res1, fileOpen: true, vim: true});
+                  }
+              });
+          }
         } else {
-          res.status(200).send({termResponse: res2, fileOpen: true, fileName: cmd.split(" ")[1], filePath: res1});
+          res.status(200).send(err2);
         }
+      } else {
+        console.log("in here");
+          res.status(200).send({termResponse: res2, fileOpen: true, fileName: fileName, filePath: res1});
       }
     });
 
