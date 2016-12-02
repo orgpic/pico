@@ -89,7 +89,7 @@ const LandingPage = ({authenticate, email, modalIsOpen, mostPopularVideos, handl
 	            picoShell remembers the file you create with each video, so you can always pick up
 	            where you left off
 	            </div>
-	            <img src="/images/codeable.gif"></img>
+	            <img src="/images/videos.gif"></img>
 	          </div>
 	          <div className="info-container">
 	            <img src="/images/collaborative.gif"></img>
