@@ -56,6 +56,14 @@ class CheatSheet extends React.Component {
               </div>
               <div className="command-container">
                 <span className="title">
+                  Vim mode
+                </span>
+                <span className="info">
+                  {'vim' + '<file>'}
+                </span>
+              </div>
+              <div className="command-container">
+                <span className="title">
                   Change Directory
                 </span>
                 <span className="info">

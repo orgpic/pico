@@ -226,20 +226,53 @@ router.post('/cmd', function (req, res) {
         }
       });
     }
-  } else if(cmd.split(" ")[0] === 'open') {
+  } else if(cmd.split(" ")[0] === 'open' || cmd.split(" ")[0] === 'vim') {
+    const potential = cmd.split(" ")[0].trim();
     if(!cmd.split(" ")[1]) {
       res.status(200).send('Error: Must specify a file');
       return;
     }
     var res1 = req.body.curDir;
+    let fileName = cmd.split(" ")[1];
     
     if(res1[res1.length - 1] === '\n') res1 = res1.slice(0, res1.length - 1);
     const command = 'cat ' + res1 + '/' + cmd.split(" ")[1];
     docker.runCommand(containerName, command, function(err2, res2) {
       if(err2) {
-        res.status(200).send(err2);
+        console.log('this is error 2', err2);
+        if (potential === 'vim') {
+          if(fileName.startsWith('/')) {
+            docker.runCommand(containerName, 'touch ' + fileName, function(err4, res4) {
+              if(err1) {
+                res.status(500).send(err4);
+              } else {
+                var filePath = fileName.slice(0, fileName.lastIndexOf('/'));
+                fileName = fileName.slice(fileName.lastIndexOf('/') + 1);
+                  res.status(200).send({newFile: true, res: res4, fileName: fileName, filePath: filePath, vim: true});
+              }
+            });
+          } else {
+              if(res1[res1.length - 1] === '/') res1 = res1.slice(0, res1.length - 1);
+              const command = 'touch ' + res1 + '/' + fileName;
+              docker.runCommand(containerName, command, function(err3, res3) {
+                if(err3) {
+                  res.status(500).send(err3);
+                } else {
+                    var filePath = fileName.slice(0, fileName.lastIndexOf('/'));
+                    fileName = fileName.slice(fileName.lastIndexOf('/') + 1);
+                    res.status(200).send({termResponse: res3, fileName: fileName, filePath: res1, fileOpen: true, vim: true});
+                  }
+              });
+          }
+        } else {
+          res.status(200).send(err2);
+        }
       } else {
-        res.status(200).send({termResponse: res2, fileOpen: true, fileName: cmd.split(" ")[1], filePath: res1});
+        if (potential === 'vim') {
+          res.status(200).send({termResponse: res2, vim: true, fileOpen: true, fileName: fileName, filePath: res1});
+        } else {
+          res.status(200).send({termResponse: res2, fileOpen: true, fileName: fileName, filePath: res1});
+        }
       }
     });
 
@@ -249,6 +282,8 @@ router.post('/cmd', function (req, res) {
       return;
     }
     var fileName = cmd.split(" ")[1];
+    var potential = cmd.split(" ")[0].trim();
+    console.log('this is potential', potential === 'vim');
     if(fileName.startsWith('/')) {
       docker.runCommand(containerName, 'touch ' + fileName, function(err1, res1) {
         if(err1) {
@@ -256,7 +291,11 @@ router.post('/cmd', function (req, res) {
         } else {
           var filePath = fileName.slice(0, fileName.lastIndexOf('/'));
           fileName = fileName.slice(fileName.lastIndexOf('/') + 1);
-          res.status(200).send({newFile: true, res: res1, fileName: fileName, filePath: filePath})
+          if (potential === 'vim') {
+            res.status(200).send({newFile: true, res: res1, fileName: fileName, filePath: filePath, vim: true});
+          } else {
+            res.status(200).send({newFile: true, res: res1, fileName: fileName, filePath: filePath});
+          }
         }
       });
     } else {
@@ -269,7 +308,12 @@ router.post('/cmd', function (req, res) {
         if(err2) {
           res.status(500).send(err2);
         } else {
-          res.status(200).send({termResponse: res2, fileName: fileName, filePath: res1, fileOpen: true});
+          if (potential === 'vim') {
+            res.status(200).send({termResponse: res2, fileName: fileName, filePath: res1, fileOpen: true, vim: true});
+          } else {
+            res.status(200).send({termResponse: res2, fileName: fileName, filePath: res1, fileOpen: true});
+          }
+
         }
       });
     }

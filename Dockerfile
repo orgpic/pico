@@ -7,5 +7,6 @@ RUN apt-get install -y gcc
 
 RUN mkdir -p /picoShell
 WORKDIR /picoShell
+COPY PICO_README.md /picoShell
 
 RUN touch .pico && echo "/picoShell" > .pico
