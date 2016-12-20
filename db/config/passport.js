@@ -53,7 +53,7 @@ passport.use(new Strategy({
 passport.use(new GitHubStrategy({
     clientID: 'f864f0df17178ff53b7b',
     clientSecret: 'd37ad17231f09cf864805e8ffa832b56ba59a855',
-    callbackURL: 'http://localhost:3000/github/callback'
+    callbackURL: 'http://picoshell.com//github/callback'
   },
   function(accessToken, refreshToken, profile, cb) {
     if (profile.displayName) {
